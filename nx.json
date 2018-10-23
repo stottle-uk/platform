@@ -1,0 +1,24 @@
+{
+  "npmScope": "stottle-platform",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "ngrx-auth0": {
+      "tags": []
+    },
+    "web": {
+      "tags": []
+    },
+    "web-e2e": {
+      "tags": []
+    },
+    "auth0-rxjs": {
+      "tags": []
+    }
+  }
+}
