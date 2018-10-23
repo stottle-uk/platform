@@ -9,8 +9,7 @@ import {
   AUTH0_LOGOUT_OPTIONS,
   AUTH0_WEB_AUTH,
   AuthDatesService,
-  AuthProviderService,
-  CallbackComponent
+  AuthProviderService
 } from '@stottle-platform/auth0-rxjs';
 import { AuthGuardService, AuthIntercepterService } from './services';
 import * as fromAuth from './store';
@@ -22,8 +21,7 @@ import { AuthEffects } from './store/auth.effects';
     StoreModule.forFeature('auth', fromAuth.reducer),
     EffectsModule.forFeature([AuthEffects]),
     Auth0RxjsRoutesModule
-  ],
-  declarations: [CallbackComponent]
+  ]
 })
 export class NgrxAuth0Module {
   static forRoot(

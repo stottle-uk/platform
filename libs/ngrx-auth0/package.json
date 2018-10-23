@@ -1,11 +1,26 @@
 {
   "name": "@stottle-platform/ngrx-auth0",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "description": "Angular wrapper library for Auth0 and ngrx",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stottle-uk/platform.git"
+  },
+  "author": {
+    "name": "Stuart Tottle"
+  },
+  "keywords": [
+    "ngrx",
+    "auth0",
+    "auth0-js",
+    "angular"
+  ],
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
     "@ngrx/effects": "6.1.0",
     "@ngrx/store": "6.1.0",
-    "@stottle-platform/auth0-rxjs": "^0.0.3"
+    "@stottle-platform/auth0-rxjs": "^0.0.6"
   }
 }
