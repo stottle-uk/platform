@@ -1,6 +1,12 @@
 {
   "name": "@stottle-platform/auth0-rxjs",
-  "version": "0.0.1",
+  "version": "0.0.3",
+  "description": "Angular wrapper library for Auth0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stottle-uk/platform.git"
+  },
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0",

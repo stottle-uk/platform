@@ -5,7 +5,8 @@
     "entryFile": "src/index.ts",
     "umdModuleIds": {
       "@ngrx/store": "store",
-      "@ngrx/effects": "effects"
+      "@ngrx/effects": "effects",
+      "@stottle-platform/auth0-rxjs": "auth0-rxjs"
     }
   }
 }

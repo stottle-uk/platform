@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { AuthProviderService } from '@stottle-platform/auth0-rxjs';
+import {
+  Authentication,
+  AuthProviderService
+} from '@stottle-platform/auth0-rxjs';
 import { Observable, of } from 'rxjs';
 import {
   catchError,
@@ -12,7 +15,6 @@ import {
   tap
 } from 'rxjs/operators';
 import * as fromActions from './auth.actions';
-import { Authentication } from './auth.model';
 
 @Injectable()
 export class AuthEffects {

@@ -39,7 +39,9 @@ export class UserIsNotAuthenticated implements Action {
 export class Login implements Action {
   readonly type = AuthActionTypes.Login;
 
-  constructor(public payload: { redirectUrl: string; options: auth0.AuthorizeOptions }) {}
+  constructor(
+    public payload: { redirectUrl: string; options: auth0.AuthorizeOptions }
+  ) {}
 }
 
 export class GetUserInfoStart implements Action {
