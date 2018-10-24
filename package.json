@@ -42,8 +42,10 @@
     "@ngrx/effects": "6.1.0",
     "@ngrx/router-store": "6.1.0",
     "@ngrx/store": "6.1.0",
+    "@ngrx/store-devtools": "^6.1.0",
     "auth0-js": "^9.8.0",
-    "@stottle-platform/auth0-rxjs": "^0.0.6"
+    "@stottle-platform/auth0-rxjs": "^0.0.6",
+    "@stottle-platform/ngrx-auth0": "^0.0.4"
   },
   "devDependencies": {
     "@angular-devkit/build-ng-packagr": "~0.8.0",

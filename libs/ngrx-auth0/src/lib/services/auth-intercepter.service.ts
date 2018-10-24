@@ -10,7 +10,10 @@ import { Authentication } from '../store/auth.model';
 export class AuthIntercepterService {
   constructor(private store: Store<fromAuth.State>) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     return combineLatest(
       this.store.select(fromAuth.selectIsAuthenticated(new Date().getTime())),
       this.store.select(fromAuth.selectAuth),
@@ -20,7 +23,10 @@ export class AuthIntercepterService {
         auth =>
           auth.isAuthenticated && auth.accessToken
             ? req.clone({
-                headers: req.headers.set('Authorization', `Bearer ${auth.accessToken}`)
+                headers: req.headers.set(
+                  'Authorization',
+                  `Bearer ${auth.accessToken}`
+                )
               })
             : req
       ),
@@ -34,7 +40,7 @@ export class AuthIntercepterService {
   ): { isAuthenticated: boolean; accessToken: string } {
     return {
       isAuthenticated,
-      accessToken: auth.accessToken
+      accessToken: auth && auth.accessToken
     };
   }
 }

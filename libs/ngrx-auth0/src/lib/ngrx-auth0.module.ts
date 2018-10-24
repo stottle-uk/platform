@@ -4,7 +4,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import {
-  Auth0RxjsRoutesModule,
+  Auth0RxjsModule,
   auth0WebAuthFactory,
   AUTH0_LOGOUT_OPTIONS,
   AUTH0_WEB_AUTH,
@@ -20,7 +20,7 @@ import { AuthEffects } from './store/auth.effects';
     CommonModule,
     StoreModule.forFeature('auth', fromAuth.reducer),
     EffectsModule.forFeature([AuthEffects]),
-    Auth0RxjsRoutesModule
+    Auth0RxjsModule
   ]
 })
 export class NgrxAuth0Module {
