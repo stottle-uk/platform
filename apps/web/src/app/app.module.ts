@@ -12,6 +12,7 @@ import { AppRoutesModule } from './app-routes.module';
 import { AppComponent } from './app.component';
 import { RouterClientModule } from './router-client/router-client.module';
 import { UsersModule } from './users/users.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const angularModules = [BrowserModule, HttpClientModule];
 
@@ -36,7 +37,8 @@ const thirdPatyModules = [
     ...ngrxModules,
     ...thirdPatyModules,
     NxModule.forRoot(),
-    AppRoutesModule
+    AppRoutesModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
