@@ -1,6 +1,8 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
@@ -12,9 +14,13 @@ import { AppRoutesModule } from './app-routes.module';
 import { AppComponent } from './app.component';
 import { RouterClientModule } from './router-client/router-client.module';
 import { UsersModule } from './users/users.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const angularModules = [BrowserModule, HttpClientModule];
+const angularModules = [
+  BrowserModule,
+  BrowserAnimationsModule,
+  HttpClientModule,
+  FlexLayoutModule
+];
 
 const appModules = [RouterClientModule, UsersModule];
 
@@ -37,8 +43,7 @@ const thirdPatyModules = [
     ...ngrxModules,
     ...thirdPatyModules,
     NxModule.forRoot(),
-    AppRoutesModule,
-    BrowserAnimationsModule
+    AppRoutesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
