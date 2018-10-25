@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromAuth from '@stottle-platform/ngrx-auth0';
+import * as fromAuth from '@stottle-platform-internal/ngrx-auth0';
 
 @Component({
   selector: 'stottle-platform-root',
@@ -18,7 +18,7 @@ import * as fromAuth from '@stottle-platform/ngrx-auth0';
   </main>
   `
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'stottle-web';
 
   isAuthenticated$ = this.store.select(
@@ -26,6 +26,10 @@ export class AppComponent {
   );
 
   constructor(private store: Store<fromAuth.State>) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(new fromAuth.CheckAuthenticationStatus());
+  }
 
   login(): void {
     this.store.dispatch(

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromAuth from '@stottle-platform/ngrx-auth0';
+import * as fromAuth from '@stottle-platform-internal/ngrx-auth0';
 
 @Component({
   selector: 'stottle-dashboard',

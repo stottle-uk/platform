@@ -133,10 +133,14 @@ export class AuthProviderService {
     observer: Subscriber<T>,
     predicate: (result: T) => boolean
   ): auth0.Auth0Callback<T> {
-    return (err, result: T) =>
-      predicate(result)
-        ? (observer.next(result), observer.complete())
-        : observer.error(err);
+    return (err, result: T) => {
+      if (predicate(result)) {
+        observer.next(result);
+        observer.complete();
+      } else if (err) {
+        observer.error(err);
+      }
+    };
   }
 
   private checkAuthResult(result: auth0.Auth0DecodedHash): boolean {

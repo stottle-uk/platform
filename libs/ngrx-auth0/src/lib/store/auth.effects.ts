@@ -21,12 +21,6 @@ export class AuthEffects {
   constructor(private actions$: Actions, private auth: AuthProviderService) {}
 
   @Effect()
-  setupAuthentication$: Observable<Action> = this.actions$.pipe(
-    take(1),
-    map(() => new fromActions.CheckAuthenticationStatus())
-  );
-
-  @Effect()
   handleAuthentication$: Observable<Action> = this.actions$.pipe(
     take(1),
     exhaustMap(() =>

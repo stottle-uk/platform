@@ -5,9 +5,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NxModule } from '@nrwl/nx';
-import { NgrxAuth0Module } from '@stottle-platform/ngrx-auth0';
+import { NgrxAuth0Module } from '@stottle-platform-internal/ngrx-auth0';
 import { AppRoutesModule } from './app-routes.module';
 import { AppComponent } from './app.component';
+import { UsersModule } from './users/users.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { AppComponent } from './app.component';
         returnTo: 'http://localhost:4200'
       }
     ),
+    UsersModule,
     AppRoutesModule
   ],
   providers: [],

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuardService } from '@stottle-platform/ngrx-auth0';
+import { AuthGuardService } from '@stottle-platform-internal/ngrx-auth0';
 
 export const routes: Routes = [
   {
@@ -27,8 +27,7 @@ export const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {
       initialNavigation: 'enabled',
-      scrollPositionRestoration: 'enabled',
-      enableTracing: true
+      scrollPositionRestoration: 'enabled'
     })
   ],
   exports: [RouterModule]
