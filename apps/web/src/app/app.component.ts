@@ -5,17 +5,25 @@ import * as fromAuth from '@stottle-platform-internal/ngrx-auth0';
 @Component({
   selector: 'stottle-platform-root',
   template: `
-  <div style="text-align:center">
-    <h1>
-      {{title}}
-    </h1>
-    <button type="button" (click)="login()" *ngIf="!(isAuthenticated$ | async)">login</button>
-    <button type="button" (click)="logout()" *ngIf="(isAuthenticated$ | async)">logout</button>
-  </div>
+  <div 
+    class="content" 
+    fxLayout="column" 
+    fxFlexFill>
+        
+      <section fxFlex="50px" class="header">
+        <div fxLayout="row">
+          <h1>
+            {{title}}
+          </h1>
+          <button type="button" (click)="login()" *ngIf="!(isAuthenticated$ | async)">login</button>
+          <button type="button" (click)="logout()" *ngIf="(isAuthenticated$ | async)">logout</button>
+        </div>
+      </section>
 
-  <main role="main" class="container">
-    <router-outlet></router-outlet>
-  </main>
+      <main fxFlex="100" role="main" class="body">
+        <router-outlet></router-outlet>
+      </main>      
+  </div>
   `
 })
 export class AppComponent implements OnInit {
