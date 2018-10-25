@@ -10,14 +10,12 @@ import * as fromAuth from '@stottle-platform-internal/ngrx-auth0';
     fxLayout="column" 
     fxFlexFill>
         
-      <section fxFlex="50px" class="header">
-        <div fxLayout="row">
-          <h1>
-            {{title}}
-          </h1>
-          <button type="button" (click)="login()" *ngIf="!(isAuthenticated$ | async)">login</button>
-          <button type="button" (click)="logout()" *ngIf="(isAuthenticated$ | async)">logout</button>
-        </div>
+      <section fxFlex="50px" fxLayout="row" class="header">
+        <h1>
+          {{title}}
+        </h1>
+        <button type="button" mat-button (click)="login()" *ngIf="!(isAuthenticated$ | async)">login</button>
+        <button type="button" mat-button (click)="logout()" *ngIf="(isAuthenticated$ | async)">logout</button>
       </section>
 
       <main fxFlex="100" role="main" class="body">

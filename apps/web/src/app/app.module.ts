@@ -12,6 +12,7 @@ import { NgrxAuth0Module } from '@stottle-platform-internal/ngrx-auth0';
 import { authLogoutOptions, authOptions } from '../environments/environment';
 import { AppRoutesModule } from './app-routes.module';
 import { AppComponent } from './app.component';
+import { MaterialModule } from './material.module';
 import { RouterClientModule } from './router-client/router-client.module';
 import { UsersModule } from './users/users.module';
 
@@ -22,7 +23,7 @@ const angularModules = [
   FlexLayoutModule
 ];
 
-const appModules = [RouterClientModule, UsersModule];
+const appModules = [MaterialModule, RouterClientModule, UsersModule];
 
 const ngrxModules = [
   StoreModule.forRoot({}),
