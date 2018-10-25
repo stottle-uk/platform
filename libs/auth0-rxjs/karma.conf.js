@@ -11,6 +11,8 @@ module.exports = function(config) {
     coverageIstanbulReporter: {
       ...baseConfig.coverageIstanbulReporter,
       dir: join(__dirname, '../../coverage/libs/auth0-rxjs')
-    }
+    },
+    autoWatch: true,
+    singleRun: false
   });
 };

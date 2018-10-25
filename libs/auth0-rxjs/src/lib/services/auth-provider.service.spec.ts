@@ -54,13 +54,15 @@ fdescribe('AuthProviderService', () => {
   });
 
   it('should handle Authentication', () => {
-    authProvider.parseHash = jasmine.createSpy('parseHash').and.callFake(callback =>
-      callback(null, {
-        accessToken: 'accessToken',
-        idToken: 'idToken',
-        expiresIn: '1'
-      })
-    );
+    authProvider.parseHash = jasmine
+      .createSpy('parseHash')
+      .and.callFake(callback =>
+        callback(null, {
+          accessToken: 'accessToken',
+          idToken: 'idToken',
+          expiresIn: '1'
+        })
+      );
 
     service.handleAuthentication().subscribe(value => {
       expect(value.accessToken).toBe('accessToken');
@@ -83,13 +85,15 @@ fdescribe('AuthProviderService', () => {
   });
 
   it('should check session', () => {
-    authProvider.checkSession = jasmine.createSpy('parseHash').and.callFake((options, callback) =>
-      callback(null, {
-        accessToken: 'accessToken',
-        idToken: 'idToken',
-        expiresIn: '1'
-      })
-    );
+    authProvider.checkSession = jasmine
+      .createSpy('parseHash')
+      .and.callFake((options, callback) =>
+        callback(null, {
+          accessToken: 'accessToken',
+          idToken: 'idToken',
+          expiresIn: '1'
+        })
+      );
 
     service.checkSession().subscribe(value => {
       expect(value.accessToken).toBe('accessToken');
@@ -101,7 +105,9 @@ fdescribe('AuthProviderService', () => {
   it('should change password', () => {
     authProvider.changePassword = jasmine
       .createSpy('parseHash')
-      .and.callFake((options, callback) => callback('error', 'password change requested'));
+      .and.callFake((options, callback) =>
+        callback('error', 'password change requested')
+      );
 
     service
       .changePassword({
