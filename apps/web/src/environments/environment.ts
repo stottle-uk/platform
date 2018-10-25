@@ -1,3 +1,5 @@
+import { AuthOptions, LogoutOptions } from 'auth0-js';
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -6,11 +8,15 @@ export const environment = {
   production: false
 };
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+export const authOptions: AuthOptions = {
+  clientID: 'gc3YpcUt64cC655TKbfiv9Pimon2c9V2',
+  domain: 'stottle.eu.auth0.com',
+  responseType: 'token id_token',
+  redirectUri: 'http://localhost:4200/callback',
+  scope: 'openid profile email',
+  audience: 'https://stottle-auth0-ngrx-api/'
+};
+
+export const authLogoutOptions: LogoutOptions = {
+  returnTo: 'http://localhost:4200'
+};
