@@ -12,7 +12,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       [mode]="mode"
       [opened]="opened">
 
-      <stottle-side-nav></stottle-side-nav>
+      <stottle-side-nav
+        (itemSelected)="drawer.toggle()"
+      ></stottle-side-nav>
 
     </mat-sidenav>
     <mat-sidenav-content>

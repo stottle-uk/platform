@@ -1,20 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'stottle-side-nav-inner',
   template: `
   <mat-toolbar color="primary">Menu</mat-toolbar>
   <mat-nav-list>
-    <a mat-list-item routerLink="/">Home</a>
-    <a mat-list-item routerLink="/">About Me</a>
-    <a mat-list-item routerLink="/">Blog</a>
-    <a mat-list-item routerLink="/">Coding Katas</a>
+    <a *ngFor="let item of menuItems"
+      mat-list-item
+      [routerLink]="item.link"
+      (click)="itemSelected.emit()">
+      {{item.name}}
+    </a>
 
     <mat-divider></mat-divider>
 
-    <a mat-list-item routerLink="/admin">Admin</a>
+    <a mat-list-item routerLink="/admin" (click)="itemSelected.emit()">Admin</a>
   </mat-nav-list>
   `,
   styles: []
 })
-export class SideNavInnerComponent {}
+export class SideNavInnerComponent {
+  @Output() itemSelected = new EventEmitter();
+
+  menuItems = [
+    {
+      link: '/',
+      name: 'Home'
+    },
+    {
+      link: '/',
+      name: 'About Me'
+    },
+    {
+      link: '/',
+      name: 'Blog'
+    },
+    {
+      link: '/',
+      name: 'Coding Katas'
+    }
+  ];
+}
