@@ -2,24 +2,26 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromAuth from '@stottle-platform-internal/ngrx-auth0';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'stottle-platform-root',
+  selector: 'stottle-navbar',
   template: `
-  <stottle-navbar></stottle-navbar>
-
-  `
+  <stottle-navbar-inner
+    [isAuthenticated]="isAuthenticated$ | async"
+    [isHandset]="isHandset$ | async"
+    (login)="onLogin()"
+    (logout)="onLogout()"
+  ></stottle-navbar-inner>
+  `,
+  styles: []
 })
-export class AppComponent implements OnInit {
-  title = 'stottle.uk';
-
+export class NavbarComponent implements OnInit {
   isAuthenticated$ = this.store.select(
     fromAuth.selectIsAuthenticated(new Date().getTime())
   );
 
-  isHandset$: Observable<boolean> = this.breakpointObserver
+  isHandset$ = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map(result => result.matches));
 
@@ -32,7 +34,7 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new fromAuth.CheckAuthenticationStatus());
   }
 
-  login(): void {
+  onLogin(): void {
     this.store.dispatch(
       new fromAuth.Login({
         redirectUrl: '/',
@@ -43,7 +45,7 @@ export class AppComponent implements OnInit {
     );
   }
 
-  logout(): void {
+  onLogout(): void {
     this.store.dispatch(new fromAuth.Logout());
   }
 }
