@@ -27,21 +27,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
             *ngIf="isHandset">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
           </button>
+
           <span fxFlex="100" class="title">{{title}}</span>
 
           <button
             type="button"
             mat-icon-button
-            (click)="login.emit()"
-            *ngIf="!isAuthenticated">
-            <mat-icon aria-label="Side nav toggle icon">person</mat-icon>
-          </button>
-          <button
-            type="button"
-            mat-icon-button
-            (click)="logout.emit()"
-            *ngIf="isAuthenticated">
-            <mat-icon aria-label="Side nav toggle icon">logout</mat-icon>
+            (click)="authAction()">
+            <mat-icon aria-label="Side nav toggle icon">{{authIcon}}</mat-icon>
           </button>
         </mat-toolbar-row>
 
@@ -91,5 +84,13 @@ export class ContainerInnerComponent {
 
   get opened(): boolean {
     return !this.isHandset;
+  }
+
+  get authIcon(): string {
+    return this.isAuthenticated ? 'logout' : 'person';
+  }
+
+  authAction(): void {
+    this.isAuthenticated ? this.logout.emit() : this.login.emit();
   }
 }
