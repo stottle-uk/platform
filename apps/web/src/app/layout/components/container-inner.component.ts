@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'stottle-navbar-inner',
+  selector: 'stottle-container-inner',
   template: `
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav
@@ -10,15 +10,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       fixedInViewport="true"
       [attr.role]="role"
       [mode]="mode"
-      [opened]="opened"
-      (closedStart)="sideNavClosed()">
-      <mat-toolbar color="primary">Menu</mat-toolbar>
-      <mat-nav-list>
-        <a mat-list-item href="#">Home</a>
-        <a mat-list-item href="#">About Me</a>
-        <a mat-list-item href="#">Blog</a>
-        <a mat-list-item href="#">Link 3</a>
-      </mat-nav-list>
+      [opened]="opened">
+
+      <stottle-side-nav></stottle-side-nav>
+
     </mat-sidenav>
     <mat-sidenav-content>
       <mat-toolbar color="primary">
@@ -28,7 +23,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
             type="button"
             aria-label="Toggle sidenav"
             mat-icon-button
-            (click)="tooooo()"
+            (click)="drawer.toggle()"
             *ngIf="isHandset">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
           </button>
@@ -51,8 +46,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
         </mat-toolbar-row>
 
       </mat-toolbar>
-      <!-- Add Content Here -->
-      <router-outlet></router-outlet>
+
+      <ng-content></ng-content>
 
     </mat-sidenav-content>
   </mat-sidenav-container>
@@ -78,14 +73,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     `
   ]
 })
-export class NavbarInnerComponent {
+export class ContainerInnerComponent {
   @Input() isAuthenticated: boolean;
   @Input() isHandset: boolean;
   @Output() login = new EventEmitter();
   @Output() logout = new EventEmitter();
 
   title = 'stottle.uk';
-  isOpen = false;
 
   get mode(): string {
     return this.isHandset ? 'over' : 'side';
@@ -96,14 +90,6 @@ export class NavbarInnerComponent {
   }
 
   get opened(): boolean {
-    return !this.isHandset || this.isOpen;
-  }
-
-  tooooo(): void {
-    this.isOpen = !this.isOpen;
-  }
-
-  sideNavClosed(): void {
-    this.isOpen = false;
+    return !this.isHandset;
   }
 }
