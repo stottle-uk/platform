@@ -64,6 +64,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       .mat-toolbar.mat-primary {
         position: sticky;
         top: 0;
+        z-index: 1;
       }
 
       .title {

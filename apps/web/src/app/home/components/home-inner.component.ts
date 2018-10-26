@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'stottle-home-inner',
   template: `
-  <h2>This is the home component</h2>
+  <h2>stottle.uk</h2>
   
   <mat-card *ngFor="let card of cards" class="card-container">
     <img mat-card-image [src]="card.image" [alt]="card.imageAlt">
@@ -32,23 +32,25 @@ export class HomeInnerComponent {
   cards = [
     {
       image: '/assets/home/about-me.jpg',
-      imageAlt: 'Photo of a Shiba Inu',
+      imageAlt: 'About me',
       title: 'About Me',
-      content: 'I am a....',
+      content:
+        'My exmployment history along with technologies, languages and frameworks I use',
       buttonText: 'Go'
     },
     {
       image: '/assets/home/blog.jpg',
-      imageAlt: 'Photo of a Shiba Inu',
+      imageAlt: 'Blog',
       title: 'Blog',
-      content: 'I am a....',
+      content: 'Articles I have written on medium',
       buttonText: 'Go'
     },
     {
       image: '/assets/home/coding-kata.jpg',
-      imageAlt: 'Photo of a Shiba Inu',
+      imageAlt: 'Coding Kata',
       title: 'Coding Kata',
-      content: 'I am a....',
+      content:
+        "Coding examples using various kata's and npm packages I have created that are also used for this site",
       buttonText: 'Go'
     }
   ];
