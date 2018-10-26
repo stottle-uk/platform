@@ -5,22 +5,51 @@ import { Component } from '@angular/core';
   template: `
   <h2>This is the home component</h2>
   
-  <mat-card class="example-card">
-    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+  <mat-card *ngFor="let card of cards" class="card-container">
+    <img mat-card-image [src]="card.image" [alt]="card.imageAlt">
     <mat-card-content>
+      <h2>{{card.title}}</h2>
       <p>
-        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-        bred for hunting.
+        {{card.content}}
       </p>
     </mat-card-content>
+    <mat-divider></mat-divider>
     <mat-card-actions>
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
+      <a mat-button routerLink="/">{{card.buttonText}}</a>
     </mat-card-actions>
   </mat-card>
 
   `,
-  styles: []
+  styles: [
+    `
+      .card-container {
+        margin-bottom: 20px;
+      }
+    `
+  ]
 })
-export class HomeInnerComponent {}
+export class HomeInnerComponent {
+  cards = [
+    {
+      image: '/assets/home/about-me.jpg',
+      imageAlt: 'Photo of a Shiba Inu',
+      title: 'About Me',
+      content: 'I am a....',
+      buttonText: 'Go'
+    },
+    {
+      image: '/assets/home/blog.jpg',
+      imageAlt: 'Photo of a Shiba Inu',
+      title: 'Blog',
+      content: 'I am a....',
+      buttonText: 'Go'
+    },
+    {
+      image: '/assets/home/coding-kata.jpg',
+      imageAlt: 'Photo of a Shiba Inu',
+      title: 'Coding Kata',
+      content: 'I am a....',
+      buttonText: 'Go'
+    }
+  ];
+}
