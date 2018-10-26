@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { SharedModule } from '../shared/shared.module';
 import { UsersEffects } from './+state/users.effects';
 import {
   initialState as usersInitialState,
@@ -11,7 +11,7 @@ import {
 
 @NgModule({
   imports: [
-    CommonModule,
+    SharedModule,
     StoreModule.forFeature(USERS_FEATURE_KEY, usersReducer, {
       initialState: usersInitialState
     }),

@@ -1,6 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
@@ -13,19 +12,18 @@ import { authLogoutOptions, authOptions } from '../environments/environment';
 import { AppRoutesModule } from './app-routes.module';
 import { AppComponent } from './app.component';
 import { LayoutModule } from './layout/layout.module';
-import { MaterialModule } from './material.module';
 import { RouterClientModule } from './router-client/router-client.module';
+import { SharedModule } from './shared/shared.module';
 import { UsersModule } from './users/users.module';
 
 const angularModules = [
   BrowserModule,
   BrowserAnimationsModule,
-  HttpClientModule,
-  FlexLayoutModule
+  HttpClientModule
 ];
 
 const appModules = [
-  MaterialModule,
+  SharedModule,
   LayoutModule,
   RouterClientModule,
   UsersModule

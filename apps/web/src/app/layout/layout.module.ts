@@ -1,10 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { MaterialModule } from '../material.module';
+import { SharedModule } from '../shared/shared.module';
 import { LayoutEffects } from './+state/layout.effects';
 import {
   initialState as layoutInitialState,
@@ -20,10 +17,7 @@ const declarations = [ContainerComponent];
 
 @NgModule({
   imports: [
-    CommonModule,
-    RouterModule,
-    MaterialModule,
-    FlexLayoutModule,
+    SharedModule,
     StoreModule.forFeature(LAYOUT_FEATURE_KEY, layoutReducer, {
       initialState: layoutInitialState
     }),
