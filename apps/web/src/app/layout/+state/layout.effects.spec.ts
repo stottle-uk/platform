@@ -1,45 +1,45 @@
-import { TestBed, async } from '@angular/core/testing';
+// import { TestBed, async } from '@angular/core/testing';
 
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
 
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { provideMockActions } from '@ngrx/effects/testing';
+// import { EffectsModule } from '@ngrx/effects';
+// import { StoreModule } from '@ngrx/store';
+// import { provideMockActions } from '@ngrx/effects/testing';
 
-import { NxModule } from '@nrwl/nx';
-import { DataPersistence } from '@nrwl/nx';
-import { hot } from '@nrwl/nx/testing';
+// import { NxModule } from '@nrwl/nx';
+// import { DataPersistence } from '@nrwl/nx';
+// import { hot } from '@nrwl/nx/testing';
 
-import { LayoutEffects } from './layout.effects';
-import { LoadLayout, LayoutLoaded } from './layout.actions';
+// import { LayoutEffects } from './layout.effects';
+// import { LoadLayout, LayoutLoaded } from './layout.actions';
 
-describe('LayoutEffects', () => {
-  let actions: Observable<any>;
-  let effects: LayoutEffects;
+// describe('LayoutEffects', () => {
+//   let actions: Observable<any>;
+//   let effects: LayoutEffects;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        NxModule.forRoot(),
-        StoreModule.forRoot({}),
-        EffectsModule.forRoot([])
-      ],
-      providers: [
-        LayoutEffects,
-        DataPersistence,
-        provideMockActions(() => actions)
-      ]
-    });
+//   beforeEach(() => {
+//     TestBed.configureTestingModule({
+//       imports: [
+//         NxModule.forRoot(),
+//         StoreModule.forRoot({}),
+//         EffectsModule.forRoot([])
+//       ],
+//       providers: [
+//         LayoutEffects,
+//         DataPersistence,
+//         provideMockActions(() => actions)
+//       ]
+//     });
 
-    effects = TestBed.get(LayoutEffects);
-  });
+//     effects = TestBed.get(LayoutEffects);
+//   });
 
-  describe('loadLayout$', () => {
-    it('should work', () => {
-      actions = hot('-a-|', { a: new LoadLayout() });
-      expect(effects.loadLayout$).toBeObservable(
-        hot('-a-|', { a: new LayoutLoaded([]) })
-      );
-    });
-  });
-});
+//   describe('loadLayout$', () => {
+//     it('should work', () => {
+//       actions = hot('-a-|', { a: new LoadLayout() });
+//       expect(effects.loadLayout$).toBeObservable(
+//         hot('-a-|', { a: new LayoutLoaded([]) })
+//       );
+//     });
+//   });
+// });
