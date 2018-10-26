@@ -36,6 +36,7 @@ export class UsersEffects {
   loadUsers$ = this.dataPersistence.fetch(UsersActionTypes.LoadUsers, {
     run: (action: LoadUsers, state: UsersPartialState) => {
       // Your custom REST 'load' logic goes here. For now just return an empty list...
+
       return new UsersLoaded([]);
     },
 
