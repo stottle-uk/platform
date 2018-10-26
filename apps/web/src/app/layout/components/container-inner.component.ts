@@ -40,13 +40,19 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
       </mat-toolbar>
 
-      <ng-content></ng-content>
+      <main class="body-container">
+        <ng-content></ng-content>
+      </main>
 
     </mat-sidenav-content>
   </mat-sidenav-container>
   `,
   styles: [
     `
+      .body-container {
+        margin: 20px;
+      }
+
       .sidenav-container {
         height: 100%;
       }
