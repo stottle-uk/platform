@@ -196,6 +196,34 @@
           }
         }
       }
+    },
+    "bowling-game": {
+      "root": "libs/bowling-game",
+      "sourceRoot": "libs/bowling-game/src",
+      "projectType": "library",
+      "prefix": "stottle-platform",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/bowling-game/src/test.ts",
+            "tsConfig": "libs/bowling-game/tsconfig.spec.json",
+            "karmaConfig": "libs/bowling-game/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/bowling-game/tsconfig.lib.json",
+              "libs/bowling-game/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "schematics": {

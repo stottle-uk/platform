@@ -19,6 +19,9 @@
     },
     "auth0-rxjs": {
       "tags": []
+    },
+    "bowling-game": {
+      "tags": []
     }
   }
 }
