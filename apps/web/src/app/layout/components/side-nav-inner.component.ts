@@ -32,7 +32,7 @@ export class SideNavInnerComponent {
       name: 'About Me'
     },
     {
-      link: '/',
+      link: '/blog',
       name: 'Blog'
     },
     {

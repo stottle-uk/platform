@@ -17,6 +17,10 @@ export const routes: Routes = [
     loadChildren: './about-me/about-me.module#AboutMeModule'
   },
   {
+    path: 'blog',
+    loadChildren: './blog/blog.module#BlogModule'
+  },
+  {
     path: 'admin',
     loadChildren: './admin/admin.module#AdminModule',
     canActivate: [AuthGuardService]
