@@ -28,7 +28,7 @@ export class SideNavInnerComponent {
       name: 'Home'
     },
     {
-      link: '/',
+      link: '/about-me',
       name: 'About Me'
     },
     {

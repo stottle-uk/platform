@@ -13,6 +13,10 @@ export const routes: Routes = [
     loadChildren: './home/home.module#HomeModule'
   },
   {
+    path: 'about-me',
+    loadChildren: './about-me/about-me.module#AboutMeModule'
+  },
+  {
     path: 'admin',
     loadChildren: './admin/admin.module#AdminModule',
     canActivate: [AuthGuardService]
