@@ -18,7 +18,11 @@
             "main": "apps/web/src/main.ts",
             "polyfills": "apps/web/src/polyfills.ts",
             "tsConfig": "apps/web/tsconfig.app.json",
-            "assets": ["apps/web/src/favicon.ico", "apps/web/src/assets"],
+            "assets": [
+              "apps/web/src/favicon.ico",
+              "apps/web/src/assets",
+              "apps/web/src/manifest.json"
+            ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/web/src/styles.css"
@@ -41,7 +45,8 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "serviceWorker": true
             }
           }
         },
@@ -74,7 +79,11 @@
               "apps/web/src/styles.css"
             ],
             "scripts": [],
-            "assets": ["apps/web/src/favicon.ico", "apps/web/src/assets"]
+            "assets": [
+              "apps/web/src/favicon.ico",
+              "apps/web/src/assets",
+              "apps/web/src/manifest.json"
+            ]
           }
         },
         "lint": {
@@ -84,7 +93,9 @@
               "apps/web/tsconfig.app.json",
               "apps/web/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -109,7 +120,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/web-e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -142,7 +155,9 @@
               "libs/ngrx-auth0/tsconfig.lib.json",
               "libs/ngrx-auth0/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -175,7 +190,9 @@
               "libs/auth0-rxjs/tsconfig.lib.json",
               "libs/auth0-rxjs/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
