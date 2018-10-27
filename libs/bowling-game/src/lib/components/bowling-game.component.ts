@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { IBowlingGameScore } from '../models/bowling-game.view';
+import { BowlingGameRollsService } from '../services/bowling-game-rolls.service';
 
 @Component({
   selector: 'stottle-bowling-game',
@@ -6,10 +8,10 @@ import { Component, OnInit } from '@angular/core';
   <ul class="list-group">
     <li class="list-group-item" *ngFor="let result of scoreCardResults">
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{scoreCard}}</h5>
-        <span>{{calculateScore(scoreCard).score}}</span>
+        <h5 class="mb-1">{{result.scoreCard}}</h5>
+        <span>{{result.score}}</span>
       </div>
-      <small class="text-muted">{{calculateScore(scoreCard).rolls}}</small>
+      <small class="text-muted">{{result.rolls}}</small>
     </li>
   </ul>
   `,
@@ -30,15 +32,18 @@ export class BowlingGameComponent implements OnInit {
   constructor(private bowlingGameRollsService: BowlingGameRollsService) {}
 
   ngOnInit(): void {
-    this.scoreCards.map(card => this.calculateScore(card));
+    this.scoreCardResults = this.scoreCards.map(card =>
+      this.calculateScore(card)
+    );
   }
 
   calculateScore(scoreCard: string): IBowlingGameScore {
-    const scoreCardRolls = this.getScoreCardRolls(scoreCard); //this should be a service
-    const score = this.bowlingGameRollsService.buildScore(scoreCardRolls);
+    const rolls = this.getScoreCardRolls(scoreCard); //this should be a service
+    const score = this.bowlingGameRollsService.buildScore(rolls);
     return {
-      rolls: scoreCardRolls,
-      score: score
+      scoreCard,
+      rolls,
+      score
     };
   }
 
