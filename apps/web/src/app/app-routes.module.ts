@@ -21,6 +21,10 @@ export const routes: Routes = [
     loadChildren: './blog/blog.module#BlogModule'
   },
   {
+    path: 'coding-katas',
+    loadChildren: './coding-katas/coding-katas.module#CodingKatasModule'
+  },
+  {
     path: 'admin',
     loadChildren: './admin/admin.module#AdminModule',
     canActivate: [AuthGuardService]

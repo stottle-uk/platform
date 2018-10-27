@@ -36,7 +36,7 @@ export class SideNavInnerComponent {
       name: 'Blog'
     },
     {
-      link: '/',
+      link: '/coding-katas',
       name: 'Coding Katas'
     }
   ];

@@ -16,7 +16,7 @@ import { Component } from '@angular/core';
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <a mat-button routerLink="/">{{card.buttonText}}</a>
+        <a mat-button [routerLink]="['/', card.button.link]">{{card.button.text}}</a>
       </mat-card-actions>
     </mat-card>
   </div>
@@ -42,14 +42,20 @@ export class HomeInnerComponent {
       title: 'About Me',
       content:
         'My employment history along with technologies, languages and frameworks I use',
-      buttonText: 'Go'
+      button: {
+        text: 'Go',
+        link: 'about-me'
+      }
     },
     {
       image: '/assets/home/blog.jpg',
       imageAlt: 'Blog',
       title: 'Blog',
       content: 'Articles I have written on medium',
-      buttonText: 'Go'
+      button: {
+        text: 'Go',
+        link: 'blog'
+      }
     },
     {
       image: '/assets/home/coding-kata.jpg',
@@ -57,7 +63,10 @@ export class HomeInnerComponent {
       title: 'Coding Kata',
       content:
         "Coding examples using various kata's and npm packages I have created that are also used for this site",
-      buttonText: 'Go'
+      button: {
+        text: 'Go',
+        link: 'coding-katas'
+      }
     }
   ];
 }

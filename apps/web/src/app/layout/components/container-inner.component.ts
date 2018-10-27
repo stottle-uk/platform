@@ -13,7 +13,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       [opened]="opened">
 
       <stottle-side-nav
-        (itemSelected)="drawer.toggle()"
+        (itemSelected)="isHandset && drawer.toggle()"
       ></stottle-side-nav>
 
     </mat-sidenav>
