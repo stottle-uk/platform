@@ -1,5 +1,5 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
-import { Authentication, State } from '../+shared/auth.modesl';
+import { Authentication, State } from '../+shared/auth.models';
 import { selectAuthState } from '../+shared/auth.selectors';
 import { AuthenticationState } from './authentication.reducer';
 

@@ -1,5 +1,5 @@
 import { ActionReducerMap } from '@ngrx/store';
-import { State } from './+shared/auth.modesl';
+import { State } from './+shared/auth.models';
 import { AuthenticationEffects, authenticationReducer } from './authentication';
 import {
   ChangePasswordEffects,
@@ -8,6 +8,7 @@ import {
 import { CheckSessionEffects, checkSessionReducer } from './check-session';
 import { UserInfoEffects, userInfoReducer } from './user-info';
 
+export * from './+shared';
 export * from './authentication';
 export * from './change-password';
 export * from './check-session';
