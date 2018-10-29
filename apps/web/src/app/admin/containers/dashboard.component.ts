@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromAuth from '@stottle-platform-internal/ngrx-auth0';
+import {
+  changePasswordQuery,
+  userInfoQuery
+} from '@stottle-platform-internal/ngrx-auth0';
 
 @Component({
   selector: 'stottle-dashboard',
@@ -14,12 +18,12 @@ import * as fromAuth from '@stottle-platform-internal/ngrx-auth0';
   styles: []
 })
 export class DashboardComponent {
-  userInfo$ = this.store.select(fromAuth.selectUserInfo);
+  userInfo$ = this.store.select(userInfoQuery.selectUserInfo);
   changePasswordResponse$ = this.store.select(
-    fromAuth.selectChangePasswordResponse
+    changePasswordQuery.selectChangePasswordResponse
   );
 
-  constructor(private store: Store<fromAuth.State>) {}
+  constructor(private store: Store<fromAuth.AuthState>) {}
 
   onEmailAddressSubmitted(email: string): void {
     this.store.dispatch(
