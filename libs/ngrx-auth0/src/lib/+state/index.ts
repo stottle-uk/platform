@@ -15,10 +15,16 @@ import {
   changePasswordReducer,
   ChangePasswordState
 } from './change-password';
+import {
+  CheckSessionEffects,
+  checkSessionReducer,
+  CheckSessionState
+} from './check-session';
 import { UserInfoEffects, userInfoReducer, UserInfoState } from './user-info';
 
 export * from './authentication';
 export * from './change-password';
+export * from './check-session';
 export * from './user-info';
 
 export const AUTH_FEATURE_KEY = 'auth';
@@ -27,18 +33,21 @@ export interface State {
   authentication: AuthenticationState;
   userInfo: UserInfoState;
   changePassword: ChangePasswordState;
+  checkSession: CheckSessionState;
 }
 
 export const authReducers: ActionReducerMap<State> = {
   authentication: authenticationReducer,
   userInfo: userInfoReducer,
-  changePassword: changePasswordReducer
+  changePassword: changePasswordReducer,
+  checkSession: checkSessionReducer
 };
 
 export const authEffects = [
   AuthenticationEffects,
   UserInfoEffects,
-  ChangePasswordEffects
+  ChangePasswordEffects,
+  CheckSessionEffects
 ];
 
 const selectAuthState: MemoizedSelector<object, State> = createFeatureSelector<
@@ -134,7 +143,7 @@ const selectChangePasswordResponse: MemoizedSelector<
   string
 > = createSelector(
   selectChangePasswordState,
-  userInfo => userInfo.changePasswordResponse
+  changePassword => changePassword.changePasswordResponse
 );
 
 const selectChangePasswordError: MemoizedSelector<
@@ -145,4 +154,41 @@ const selectChangePasswordError: MemoizedSelector<
 export const changePasswordQuery = {
   selectChangePasswordResponse,
   selectChangePasswordError
+};
+
+// check session
+
+const selectCheckSessionState: MemoizedSelector<
+  State,
+  CheckSessionState
+> = createSelector(selectAuthState, auth => auth.checkSession);
+
+const selectCheckSessionScheduled: MemoizedSelector<
+  State,
+  boolean
+> = createSelector(
+  selectCheckSessionState,
+  checkSession => checkSession.checkSessionScheduled
+);
+
+const selectCheckingSession: MemoizedSelector<State, boolean> = createSelector(
+  selectCheckSessionState,
+  checkSession => checkSession.checkingSession
+);
+
+const selectCheckedSession: MemoizedSelector<State, boolean> = createSelector(
+  selectCheckSessionState,
+  checkSession => checkSession.checkedSession
+);
+
+const selectCheckgSessionError: MemoizedSelector<
+  State,
+  auth0.Auth0Error
+> = createSelector(selectCheckSessionState, checkSession => checkSession.error);
+
+export const checkSessiondQuery = {
+  selectCheckSessionScheduled,
+  selectCheckingSession,
+  selectCheckedSession,
+  selectCheckgSessionError
 };
