@@ -5,8 +5,8 @@ export enum AuthenticationActionTypes {
   CheckAuthenticationStatus = '[Auth-Authentication] Check Authentication Status',
   UserIsAuthenticated = '[Auth-Authentication] User Is Authenticated',
   UserIsNotAuthenticated = '[Auth-Authentication] User Is Not Authenticated',
-  Login = '[Auth-Authentication] Login',
-  Logout = '[Auth-Authentication] Logout Start',
+  Authorize = '[Auth-Authentication] Authorize',
+  Logout = '[Auth-Authentication] Logout',
   ClearLocalStorage = '[Auth-Authentication] Clear Local Storage',
   AuthenticationError = '[Auth-Authentication] Authentication Error'
 }
@@ -25,8 +25,8 @@ export class UserIsNotAuthenticated implements Action {
   readonly type = AuthenticationActionTypes.UserIsNotAuthenticated;
 }
 
-export class Login implements Action {
-  readonly type = AuthenticationActionTypes.Login;
+export class Authorize implements Action {
+  readonly type = AuthenticationActionTypes.Authorize;
 
   constructor(
     public payload: { redirectUrl: string; options: auth0.AuthorizeOptions }
@@ -51,7 +51,7 @@ export type AuthenticationAction =
   | CheckAuthenticationStatus
   | UserIsAuthenticated
   | UserIsNotAuthenticated
-  | Login
+  | Authorize
   | Logout
   | ClearLocalStorage
   | AuthenticationError;
@@ -61,7 +61,7 @@ export const fromAuthenticationActions = {
   CheckAuthenticationStatus,
   UserIsAuthenticated,
   UserIsNotAuthenticated,
-  Login,
+  Authorize,
   Logout,
   ClearLocalStorage,
   AuthenticationError

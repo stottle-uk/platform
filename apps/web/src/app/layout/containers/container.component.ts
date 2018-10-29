@@ -37,7 +37,7 @@ export class ContainerComponent {
 
   onLogin(): void {
     this.store.dispatch(
-      new fromAuthenticationActions.Login({
+      new fromAuthenticationActions.Authorize({
         redirectUrl: '/',
         options: {
           mode: 'login'

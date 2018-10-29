@@ -9,9 +9,9 @@ import {
 import { Observable, of } from 'rxjs';
 import { catchError, exhaustMap, map, take, tap } from 'rxjs/operators';
 import {
+  Authorize,
   CheckAuthenticationStatus,
   fromAuthenticationActions as fromActions,
-  Login,
   Logout,
   UserIsAuthenticated
 } from './authentication.actions';
@@ -53,15 +53,15 @@ export class AuthenticationEffects {
   );
 
   @Effect({ dispatch: false })
-  login$: Observable<void> = this.actions$.pipe(
-    ofType<Login>(fromActions.AuthenticationActionTypes.Login),
+  authorize$: Observable<void> = this.actions$.pipe(
+    ofType<Authorize>(fromActions.AuthenticationActionTypes.Authorize),
     map(action => action.payload.options),
     map(options => this.auth.authorize(options))
   );
 
   @Effect({ dispatch: false })
   loginSaveRedirectUrl$: Observable<string> = this.actions$.pipe(
-    ofType<Login>(fromActions.AuthenticationActionTypes.Login),
+    ofType<Authorize>(fromActions.AuthenticationActionTypes.Authorize),
     map(action => action.payload.redirectUrl),
     tap(redirectUrl => (this.auth.redirectUrl = redirectUrl))
   );

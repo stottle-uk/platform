@@ -37,7 +37,7 @@ export class AuthGuardService implements CanActivate {
   ) {
     if (!isAuthenticated) {
       this.store.dispatch(
-        new fromAuthenticationActions.Login({
+        new fromAuthenticationActions.Authorize({
           redirectUrl: state.url,
           options: {
             mode: 'signUp'
