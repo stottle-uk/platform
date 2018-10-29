@@ -8,17 +8,17 @@ import { Component } from '@angular/core';
     Articles I have written and published on <a href="https://medium.com/@stuarttottle/">medium.com</a>. 
     I write articles to confirm my understanding of a subject or technology and I hope others will find them useful.
   </p>
-  <mat-list>
-    <mat-list-item *ngFor="let item of blogItems">
+  <mat-nav-list>
+    <mat-divider></mat-divider>
+    <a mat-list-item *ngFor="let item of blogItems" [href]="item.link" target="_blank">
       <mat-icon mat-list-icon>short_text</mat-icon>
       <h4 mat-line>
-        <a [href]="item.link" target="_blank">
-          {{item.name}}
-        </a>
+        {{item.name}}
       </h4>
       <p mat-line>{{item.description}}</p>
-    </mat-list-item>
-  </mat-list>
+      <mat-divider></mat-divider>
+    </a>
+  </mat-nav-list>
   `,
   styles: []
 })
