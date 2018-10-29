@@ -7,7 +7,7 @@ import {
   UserIsAuthenticated
 } from '@stottle-platform-internal/ngrx-auth0';
 import { Observable } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import * as fromRouter from '../../router-client/store';
 import {
   LoadUsers,
@@ -25,12 +25,11 @@ export class UsersEffects {
       fromAuthenticationActions.AuthenticationActionTypes.UserIsAuthenticated
     ),
     map(action => action.payload.auth),
-    filter(auth => !!auth.redirectUrl),
-    take(1),
+    map(auth => auth.redirectUrl || '/'),
     map(
-      auth =>
+      redirectUrl =>
         new fromRouter.Go({
-          path: [auth.redirectUrl]
+          path: [redirectUrl]
         })
     )
   );
