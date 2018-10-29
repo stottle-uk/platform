@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromAuth from '@stottle-platform-internal/ngrx-auth0';
 import {
+  AuthState,
   changePasswordQuery,
+  fromChangePasswordActions,
   userInfoQuery
 } from '@stottle-platform-internal/ngrx-auth0';
 
@@ -23,11 +24,11 @@ export class DashboardComponent {
     changePasswordQuery.selectChangePasswordResponse
   );
 
-  constructor(private store: Store<fromAuth.AuthState>) {}
+  constructor(private store: Store<AuthState>) {}
 
   onEmailAddressSubmitted(email: string): void {
     this.store.dispatch(
-      new fromAuth.ChangePasswordStart({
+      new fromChangePasswordActions.ChangePasswordStart({
         options: {
           connection: 'Username-Password-Authentication',
           email

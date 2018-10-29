@@ -1,24 +1,43 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  RouterStateSnapshot
+} from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import * as fromAuth from '../store';
+import { map, tap } from 'rxjs/operators';
+import {
+  authenticationQuery,
+  AuthState,
+  fromAuthenticationActions
+} from '../+state';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
-  constructor(private store: Store<fromAuth.State>) {}
+  constructor(private store: Store<AuthState>) {}
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
     return this.store
-      .select(fromAuth.selectIsAuthenticated(new Date().getTime()))
-      .pipe(tap(isAuthenticated => this.showLoginFormIfNotAuthenticated(isAuthenticated, state)));
+      .select(authenticationQuery.selectIsAuthenticated(new Date().getTime()))
+      .pipe(
+        map(accessToken => !!accessToken),
+        tap(isAuthenticated =>
+          this.showLoginFormIfNotAuthenticated(isAuthenticated, state)
+        )
+      );
   }
 
-  private showLoginFormIfNotAuthenticated(isAuthenticated: boolean, state: RouterStateSnapshot) {
+  private showLoginFormIfNotAuthenticated(
+    isAuthenticated: boolean,
+    state: RouterStateSnapshot
+  ) {
     if (!isAuthenticated) {
       this.store.dispatch(
-        new fromAuth.Login({
+        new fromAuthenticationActions.Login({
           redirectUrl: state.url,
           options: {
             mode: 'signUp'

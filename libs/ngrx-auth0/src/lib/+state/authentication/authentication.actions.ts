@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Authentication } from './authentication.model';
+import { Authentication } from '@stottle-platform/auth0-rxjs';
 
 export enum AuthenticationActionTypes {
   CheckAuthenticationStatus = '[Auth-Authentication] Check Authentication Status',

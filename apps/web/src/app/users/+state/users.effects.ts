@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { DataPersistence } from '@nrwl/nx';
-import * as fromAuth from '@stottle-platform-internal/ngrx-auth0';
+import {
+  fromAuthenticationActions,
+  UserIsAuthenticated
+} from '@stottle-platform-internal/ngrx-auth0';
 import { Observable } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import * as fromRouter from '../../router-client/store';
@@ -18,8 +21,8 @@ import { UsersPartialState } from './users.reducer';
 export class UsersEffects {
   @Effect()
   userIsAuthenticatedRedirectUser$: Observable<Action> = this.actions$.pipe(
-    ofType<fromAuth.UserIsAuthenticated>(
-      fromAuth.AuthActionTypes.UserIsAuthenticated
+    ofType<UserIsAuthenticated>(
+      fromAuthenticationActions.AuthenticationActionTypes.UserIsAuthenticated
     ),
     map(action => action.payload.auth),
     filter(auth => !!auth.redirectUrl),

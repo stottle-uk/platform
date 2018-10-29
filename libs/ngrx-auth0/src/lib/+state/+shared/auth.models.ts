@@ -10,9 +10,4 @@ export interface AuthState {
   checkSession: CheckSessionState;
 }
 
-export interface Authentication extends auth0.Auth0DecodedHash {
-  expiresAt: number;
-  redirectUrl: string;
-}
-
 export const AUTH_FEATURE_KEY = 'auth';

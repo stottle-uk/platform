@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Authentication } from '../authentication/authentication.model';
+import { Authentication } from '@stottle-platform/auth0-rxjs';
 
 export enum CheckSessionActionTypes {
   CheckSessionStart = '[Auth-CheckSession] Check Session Start',
@@ -15,7 +15,7 @@ export class CheckSessionStart implements Action {
 export class CheckSessionSuccess implements Action {
   readonly type = CheckSessionActionTypes.CheckSessionSuccess;
 
-  constructor(public payload: { auth: Authentication }) {} // TODO create shared thing
+  constructor(public payload: { auth: Authentication }) {}
 }
 
 export class CheckSessionFailure implements Action {

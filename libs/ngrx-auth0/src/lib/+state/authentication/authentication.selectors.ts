@@ -1,5 +1,6 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
-import { Authentication, AuthState } from '../+shared/auth.models';
+import { Authentication } from '@stottle-platform/auth0-rxjs';
+import { AuthState } from '../+shared/auth.models';
 import { selectAuthState } from '../+shared/auth.selectors';
 import { AuthenticationState } from './authentication.reducer';
 
