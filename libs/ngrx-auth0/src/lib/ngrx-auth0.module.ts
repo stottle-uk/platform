@@ -11,15 +11,14 @@ import {
   AuthDatesService,
   AuthProviderService
 } from '@stottle-platform/auth0-rxjs';
+import { authEffects, authReducers, AUTH_FEATURE_KEY } from './+state';
 import { AuthGuardService, AuthIntercepterService } from './services';
-import * as fromAuth from './store';
-import { AuthEffects } from './store/auth.effects';
 
 @NgModule({
   imports: [
     CommonModule,
-    StoreModule.forFeature('auth', fromAuth.reducer),
-    EffectsModule.forFeature([AuthEffects]),
+    StoreModule.forFeature(AUTH_FEATURE_KEY, authReducers),
+    EffectsModule.forFeature([...authEffects]),
     Auth0RxjsModule
   ]
 })

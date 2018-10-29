@@ -6,16 +6,19 @@ export enum AuthActionTypes {
   UserIsAuthenticated = '[Auth] User Is Authenticated',
   UserIsNotAuthenticated = '[Auth] User Is Not Authenticated',
   Login = '[Auth] Login',
-  GetUserInfoStart = '[AUth] Get User Info Start',
-  GetUserInfoSuccess = '[AUth] Get User Info Success',
-  GetUserInfoFailure = '[AUth] Get User Info Failure',
   Logout = '[Auth] Logout Start',
-  ChangePasswordStart = '[AUth] Change Password Start',
-  ChangePasswordSuccess = '[AUth] Change Password Success',
-  ChangePasswordFailure = '[AUth] Change Password Failure',
   ClearLocalStorage = '[Auth] Clear Local Storage',
   HandleAuthentication = '[Auth] Handle Authentication',
   HandleAuthenticationError = '[Auth] Handle Authentication Error',
+
+  GetUserInfoStart = '[AUth] Get User Info Start',
+  GetUserInfoSuccess = '[AUth] Get User Info Success',
+  GetUserInfoFailure = '[AUth] Get User Info Failure',
+
+  ChangePasswordStart = '[AUth] Change Password Start',
+  ChangePasswordSuccess = '[AUth] Change Password Success',
+  ChangePasswordFailure = '[AUth] Change Password Failure',
+
   CheckSessionStart = '[Auth] Check Session Start',
   CheckSessionSuccess = '[Auth] Check Session Success',
   CheckSessionFailure = '[Auth] Check Session Failure',
@@ -44,6 +47,26 @@ export class Login implements Action {
   ) {}
 }
 
+export class Logout implements Action {
+  readonly type = AuthActionTypes.Logout;
+}
+
+export class ClearLocalStorage implements Action {
+  readonly type = AuthActionTypes.ClearLocalStorage;
+}
+
+export class HandleAuthentication implements Action {
+  readonly type = AuthActionTypes.HandleAuthentication;
+
+  constructor(public payload: { auth: Authentication }) {}
+}
+
+export class HandleAuthenticationError implements Action {
+  readonly type = AuthActionTypes.HandleAuthenticationError;
+
+  constructor(public payload: { error: auth0.Auth0Error }) {}
+}
+
 export class GetUserInfoStart implements Action {
   readonly type = AuthActionTypes.GetUserInfoStart;
 }
@@ -58,10 +81,6 @@ export class GetUserInfoFailure implements Action {
   readonly type = AuthActionTypes.GetUserInfoFailure;
 
   constructor(public payload: { error: any }) {}
-}
-
-export class Logout implements Action {
-  readonly type = AuthActionTypes.Logout;
 }
 
 export class ChangePasswordStart implements Action {
@@ -80,22 +99,6 @@ export class ChangePasswordFailure implements Action {
   readonly type = AuthActionTypes.ChangePasswordFailure;
 
   constructor(public payload: { error: any }) {}
-}
-
-export class ClearLocalStorage implements Action {
-  readonly type = AuthActionTypes.ClearLocalStorage;
-}
-
-export class HandleAuthentication implements Action {
-  readonly type = AuthActionTypes.HandleAuthentication;
-
-  constructor(public payload: { auth: Authentication }) {}
-}
-
-export class HandleAuthenticationError implements Action {
-  readonly type = AuthActionTypes.HandleAuthenticationError;
-
-  constructor(public payload: { error: auth0.Auth0Error }) {}
 }
 
 export class CheckSessionStart implements Action {
@@ -121,16 +124,16 @@ export class ScheduleSessionCheck implements Action {
 export type AuthActions =
   | CheckAuthenticationStatus
   | Login
-  | GetUserInfoStart
-  | GetUserInfoSuccess
-  | GetUserInfoFailure
   | Logout
-  | ChangePasswordStart
-  | ChangePasswordSuccess
-  | ChangePasswordFailure
   | ClearLocalStorage
   | HandleAuthentication
   | HandleAuthenticationError
+  | GetUserInfoStart
+  | GetUserInfoSuccess
+  | GetUserInfoFailure
+  | ChangePasswordStart
+  | ChangePasswordSuccess
+  | ChangePasswordFailure
   | CheckSessionStart
   | CheckSessionSuccess
   | CheckSessionFailure
