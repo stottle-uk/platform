@@ -5,6 +5,7 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { AuthDatesService } from '@stottle-platform/auth0-rxjs';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
@@ -15,14 +16,17 @@ import {
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
-  constructor(private store: Store<AuthState>) {}
+  constructor(
+    private store: Store<AuthState>,
+    private date: AuthDatesService
+  ) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.store
-      .select(authenticationQuery.selectIsAuthenticated(new Date().getTime()))
+      .select(authenticationQuery.selectIsAuthenticated(this.date.getTime()))
       .pipe(
         map(accessToken => !!accessToken),
         tap(isAuthenticated =>

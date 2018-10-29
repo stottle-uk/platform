@@ -1,20 +1,24 @@
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { AuthDatesService } from '@stottle-platform/auth0-rxjs';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { authenticationQuery, AuthState } from '../+state';
 
 @Injectable()
 export class AuthIntercepterService {
-  constructor(private store: Store<AuthState>) {}
+  constructor(
+    private store: Store<AuthState>,
+    private date: AuthDatesService
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return this.store
-      .select(authenticationQuery.selectIsAuthenticated(new Date().getTime()))
+      .select(authenticationQuery.selectIsAuthenticated(this.date.getTime()))
       .pipe(
         map(
           accessToken =>
