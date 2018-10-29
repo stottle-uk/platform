@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromAuth from '@stottle-platform-internal/ngrx-auth0';
+import {
+  AuthState,
+  fromAuthenticationActions
+} from '@stottle-platform-internal/ngrx-auth0';
 
 @Component({
   selector: 'stottle-platform-root',
@@ -13,9 +16,11 @@ import * as fromAuth from '@stottle-platform-internal/ngrx-auth0';
 export class AppComponent implements OnInit {
   title = 'stottle.uk';
 
-  constructor(private store: Store<fromAuth.State>) {}
+  constructor(private store: Store<AuthState>) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new fromAuth.CheckAuthenticationStatus());
+    this.store.dispatch(
+      new fromAuthenticationActions.CheckAuthenticationStatus()
+    );
   }
 }

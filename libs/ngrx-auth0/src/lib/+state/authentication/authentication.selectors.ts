@@ -1,15 +1,15 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
-import { Authentication, State } from '../+shared/auth.models';
+import { Authentication, AuthState } from '../+shared/auth.models';
 import { selectAuthState } from '../+shared/auth.selectors';
 import { AuthenticationState } from './authentication.reducer';
 
 const selectAuthenticationState: MemoizedSelector<
-  State,
+  AuthState,
   AuthenticationState
 > = createSelector(selectAuthState, auth => auth.authentication);
 
 const selectAuthenticationError: MemoizedSelector<
-  State,
+  AuthState,
   auth0.Auth0Error
 > = createSelector(
   selectAuthenticationState,
@@ -17,7 +17,7 @@ const selectAuthenticationError: MemoizedSelector<
 );
 
 const selectAuthenticationData: MemoizedSelector<
-  State,
+  AuthState,
   Authentication
 > = createSelector(
   selectAuthenticationState,
@@ -26,7 +26,7 @@ const selectAuthenticationData: MemoizedSelector<
 
 const selectIsAuthenticated: (
   time: number
-) => MemoizedSelector<State, string> = time =>
+) => MemoizedSelector<AuthState, string> = time =>
   createSelector(
     selectAuthenticationData,
     authenticationData =>

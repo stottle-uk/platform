@@ -3,7 +3,7 @@ import { ChangePasswordState } from '../change-password';
 import { CheckSessionState } from '../check-session';
 import { UserInfoState } from '../user-info';
 
-export interface State {
+export interface AuthState {
   authentication: AuthenticationState;
   userInfo: UserInfoState;
   changePassword: ChangePasswordState;

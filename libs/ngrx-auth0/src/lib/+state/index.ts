@@ -1,5 +1,5 @@
 import { ActionReducerMap } from '@ngrx/store';
-import { State } from './+shared/auth.models';
+import { AuthState } from './+shared/auth.models';
 import { AuthenticationEffects, authenticationReducer } from './authentication';
 import {
   ChangePasswordEffects,
@@ -14,7 +14,7 @@ export * from './change-password';
 export * from './check-session';
 export * from './user-info';
 
-export const authReducers: ActionReducerMap<State> = {
+export const authReducers: ActionReducerMap<AuthState> = {
   authentication: authenticationReducer,
   userInfo: userInfoReducer,
   changePassword: changePasswordReducer,

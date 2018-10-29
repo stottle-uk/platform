@@ -1,15 +1,15 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
-import { State } from '../+shared/auth.models';
+import { AuthState } from '../+shared/auth.models';
 import { selectAuthState } from '../+shared/auth.selectors';
 import { ChangePasswordState } from './change-password.reducer';
 
 const selectChangePasswordState: MemoizedSelector<
-  State,
+  AuthState,
   ChangePasswordState
 > = createSelector(selectAuthState, auth => auth.changePassword);
 
 const selectChangePasswordResponse: MemoizedSelector<
-  State,
+  AuthState,
   string
 > = createSelector(
   selectChangePasswordState,
@@ -17,7 +17,7 @@ const selectChangePasswordResponse: MemoizedSelector<
 );
 
 const selectChangePasswordError: MemoizedSelector<
-  State,
+  AuthState,
   auth0.Auth0Error
 > = createSelector(selectChangePasswordState, userInfo => userInfo.error);
 

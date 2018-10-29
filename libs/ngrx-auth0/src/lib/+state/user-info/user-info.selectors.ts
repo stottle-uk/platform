@@ -1,32 +1,32 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
-import { State } from '../+shared/auth.models';
+import { AuthState } from '../+shared/auth.models';
 import { selectAuthState } from '../+shared/auth.selectors';
 import { UserInfoState } from './user-info.reducer';
 
 const selectUserInfoState: MemoizedSelector<
-  State,
+  AuthState,
   UserInfoState
 > = createSelector(selectAuthState, auth => auth.userInfo);
 
 const selectUserInfo: MemoizedSelector<
-  State,
+  AuthState,
   auth0.Auth0UserProfile
 > = createSelector(selectUserInfoState, userInfo => userInfo.userInfo);
 
 const selectUserInfoError: MemoizedSelector<
-  State,
+  AuthState,
   auth0.Auth0Error
 > = createSelector(selectUserInfoState, userInfo => userInfo.error);
 
 const selectUserInfoIsLoading: MemoizedSelector<
-  State,
+  AuthState,
   boolean
 > = createSelector(selectUserInfoState, userInfo => userInfo.loading);
 
-const selectUserInfoIsLoaded: MemoizedSelector<State, boolean> = createSelector(
-  selectUserInfoState,
-  userInfo => userInfo.loaded
-);
+const selectUserInfoIsLoaded: MemoizedSelector<
+  AuthState,
+  boolean
+> = createSelector(selectUserInfoState, userInfo => userInfo.loaded);
 
 export const userInfoQuery = {
   selectUserInfo,
