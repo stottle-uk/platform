@@ -3,11 +3,12 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import * as auth0 from 'auth0-js';
 import { Auth0RxjsRoutesModule } from './auth0-rxjs-routes.moduls';
 import { CallbackComponent } from './components/callback.component';
+import { AuthOptions } from './models/auth.model';
 import {
-  AUTH0_LOGOUT_OPTIONS,
   AUTH0_WEB_AUTH,
   AuthDatesService,
-  AuthProviderService
+  AuthProviderService,
+  AUTH_OPTIONS
 } from './services';
 
 export function auth0WebAuthFactory(options: auth0.AuthOptions) {
@@ -22,20 +23,17 @@ export function auth0WebAuthFactory(options: auth0.AuthOptions) {
   declarations: [CallbackComponent]
 })
 export class Auth0RxjsModule {
-  static forRoot(
-    options: auth0.AuthOptions,
-    logoutOptions: auth0.LogoutOptions
-  ): ModuleWithProviders {
+  static forRoot(authOptions: AuthOptions): ModuleWithProviders {
     return {
       ngModule: Auth0RxjsModule,
       providers: [
         {
           provide: AUTH0_WEB_AUTH,
-          useFactory: auth0WebAuthFactory(options)
+          useFactory: auth0WebAuthFactory(authOptions.options)
         },
         {
-          provide: AUTH0_LOGOUT_OPTIONS,
-          useValue: logoutOptions
+          provide: AUTH_OPTIONS,
+          useValue: authOptions.logoutOptions
         },
         AuthDatesService,
         AuthProviderService

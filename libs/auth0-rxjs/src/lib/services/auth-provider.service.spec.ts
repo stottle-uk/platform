@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import * as auth0 from 'auth0-js';
 import { AuthDatesService } from './auth-dates.service';
 import { AuthProviderService } from './auth-provider.service';
-import { AUTH0_LOGOUT_OPTIONS, AUTH0_WEB_AUTH } from './tokens';
+import { AUTH0_WEB_AUTH, AUTH_OPTIONS } from './tokens';
 
 const webAuth = new auth0.WebAuth({
   clientID: '',
@@ -26,7 +26,7 @@ fdescribe('AuthProviderService', () => {
           useValue: webAuth
         },
         {
-          provide: AUTH0_LOGOUT_OPTIONS,
+          provide: AUTH_OPTIONS,
           useValue: {}
         },
         {

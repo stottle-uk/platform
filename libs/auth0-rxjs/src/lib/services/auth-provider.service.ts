@@ -1,17 +1,21 @@
 import { Inject, Injectable } from '@angular/core';
 import * as auth0 from 'auth0-js';
-import { Observable, of, race, Subscriber, timer } from 'rxjs';
+import { Observable, of, Subscriber, timer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { Authentication } from '../models/auth.model';
+import { Authentication, AuthOptions } from '../models/auth.model';
 import { AuthDatesService } from './auth-dates.service';
-import { AUTH0_LOGOUT_OPTIONS, AUTH0_WEB_AUTH } from './tokens';
+import { AUTH0_WEB_AUTH, AUTH_OPTIONS } from './tokens';
 
 @Injectable()
 export class AuthProviderService {
-  ACCESS_TOKEN = 'stottle::access_token';
-  ID_TOKEN = 'stottle::id_token';
-  EXPIRES_AT = 'stottle::expires_at';
-  REDIRECT_URL = 'stottle::redirect_url';
+  ACCESS_TOKEN = `${this.localStoragePrefix}::access_token`;
+  ID_TOKEN = `${this.localStoragePrefix}::id_token`;
+  EXPIRES_AT = `${this.localStoragePrefix}::expires_at`;
+  REDIRECT_URL = `${this.localStoragePrefix}::redirect_url`;
+
+  private get localStoragePrefix(): string {
+    return this.authOptions.localStoragePrefix || 'auth0-ngrx';
+  }
 
   get accessToken(): string {
     return localStorage.getItem(this.ACCESS_TOKEN);
@@ -47,66 +51,59 @@ export class AuthProviderService {
 
   constructor(
     private dateService: AuthDatesService,
-    @Inject(AUTH0_WEB_AUTH) private auth0: auth0.WebAuth,
-    @Inject(AUTH0_LOGOUT_OPTIONS) private logoutOptions: auth0.LogoutOptions
+    @Inject(AUTH0_WEB_AUTH) private webAuth: auth0.WebAuth,
+    @Inject(AUTH_OPTIONS) private authOptions: AuthOptions
   ) {}
 
   authorize(options: auth0.AuthorizeOptions): void {
-    this.auth0.authorize(options);
+    this.webAuth.authorize(options);
   }
 
   logout(options?: auth0.LogoutOptions): void {
-    this.auth0.logout({
-      ...this.logoutOptions,
+    this.webAuth.logout({
+      ...this.authOptions.logoutOptions,
       ...options
     });
   }
 
-  login(): Observable<Authentication> {
-    return new Observable<auth0.Auth0DecodedHash>(observer =>
-      this.auth0.login(
-        {
-          email: '',
-          password: ''
-        },
-        this.callback(observer, this.checkAuthResult)
-      )
-    ).pipe(this.authorizationHandler());
-  }
-
   handleAuthentication(): Observable<Authentication> {
     return new Observable<auth0.Auth0DecodedHash>(observer =>
-      this.auth0.parseHash(this.callback(observer, this.checkAuthResult))
+      this.webAuth.parseHash(this.callback(observer, this.checkAuthResult))
     ).pipe(this.authorizationHandler());
   }
 
   checkSession(): Observable<Authentication> {
     return new Observable<auth0.Auth0DecodedHash>(observer =>
-      this.auth0.checkSession({}, this.callback(observer, this.checkAuthResult))
+      this.webAuth.checkSession(
+        {},
+        this.callback(observer, this.checkAuthResult)
+      )
     ).pipe(this.authorizationHandler());
   }
 
   changePassword(options: auth0.ChangePasswordOptions): Observable<string> {
     return new Observable<string>(observer =>
-      this.auth0.changePassword(options, this.callback(observer))
+      this.webAuth.changePassword(options, this.callback(observer))
     );
   }
 
   getUserInfo(): Observable<auth0.Auth0UserProfile> {
     return new Observable<auth0.Auth0UserProfile>(observer =>
-      this.auth0.client.userInfo(this.accessToken, this.callback(observer))
+      this.webAuth.client.userInfo(this.accessToken, this.callback(observer))
     );
   }
 
   scheduleSessionCheck(): Observable<number> {
-    const sessionTimer = timer(30 * 60000); // 30 minutes
-    const sessionExpiryTimer = of(this.expiresAt).pipe(
+    return of(this.expiresAt).pipe(
       switchMap(expiresAt =>
-        timer(Math.max(1, +expiresAt - this.dateService.getTime() - 1000))
+        timer(
+          Math.min(
+            this.authOptions.sessionRenewalInterval,
+            +expiresAt - this.dateService.getTime() - 1000
+          )
+        )
       )
     );
-
-    return race(sessionTimer, sessionExpiryTimer);
   }
 
   clearLocalStorage(): void {
