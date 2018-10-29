@@ -28,6 +28,7 @@ export function userInfoReducer(
     case UserInfoActionTypes.GetUserInfoStart: {
       return {
         ...state,
+        error: null,
         loaded: false,
         loading: true
       };

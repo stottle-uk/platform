@@ -60,7 +60,7 @@ export class AuthenticationEffects {
   );
 
   @Effect({ dispatch: false })
-  loginSaveRedirectUrl$: Observable<string> = this.actions$.pipe(
+  authorizeRedirectUrl$: Observable<string> = this.actions$.pipe(
     ofType<Authorize>(fromActions.AuthenticationActionTypes.Authorize),
     map(action => action.payload.redirectUrl),
     tap(redirectUrl => (this.auth.redirectUrl = redirectUrl))
@@ -73,7 +73,7 @@ export class AuthenticationEffects {
   );
 
   @Effect({ dispatch: false })
-  handleAuthenticationDeleteRedirectUrl$: Observable<
+  userIsAuthenticatedDeleteRedirectUrl$: Observable<
     Authentication
   > = this.actions$.pipe(
     ofType<UserIsAuthenticated>(

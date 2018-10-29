@@ -45,7 +45,8 @@ export function authenticationReducer(
     case AuthenticationActionTypes.AuthenticationError: {
       return {
         ...state,
-        error: action.payload.error
+        error: action.payload.error,
+        isAuthenticating: false
       };
     }
 

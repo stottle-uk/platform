@@ -18,7 +18,9 @@ import {
 @Injectable()
 export class CheckSessionEffects {
   @Effect()
-  handleAuthenticationScheduleRenewal$: Observable<Action> = this.actions$.pipe(
+  userIsAuthenticatedScheduleSessionCheck$: Observable<
+    Action
+  > = this.actions$.pipe(
     ofType<UserIsAuthenticated>(
       fromAuthenticationActions.AuthenticationActionTypes.UserIsAuthenticated
     ),
@@ -26,7 +28,7 @@ export class CheckSessionEffects {
   );
 
   @Effect()
-  scheduleSessionRenewal$: Observable<Action> = this.actions$.pipe(
+  scheduleSessionCheck$: Observable<Action> = this.actions$.pipe(
     ofType<ScheduleSessionCheck>(
       fromActions.CheckSessionActionTypes.ScheduleSessionCheck
     ),
@@ -38,7 +40,7 @@ export class CheckSessionEffects {
   );
 
   @Effect()
-  renewSessionStart$: Observable<Action> = this.actions$.pipe(
+  checkSessionStart$: Observable<Action> = this.actions$.pipe(
     ofType<CheckSessionStart>(
       fromActions.CheckSessionActionTypes.CheckSessionStart
     ),
@@ -51,7 +53,7 @@ export class CheckSessionEffects {
   );
 
   @Effect()
-  renewSessionSuccessScheduleRenewal$: Observable<Action> = this.actions$.pipe(
+  checkSessionSuccess$: Observable<Action> = this.actions$.pipe(
     ofType<CheckSessionSuccess>(
       fromActions.CheckSessionActionTypes.CheckSessionSuccess
     ),
