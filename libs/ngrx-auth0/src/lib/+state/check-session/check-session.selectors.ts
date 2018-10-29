@@ -1,50 +1,39 @@
-import { createFeatureSelector } from '@ngrx/store';
+import { createSelector, MemoizedSelector } from '@ngrx/store';
+import { State } from '../+shared/auth.modesl';
+import { selectAuthState } from '../+shared/auth.selectors';
 import { CheckSessionState } from './check-session.reducer';
 
-// import { createFeatureSelector, createSelector } from '@ngrx/store';
-// import { CheckSessionState } from './check-session.reducer';
+const selectCheckSessionState: MemoizedSelector<
+  State,
+  CheckSessionState
+> = createSelector(selectAuthState, auth => auth.checkSession);
 
-// // Lookup the 'CheckSession' feature state managed by NgRx
-// const getCheckSessionState = createFeatureSelector<CheckSessionState>(
-//   'checkSession'
-// );
-
-const getCheckSessionState = createFeatureSelector<CheckSessionState>(
-  'checkSession'
+const selectCheckSessionScheduled: MemoizedSelector<
+  State,
+  boolean
+> = createSelector(
+  selectCheckSessionState,
+  checkSession => checkSession.checkSessionScheduled
 );
 
-// const getLoaded = createSelector(
-//   getCheckSessionState,
-//   (state: CheckSessionState) => state.loaded
-// );
-// const getError = createSelector(
-//   getCheckSessionState,
-//   (state: CheckSessionState) => state.error
-// );
+const selectCheckingSession: MemoizedSelector<State, boolean> = createSelector(
+  selectCheckSessionState,
+  checkSession => checkSession.checkingSession
+);
 
-// const getAllCheckSession = createSelector(
-//   getCheckSessionState,
-//   getLoaded,
-//   (state: CheckSessionState, isLoaded) => {
-//     return isLoaded ? state.list : [];
-//   }
-// );
-// const getSelectedId = createSelector(
-//   getCheckSessionState,
-//   (state: CheckSessionState) => state.selectedId
-// );
-// const getSelectedCheckSession = createSelector(
-//   getAllCheckSession,
-//   getSelectedId,
-//   (checkSession, id) => {
-//     const result = checkSession.find(it => it['id'] === id);
-//     return result ? Object.assign({}, result) : undefined;
-//   }
-// );
+const selectCheckedSession: MemoizedSelector<State, boolean> = createSelector(
+  selectCheckSessionState,
+  checkSession => checkSession.checkedSession
+);
 
-// export const checkSessionQuery = {
-//   getLoaded,
-//   getError,
-//   getAllCheckSession,
-//   getSelectedCheckSession
-// };
+const selectCheckgSessionError: MemoizedSelector<
+  State,
+  auth0.Auth0Error
+> = createSelector(selectCheckSessionState, checkSession => checkSession.error);
+
+export const checkSessiondQuery = {
+  selectCheckSessionScheduled,
+  selectCheckingSession,
+  selectCheckedSession,
+  selectCheckgSessionError
+};

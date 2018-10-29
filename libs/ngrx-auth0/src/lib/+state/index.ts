@@ -1,40 +1,17 @@
-import {
-  ActionReducerMap,
-  createFeatureSelector,
-  createSelector,
-  MemoizedSelector
-} from '@ngrx/store';
-import {
-  AuthenticationEffects,
-  authenticationReducer,
-  AuthenticationState
-} from './authentication';
-import { Authentication } from './authentication/authentication.model';
+import { ActionReducerMap } from '@ngrx/store';
+import { State } from './+shared/auth.modesl';
+import { AuthenticationEffects, authenticationReducer } from './authentication';
 import {
   ChangePasswordEffects,
-  changePasswordReducer,
-  ChangePasswordState
+  changePasswordReducer
 } from './change-password';
-import {
-  CheckSessionEffects,
-  checkSessionReducer,
-  CheckSessionState
-} from './check-session';
-import { UserInfoEffects, userInfoReducer, UserInfoState } from './user-info';
+import { CheckSessionEffects, checkSessionReducer } from './check-session';
+import { UserInfoEffects, userInfoReducer } from './user-info';
 
 export * from './authentication';
 export * from './change-password';
 export * from './check-session';
 export * from './user-info';
-
-export const AUTH_FEATURE_KEY = 'auth';
-
-export interface State {
-  authentication: AuthenticationState;
-  userInfo: UserInfoState;
-  changePassword: ChangePasswordState;
-  checkSession: CheckSessionState;
-}
 
 export const authReducers: ActionReducerMap<State> = {
   authentication: authenticationReducer,
@@ -49,146 +26,3 @@ export const authEffects = [
   ChangePasswordEffects,
   CheckSessionEffects
 ];
-
-const selectAuthState: MemoizedSelector<object, State> = createFeatureSelector<
-  State
->(AUTH_FEATURE_KEY);
-
-// Authentication Selectors
-
-const selectAuthenticationState: MemoizedSelector<
-  State,
-  AuthenticationState
-> = createSelector(selectAuthState, auth => auth.authentication);
-
-const selectAuthenticationError: MemoizedSelector<
-  State,
-  auth0.Auth0Error
-> = createSelector(
-  selectAuthenticationState,
-  authentication => authentication.error
-);
-
-const selectAuthenticationData: MemoizedSelector<
-  State,
-  Authentication
-> = createSelector(
-  selectAuthenticationState,
-  authentication => authentication.authenticationData
-);
-
-const selectIsAuthenticated: (
-  time: number
-) => MemoizedSelector<State, string> = time =>
-  createSelector(
-    selectAuthenticationData,
-    authenticationData =>
-      authenticationData &&
-      !!authenticationData.accessToken &&
-      !!authenticationData.expiresAt &&
-      time < +authenticationData.expiresAt
-        ? authenticationData.accessToken
-        : null
-  );
-
-export const authenticationQuery = {
-  selectIsAuthenticated,
-  selectAuthenticationError,
-  selectAuthenticationData
-};
-
-// user info selectors
-
-const selectUserInfoState: MemoizedSelector<
-  State,
-  UserInfoState
-> = createSelector(selectAuthState, auth => auth.userInfo);
-
-const selectUserInfo: MemoizedSelector<
-  State,
-  auth0.Auth0UserProfile
-> = createSelector(selectUserInfoState, userInfo => userInfo.userInfo);
-
-const selectUserInfoError: MemoizedSelector<
-  State,
-  auth0.Auth0Error
-> = createSelector(selectUserInfoState, userInfo => userInfo.error);
-
-const selectUserInfoIsLoading: MemoizedSelector<
-  State,
-  boolean
-> = createSelector(selectUserInfoState, userInfo => userInfo.loading);
-
-const selectUserInfoIsLoaded: MemoizedSelector<State, boolean> = createSelector(
-  selectUserInfoState,
-  userInfo => userInfo.loaded
-);
-
-export const userInfoQuery = {
-  selectUserInfo,
-  selectUserInfoError,
-  selectUserInfoIsLoading,
-  selectUserInfoIsLoaded
-};
-
-// change password selectors
-
-const selectChangePasswordState: MemoizedSelector<
-  State,
-  ChangePasswordState
-> = createSelector(selectAuthState, auth => auth.changePassword);
-
-const selectChangePasswordResponse: MemoizedSelector<
-  State,
-  string
-> = createSelector(
-  selectChangePasswordState,
-  changePassword => changePassword.changePasswordResponse
-);
-
-const selectChangePasswordError: MemoizedSelector<
-  State,
-  auth0.Auth0Error
-> = createSelector(selectChangePasswordState, userInfo => userInfo.error);
-
-export const changePasswordQuery = {
-  selectChangePasswordResponse,
-  selectChangePasswordError
-};
-
-// check session
-
-const selectCheckSessionState: MemoizedSelector<
-  State,
-  CheckSessionState
-> = createSelector(selectAuthState, auth => auth.checkSession);
-
-const selectCheckSessionScheduled: MemoizedSelector<
-  State,
-  boolean
-> = createSelector(
-  selectCheckSessionState,
-  checkSession => checkSession.checkSessionScheduled
-);
-
-const selectCheckingSession: MemoizedSelector<State, boolean> = createSelector(
-  selectCheckSessionState,
-  checkSession => checkSession.checkingSession
-);
-
-const selectCheckedSession: MemoizedSelector<State, boolean> = createSelector(
-  selectCheckSessionState,
-  checkSession => checkSession.checkedSession
-);
-
-const selectCheckgSessionError: MemoizedSelector<
-  State,
-  auth0.Auth0Error
-> = createSelector(selectCheckSessionState, checkSession => checkSession.error);
-
-export const checkSessiondQuery = {
-  selectCheckSessionScheduled,
-  selectCheckingSession,
-  selectCheckedSession,
-  selectCheckgSessionError
-};

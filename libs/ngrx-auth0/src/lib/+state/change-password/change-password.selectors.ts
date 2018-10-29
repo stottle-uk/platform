@@ -1,42 +1,27 @@
-import { createFeatureSelector } from '@ngrx/store';
+import { createSelector, MemoizedSelector } from '@ngrx/store';
+import { State } from '../+shared/auth.modesl';
+import { selectAuthState } from '../+shared/auth.selectors';
 import { ChangePasswordState } from './change-password.reducer';
 
-const getChangePasswordState = createFeatureSelector<ChangePasswordState>(
-  'changePassword'
+const selectChangePasswordState: MemoizedSelector<
+  State,
+  ChangePasswordState
+> = createSelector(selectAuthState, auth => auth.changePassword);
+
+const selectChangePasswordResponse: MemoizedSelector<
+  State,
+  string
+> = createSelector(
+  selectChangePasswordState,
+  changePassword => changePassword.changePasswordResponse
 );
 
-// const getLoaded = createSelector(
-//   getChangePasswordState,
-//   (state: ChangePasswordState) => state.loaded
-// );
-// const getError = createSelector(
-//   getChangePasswordState,
-//   (state: ChangePasswordState) => state.error
-// );
+const selectChangePasswordError: MemoizedSelector<
+  State,
+  auth0.Auth0Error
+> = createSelector(selectChangePasswordState, userInfo => userInfo.error);
 
-// const getAllChangePassword = createSelector(
-//   getChangePasswordState,
-//   getLoaded,
-//   (state: ChangePasswordState, isLoaded) => {
-//     return isLoaded ? state.list : [];
-//   }
-// );
-// const getSelectedId = createSelector(
-//   getChangePasswordState,
-//   (state: ChangePasswordState) => state.selectedId
-// );
-// const getSelectedChangePassword = createSelector(
-//   getAllChangePassword,
-//   getSelectedId,
-//   (changePassword, id) => {
-//     const result = changePassword.find(it => it['id'] === id);
-//     return result ? Object.assign({}, result) : undefined;
-//   }
-// );
-
-// export const changePasswordQuery = {
-//   getLoaded,
-//   getError,
-//   getAllChangePassword,
-//   getSelectedChangePassword
-// };
+export const changePasswordQuery = {
+  selectChangePasswordResponse,
+  selectChangePasswordError
+};
