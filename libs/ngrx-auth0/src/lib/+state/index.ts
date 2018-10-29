@@ -10,9 +10,15 @@ import {
   AuthenticationState
 } from './authentication';
 import { Authentication } from './authentication/authentication.model';
+import {
+  ChangePasswordEffects,
+  changePasswordReducer,
+  ChangePasswordState
+} from './change-password';
 import { UserInfoEffects, userInfoReducer, UserInfoState } from './user-info';
 
 export * from './authentication';
+export * from './change-password';
 export * from './user-info';
 
 export const AUTH_FEATURE_KEY = 'auth';
@@ -20,14 +26,20 @@ export const AUTH_FEATURE_KEY = 'auth';
 export interface State {
   authentication: AuthenticationState;
   userInfo: UserInfoState;
+  changePassword: ChangePasswordState;
 }
 
 export const authReducers: ActionReducerMap<State> = {
   authentication: authenticationReducer,
-  userInfo: userInfoReducer
+  userInfo: userInfoReducer,
+  changePassword: changePasswordReducer
 };
 
-export const authEffects = [AuthenticationEffects, UserInfoEffects];
+export const authEffects = [
+  AuthenticationEffects,
+  UserInfoEffects,
+  ChangePasswordEffects
+];
 
 const selectAuthState: MemoizedSelector<object, State> = createFeatureSelector<
   State
@@ -108,4 +120,29 @@ export const userInfoQuery = {
   selectUserInfoError,
   selectUserInfoIsLoading,
   selectUserInfoIsLoaded
+};
+
+// change password selectors
+
+const selectChangePasswordState: MemoizedSelector<
+  State,
+  ChangePasswordState
+> = createSelector(selectAuthState, auth => auth.changePassword);
+
+const selectChangePasswordResponse: MemoizedSelector<
+  State,
+  string
+> = createSelector(
+  selectChangePasswordState,
+  userInfo => userInfo.changePasswordResponse
+);
+
+const selectChangePasswordError: MemoizedSelector<
+  State,
+  auth0.Auth0Error
+> = createSelector(selectChangePasswordState, userInfo => userInfo.error);
+
+export const changePasswordQuery = {
+  selectChangePasswordResponse,
+  selectChangePasswordError
 };
