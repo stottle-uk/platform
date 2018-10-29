@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { AuthProviderService } from '@stottle-platform/auth0-rxjs';
+import { UserIsAuthenticated } from 'dist/libs/ngrx-auth0';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import { fromAuthenticationActions } from '../authentication';
 import {
   fromUserInfoActions as fromActions,
   GetUserInfoStart
@@ -11,6 +13,16 @@ import {
 
 @Injectable()
 export class UserInfoEffects {
+  @Effect()
+  handleAuthenticationGetUserInfoStart$: Observable<
+    Action
+  > = this.actions$.pipe(
+    ofType<UserIsAuthenticated>(
+      fromAuthenticationActions.AuthenticationActionTypes.UserIsAuthenticated
+    ),
+    map(() => new fromActions.GetUserInfoStart())
+  );
+
   @Effect()
   getUserInfoStart$: Observable<Action> = this.actions$.pipe(
     ofType<GetUserInfoStart>(fromActions.UserInfoActionTypes.GetUserInfoStart),

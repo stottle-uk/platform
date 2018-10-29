@@ -9,11 +9,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NxModule } from '@nrwl/nx';
 import { NgrxAuth0Module } from '@stottle-platform-internal/ngrx-auth0';
-import {
-  authLogoutOptions,
-  authOptions,
-  environment
-} from '../environments/environment';
+import { authOptions, environment } from '../environments/environment';
 import { AppRoutesModule } from './app-routes.module';
 import { AppComponent } from './app.component';
 import { LayoutModule } from './layout/layout.module';
@@ -45,7 +41,7 @@ const ngrxModules = [
 ];
 
 const thirdPatyModules = [
-  NgrxAuth0Module.forRoot(authOptions, authLogoutOptions),
+  NgrxAuth0Module.forRoot(authOptions),
   NxModule.forRoot()
 ];
 

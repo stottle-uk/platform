@@ -42,6 +42,13 @@ export function authenticationReducer(
       };
     }
 
+    case AuthenticationActionTypes.UserIsNotAuthenticated: {
+      return {
+        ...state,
+        isAuthenticating: false
+      };
+    }
+
     case AuthenticationActionTypes.AuthenticationError: {
       return {
         ...state,

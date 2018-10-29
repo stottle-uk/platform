@@ -11,9 +11,11 @@ import { catchError, exhaustMap, map, take, tap } from 'rxjs/operators';
 import {
   Authorize,
   CheckAuthenticationStatus,
+  ClearLocalStorage,
   fromAuthenticationActions as fromActions,
   Logout,
-  UserIsAuthenticated
+  UserIsAuthenticated,
+  UserIsNotAuthenticated
 } from './authentication.actions';
 
 @Injectable()
@@ -81,6 +83,28 @@ export class AuthenticationEffects {
     ),
     map(action => action.payload.auth),
     tap(() => (this.auth.redirectUrl = null))
+  );
+
+  @Effect()
+  logoutUserIsNotAuthenticated$: Observable<Action> = this.actions$.pipe(
+    ofType<Logout>(fromActions.AuthenticationActionTypes.Logout),
+    map(() => new fromActions.UserIsNotAuthenticated())
+  );
+
+  @Effect()
+  userIsNotAuthenticated$: Observable<Action> = this.actions$.pipe(
+    ofType<UserIsNotAuthenticated>(
+      fromActions.AuthenticationActionTypes.UserIsNotAuthenticated
+    ),
+    map(() => new fromActions.ClearLocalStorage())
+  );
+
+  @Effect({ dispatch: false })
+  clearLocalStorage$: Observable<void> = this.actions$.pipe(
+    ofType<ClearLocalStorage>(
+      fromActions.AuthenticationActionTypes.ClearLocalStorage
+    ),
+    map(() => this.auth.clearLocalStorage())
   );
 
   constructor(

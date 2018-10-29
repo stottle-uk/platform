@@ -5,10 +5,11 @@ import { StoreModule } from '@ngrx/store';
 import {
   Auth0RxjsModule,
   auth0WebAuthFactory,
-  AUTH0_LOGOUT_OPTIONS,
   AUTH0_WEB_AUTH,
   AuthDatesService,
-  AuthProviderService
+  AuthOptions,
+  AuthProviderService,
+  AUTH_OPTIONS
 } from '@stottle-platform/auth0-rxjs';
 import { authEffects, authReducers, AUTH_FEATURE_KEY } from './+state';
 import { AuthGuardService, AuthIntercepterService } from './services';
@@ -21,20 +22,17 @@ import { AuthGuardService, AuthIntercepterService } from './services';
   ]
 })
 export class NgrxAuth0Module {
-  static forRoot(
-    options: auth0.AuthOptions,
-    logoutOptions: auth0.LogoutOptions
-  ): ModuleWithProviders {
+  static forRoot(authOptions: AuthOptions): ModuleWithProviders {
     return {
       ngModule: NgrxAuth0Module,
       providers: [
         {
           provide: AUTH0_WEB_AUTH,
-          useFactory: auth0WebAuthFactory(options)
+          useFactory: auth0WebAuthFactory(authOptions.options)
         },
         {
-          provide: AUTH0_LOGOUT_OPTIONS,
-          useValue: logoutOptions
+          provide: AUTH_OPTIONS,
+          useValue: authOptions
         },
         {
           provide: HTTP_INTERCEPTORS,
