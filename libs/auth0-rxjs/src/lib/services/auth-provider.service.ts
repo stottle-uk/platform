@@ -88,19 +88,13 @@ export class AuthProviderService {
 
   changePassword(options: auth0.ChangePasswordOptions): Observable<string> {
     return new Observable<string>(observer =>
-      this.auth0.changePassword(
-        options,
-        this.callback(observer, result => !!result)
-      )
+      this.auth0.changePassword(options, this.callback(observer))
     );
   }
 
   getUserInfo(): Observable<auth0.Auth0UserProfile> {
     return new Observable<auth0.Auth0UserProfile>(observer =>
-      this.auth0.client.userInfo(
-        this.accessToken,
-        this.callback(observer, result => !!result)
-      )
+      this.auth0.client.userInfo(this.accessToken, this.callback(observer))
     );
   }
 
@@ -131,7 +125,7 @@ export class AuthProviderService {
 
   private callback<T>(
     observer: Subscriber<T>,
-    predicate: (result: T) => boolean
+    predicate: (result: T) => boolean = result => !!result
   ): auth0.Auth0Callback<T> {
     return (err, result: T) => {
       if (predicate(result)) {
