@@ -1,6 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import {
   authenticationQuery,
   AuthState,
@@ -23,8 +23,8 @@ import { map } from 'rxjs/operators';
   `
 })
 export class ContainerComponent {
-  isAuthenticated$ = this.store.select(
-    authenticationQuery.selectIsAuthenticated(new Date().getTime())
+  isAuthenticated$ = this.store.pipe(
+    select(authenticationQuery.selectIsAuthenticated(new Date().getTime()))
   );
   isHandset$ = this.breakpointObserver
     .observe(Breakpoints.Handset)

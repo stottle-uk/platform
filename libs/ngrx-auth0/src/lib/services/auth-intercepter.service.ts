@@ -1,6 +1,6 @@
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AuthDatesService } from '@stottle-platform/auth0-rxjs';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
@@ -17,21 +17,20 @@ export class AuthIntercepterService {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    return this.store
-      .select(authenticationQuery.selectIsAuthenticated(this.date.getTime()))
-      .pipe(
-        map(
-          accessToken =>
-            !!accessToken
-              ? req.clone({
-                  headers: req.headers.set(
-                    'Authorization',
-                    `Bearer ${accessToken}`
-                  )
-                })
-              : req
-        ),
-        mergeMap(newReq => next.handle(newReq))
-      );
+    return this.store.pipe(
+      select(authenticationQuery.selectIsAuthenticated(this.date.getTime())),
+      map(
+        accessToken =>
+          !!accessToken
+            ? req.clone({
+                headers: req.headers.set(
+                  'Authorization',
+                  `Bearer ${accessToken}`
+                )
+              })
+            : req
+      ),
+      mergeMap(newReq => next.handle(newReq))
+    );
   }
 }

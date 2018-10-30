@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import {
   AuthState,
   changePasswordQuery,
@@ -19,9 +19,9 @@ import {
   styles: []
 })
 export class DashboardComponent {
-  userInfo$ = this.store.select(userInfoQuery.selectUserInfo);
-  changePasswordResponse$ = this.store.select(
-    changePasswordQuery.selectChangePasswordResponse
+  userInfo$ = this.store.pipe(select(userInfoQuery.selectUserInfo));
+  changePasswordResponse$ = this.store.pipe(
+    select(changePasswordQuery.selectChangePasswordResponse)
   );
 
   constructor(private store: Store<AuthState>) {}
