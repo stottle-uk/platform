@@ -6,36 +6,22 @@ import {
   Authentication,
   AuthProviderService
 } from '@stottle-platform/auth0-rxjs';
-import { Observable, of } from 'rxjs';
-import { catchError, exhaustMap, map, take, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import {
-  Authorize,
+  fromAuthorizationActions,
+  Logout
+} from '../authorization/authorization.actions';
+import {
   CheckAuthenticationStatus,
   ClearLocalStorage,
   fromAuthenticationActions as fromActions,
-  Logout,
   UserIsAuthenticated,
   UserIsNotAuthenticated
 } from './authentication.actions';
 
 @Injectable()
 export class AuthenticationEffects {
-  @Effect()
-  handleAuthentication$: Observable<Action> = this.actions$.pipe(
-    take(1),
-    exhaustMap(() =>
-      this.auth.handleAuthentication().pipe(
-        map(
-          auth =>
-            new fromActions.UserIsAuthenticated({
-              auth
-            })
-        ),
-        catchError(error => of(new fromActions.AuthenticationError({ error })))
-      )
-    )
-  );
-
   @Effect()
   checkAuthenticationStatus$: Observable<Action> = this.actions$.pipe(
     ofType<CheckAuthenticationStatus>(
@@ -55,26 +41,6 @@ export class AuthenticationEffects {
   );
 
   @Effect({ dispatch: false })
-  authorize$: Observable<void> = this.actions$.pipe(
-    ofType<Authorize>(fromActions.AuthenticationActionTypes.Authorize),
-    map(action => action.payload.options),
-    map(options => this.auth.authorize(options))
-  );
-
-  @Effect({ dispatch: false })
-  authorizeRedirectUrl$: Observable<string> = this.actions$.pipe(
-    ofType<Authorize>(fromActions.AuthenticationActionTypes.Authorize),
-    map(action => action.payload.redirectUrl),
-    tap(redirectUrl => (this.auth.redirectUrl = redirectUrl))
-  );
-
-  @Effect({ dispatch: false })
-  logout$: Observable<void> = this.actions$.pipe(
-    ofType<Logout>(fromActions.AuthenticationActionTypes.Logout),
-    map(() => this.auth.logout())
-  );
-
-  @Effect({ dispatch: false })
   userIsAuthenticatedDeleteRedirectUrl$: Observable<
     Authentication
   > = this.actions$.pipe(
@@ -87,7 +53,7 @@ export class AuthenticationEffects {
 
   @Effect()
   logoutUserIsNotAuthenticated$: Observable<Action> = this.actions$.pipe(
-    ofType<Logout>(fromActions.AuthenticationActionTypes.Logout),
+    ofType<Logout>(fromAuthorizationActions.AuthorizationActionTypes.Logout),
     map(() => new fromActions.UserIsNotAuthenticated())
   );
 

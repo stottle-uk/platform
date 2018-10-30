@@ -11,7 +11,7 @@ import { map, tap } from 'rxjs/operators';
 import {
   authenticationQuery,
   AuthState,
-  fromAuthenticationActions
+  fromAuthorizationActions
 } from '../+state';
 
 @Injectable()
@@ -41,7 +41,7 @@ export class AuthGuardService implements CanActivate {
   ) {
     if (!isAuthenticated) {
       this.store.dispatch(
-        new fromAuthenticationActions.Authorize({
+        new fromAuthorizationActions.Authorize({
           redirectUrl: state.url,
           options: {
             mode: 'signUp'

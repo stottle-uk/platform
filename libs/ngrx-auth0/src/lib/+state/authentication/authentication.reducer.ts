@@ -6,13 +6,13 @@ import {
 
 export interface AuthenticationState {
   authenticationData: Authentication;
-  isAuthenticating: boolean;
+  checkingAuthenticationStatus: boolean;
   error: auth0.Auth0Error;
 }
 
 export const authenticationInitialState: AuthenticationState = {
   authenticationData: null,
-  isAuthenticating: false,
+  checkingAuthenticationStatus: false,
   error: null
 };
 
@@ -21,15 +21,14 @@ export function authenticationReducer(
   action: AuthenticationAction
 ): AuthenticationState {
   switch (action.type) {
-    case AuthenticationActionTypes.ClearLocalStorage:
-    case AuthenticationActionTypes.Logout: {
+    case AuthenticationActionTypes.ClearLocalStorage: {
       return authenticationInitialState;
     }
 
     case AuthenticationActionTypes.CheckAuthenticationStatus: {
       return {
         ...state,
-        isAuthenticating: true
+        checkingAuthenticationStatus: true
       };
     }
 
@@ -37,7 +36,7 @@ export function authenticationReducer(
       return {
         ...state,
         authenticationData: action.payload.auth,
-        isAuthenticating: false,
+        checkingAuthenticationStatus: false,
         error: null
       };
     }
@@ -45,15 +44,7 @@ export function authenticationReducer(
     case AuthenticationActionTypes.UserIsNotAuthenticated: {
       return {
         ...state,
-        isAuthenticating: false
-      };
-    }
-
-    case AuthenticationActionTypes.AuthenticationError: {
-      return {
-        ...state,
-        error: action.payload.error,
-        isAuthenticating: false
+        checkingAuthenticationStatus: false
       };
     }
 
