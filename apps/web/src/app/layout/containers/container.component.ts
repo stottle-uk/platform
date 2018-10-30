@@ -2,7 +2,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import {
-  authenticationQuery,
+  authorizationQuery,
   AuthState,
   fromAuthorizationActions
 } from '@stottle-platform-internal/ngrx-auth0';
@@ -24,7 +24,7 @@ import { map } from 'rxjs/operators';
 })
 export class ContainerComponent {
   isAuthenticated$ = this.store.pipe(
-    select(authenticationQuery.selectIsAuthenticated(new Date().getTime()))
+    select(authorizationQuery.selectIsAuthenticated(new Date().getTime()))
   );
   isHandset$ = this.breakpointObserver
     .observe(Breakpoints.Handset)

@@ -6,6 +6,7 @@ export enum AuthorizationActionTypes {
   AuthenticationComplete = '[Auth-Authorization] Authentication Complete',
   AuthenticationSuccess = '[Auth-Authorization] Authentication Success',
   AuthenticationError = '[Auth-Authorization] Authentication Error',
+  ClearAuthenticationDetails = '[Auth-Authorization] Clear Authentication Details',
   Logout = '[Auth-Authorization] Logout'
 }
 
@@ -33,6 +34,10 @@ export class AuthenticationError implements Action {
   constructor(public payload: { error: auth0.Auth0Error }) {}
 }
 
+export class ClearAuthenticationDetails implements Action {
+  readonly type = AuthorizationActionTypes.ClearAuthenticationDetails;
+}
+
 export class Logout implements Action {
   readonly type = AuthorizationActionTypes.Logout;
 }
@@ -42,6 +47,7 @@ export type AuthorizationAction =
   | AuthenticationComplete
   | AuthenticationSuccess
   | AuthenticationError
+  | ClearAuthenticationDetails
   | Logout;
 
 export const fromAuthorizationActions = {
@@ -50,5 +56,6 @@ export const fromAuthorizationActions = {
   AuthenticationComplete,
   AuthenticationSuccess,
   AuthenticationError,
+  ClearAuthenticationDetails,
   Logout
 };

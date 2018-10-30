@@ -1,16 +1,13 @@
-import { Authentication } from '@stottle-platform/auth0-rxjs';
 import {
   AuthenticationAction,
   AuthenticationActionTypes
 } from './authentication.actions';
 
 export interface AuthenticationState {
-  authenticationData: Authentication;
   checkingAuthenticationStatus: boolean;
 }
 
 export const authenticationInitialState: AuthenticationState = {
-  authenticationData: null,
   checkingAuthenticationStatus: false
 };
 
@@ -38,17 +35,6 @@ export function authenticationReducer(
         ...state,
         checkingAuthenticationStatus: false
       };
-    }
-
-    case AuthenticationActionTypes.SetAuthenticationState: {
-      return {
-        ...state,
-        authenticationData: action.payload.auth
-      };
-    }
-
-    case AuthenticationActionTypes.ClearLocalStorage: {
-      return authenticationInitialState;
     }
 
     default:

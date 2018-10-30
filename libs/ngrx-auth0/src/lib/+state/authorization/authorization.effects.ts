@@ -6,7 +6,9 @@ import { Observable, of } from 'rxjs';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
 import {
   AuthenticationComplete,
+  AuthenticationSuccess,
   Authorize,
+  ClearAuthenticationDetails,
   fromAuthorizationActions as fromActions,
   Logout
 } from './authorization.actions';
@@ -46,9 +48,33 @@ export class AuthorizationEffects {
   );
 
   @Effect({ dispatch: false })
+  authenticationSuccessDeleteRedirectUrl$: Observable<
+    Action
+  > = this.actions$.pipe(
+    ofType<AuthenticationSuccess>(
+      fromActions.AuthorizationActionTypes.AuthenticationSuccess
+    ),
+    tap(() => (this.auth.redirectUrl = null))
+  );
+
+  @Effect({ dispatch: false })
   logout$: Observable<void> = this.actions$.pipe(
     ofType<Logout>(fromActions.AuthorizationActionTypes.Logout),
     map(() => this.auth.logout())
+  );
+
+  @Effect()
+  logoutClearLocalStorage$: Observable<Action> = this.actions$.pipe(
+    ofType<Logout>(fromActions.AuthorizationActionTypes.Logout),
+    map(() => new fromActions.ClearAuthenticationDetails())
+  );
+
+  @Effect({ dispatch: false })
+  clearLocalStorage$: Observable<void> = this.actions$.pipe(
+    ofType<ClearAuthenticationDetails>(
+      fromActions.AuthorizationActionTypes.ClearAuthenticationDetails
+    ),
+    map(() => this.auth.clearLocalStorage())
   );
 
   constructor(private actions$: Actions, private auth: AuthProviderService) {}

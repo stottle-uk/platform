@@ -6,16 +6,13 @@ import {
   AuthProviderService
 } from '@stottle-platform/auth0-rxjs';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import {
-  AuthenticationSuccess,
-  fromAuthorizationActions,
-  Logout
-} from '../authorization/authorization.actions';
+import { map } from 'rxjs/operators';
+import { fromAuthorizationActions } from '../authorization';
+import { fromCheckSessionActions } from '../check-session';
 import {
   CheckAuthenticationStatus,
-  ClearLocalStorage,
   fromAuthenticationActions as fromActions,
+  UserIsAuthenticated,
   UserIsNotAuthenticated
 } from './authentication.actions';
 
@@ -37,47 +34,22 @@ export class AuthenticationEffects {
     )
   );
 
-  @Effect({ dispatch: false })
-  authenticationSuccessDeleteRedirectUrl$: Observable<
+  @Effect()
+  userIsAuthenticatedScheduleSessionCheck$: Observable<
     Action
   > = this.actions$.pipe(
-    ofType<AuthenticationSuccess>(
-      fromAuthorizationActions.AuthorizationActionTypes.AuthenticationSuccess
+    ofType<UserIsAuthenticated>(
+      fromActions.AuthenticationActionTypes.UserIsAuthenticated
     ),
-    tap(() => (this.auth.redirectUrl = null))
+    map(() => new fromCheckSessionActions.CheckSessionStart())
   );
 
   @Effect()
-  authenticationSuccessSetAuthenticationState$: Observable<
-    Action
-  > = this.actions$.pipe(
-    ofType<AuthenticationSuccess>(
-      fromAuthorizationActions.AuthorizationActionTypes.AuthenticationSuccess
-    ),
-    map(action => action.payload.auth),
-    map(auth => new fromActions.SetAuthenticationState({ auth }))
-  );
-
-  @Effect()
-  logoutUserIsNotAuthenticated$: Observable<Action> = this.actions$.pipe(
-    ofType<Logout>(fromAuthorizationActions.AuthorizationActionTypes.Logout),
-    map(() => new fromActions.UserIsNotAuthenticated())
-  );
-
-  @Effect()
-  userIsNotAuthenticated$: Observable<Action> = this.actions$.pipe(
+  clearLocalStorage$: Observable<Action> = this.actions$.pipe(
     ofType<UserIsNotAuthenticated>(
       fromActions.AuthenticationActionTypes.UserIsNotAuthenticated
     ),
-    map(() => new fromActions.ClearLocalStorage())
-  );
-
-  @Effect({ dispatch: false })
-  clearLocalStorage$: Observable<void> = this.actions$.pipe(
-    ofType<ClearLocalStorage>(
-      fromActions.AuthenticationActionTypes.ClearLocalStorage
-    ),
-    map(() => this.auth.clearLocalStorage())
+    map(() => new fromAuthorizationActions.ClearAuthenticationDetails())
   );
 
   constructor(

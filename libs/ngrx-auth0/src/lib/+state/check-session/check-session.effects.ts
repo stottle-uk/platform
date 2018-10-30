@@ -5,10 +5,6 @@ import { AuthProviderService } from '@stottle-platform/auth0-rxjs';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import {
-  fromAuthenticationActions,
-  UserIsAuthenticated
-} from '../authentication';
-import {
   AuthenticationSuccess,
   fromAuthorizationActions
 } from '../authorization';
@@ -21,16 +17,6 @@ import {
 
 @Injectable()
 export class CheckSessionEffects {
-  @Effect()
-  userIsAuthenticatedScheduleSessionCheck$: Observable<
-    Action
-  > = this.actions$.pipe(
-    ofType<UserIsAuthenticated>(
-      fromAuthenticationActions.AuthenticationActionTypes.UserIsAuthenticated
-    ),
-    map(() => new fromActions.CheckSessionStart())
-  );
-
   @Effect()
   authenticationSuccessScheduleSessionCheck$: Observable<
     Action

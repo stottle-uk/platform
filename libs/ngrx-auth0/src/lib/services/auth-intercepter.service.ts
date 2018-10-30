@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { AuthDatesService } from '@stottle-platform/auth0-rxjs';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { authenticationQuery, AuthState } from '../+state';
+import { authorizationQuery, AuthState } from '../+state';
 
 @Injectable()
 export class AuthIntercepterService {
@@ -18,7 +18,7 @@ export class AuthIntercepterService {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return this.store.pipe(
-      select(authenticationQuery.selectIsAuthenticated(this.date.getTime())),
+      select(authorizationQuery.selectIsAuthenticated(this.date.getTime())),
       map(
         accessToken =>
           !!accessToken

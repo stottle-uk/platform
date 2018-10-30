@@ -9,7 +9,7 @@ import { AuthDatesService } from '@stottle-platform/auth0-rxjs';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
-  authenticationQuery,
+  authorizationQuery,
   AuthState,
   fromAuthorizationActions
 } from '../+state';
@@ -26,7 +26,7 @@ export class AuthGuardService implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.store.pipe(
-      select(authenticationQuery.selectIsAuthenticated(this.date.getTime())),
+      select(authorizationQuery.selectIsAuthenticated(this.date.getTime())),
       map(accessToken => !!accessToken),
       tap(isAuthenticated =>
         this.showLoginFormIfNotAuthenticated(isAuthenticated, state)
