@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import {
   authenticationQuery,
   AuthState,
-  fromAuthenticationActions
+  fromAuthorizationActions
 } from '@stottle-platform-internal/ngrx-auth0';
 import { map } from 'rxjs/operators';
 
@@ -37,7 +37,7 @@ export class ContainerComponent {
 
   onLogin(): void {
     this.store.dispatch(
-      new fromAuthenticationActions.Authorize({
+      new fromAuthorizationActions.Authorize({
         redirectUrl: '/',
         options: {
           mode: 'login'
@@ -47,6 +47,6 @@ export class ContainerComponent {
   }
 
   onLogout(): void {
-    this.store.dispatch(new fromAuthenticationActions.Logout());
+    this.store.dispatch(new fromAuthorizationActions.Logout());
   }
 }

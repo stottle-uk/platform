@@ -9,12 +9,12 @@ const selectAuthenticationState: MemoizedSelector<
   AuthenticationState
 > = createSelector(selectAuthState, auth => auth.authentication);
 
-const selectAuthenticationError: MemoizedSelector<
+const selectCheckingAuthenticationStatus: MemoizedSelector<
   AuthState,
-  auth0.Auth0Error
+  boolean
 > = createSelector(
   selectAuthenticationState,
-  authentication => authentication.error
+  authentication => authentication.checkingAuthenticationStatus
 );
 
 const selectAuthenticationData: MemoizedSelector<
@@ -41,6 +41,6 @@ const selectIsAuthenticated: (
 
 export const authenticationQuery = {
   selectIsAuthenticated,
-  selectAuthenticationError,
+  selectCheckingAuthenticationStatus,
   selectAuthenticationData
 };
