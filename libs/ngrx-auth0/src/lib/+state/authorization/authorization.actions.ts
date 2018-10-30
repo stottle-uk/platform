@@ -2,8 +2,10 @@ import { Action } from '@ngrx/store';
 
 export enum AuthorizationActionTypes {
   Authorize = '[Auth-Authorization] Authorize',
-  Logout = '[Auth-Authorization] Logout',
-  AuthenticationError = '[Auth-Authorization] Authentication Error'
+  AuthenticationComplete = '[Auth-Authorization] Authentication Complete',
+  AuthenticationSuccess = '[Auth-Authorization] Authentication Success',
+  AuthenticationError = '[Auth-Authorization] Authentication Error',
+  Logout = '[Auth-Authorization] Logout'
 }
 
 export class Authorize implements Action {
@@ -14,8 +16,16 @@ export class Authorize implements Action {
   ) {}
 }
 
-export class Logout implements Action {
-  readonly type = AuthorizationActionTypes.Logout;
+export class AuthenticationComplete implements Action {
+  readonly type = AuthorizationActionTypes.AuthenticationComplete;
+
+  constructor(public payload: { error: auth0.Auth0Error }) {}
+}
+
+export class AuthenticationSuccess implements Action {
+  readonly type = AuthorizationActionTypes.AuthenticationSuccess;
+
+  constructor(public payload: { error: auth0.Auth0Error }) {}
 }
 
 export class AuthenticationError implements Action {
@@ -24,11 +34,22 @@ export class AuthenticationError implements Action {
   constructor(public payload: { error: auth0.Auth0Error }) {}
 }
 
-export type AuthorizationAction = Authorize | Logout | AuthenticationError;
+export class Logout implements Action {
+  readonly type = AuthorizationActionTypes.Logout;
+}
+
+export type AuthorizationAction =
+  | Authorize
+  | AuthenticationComplete
+  | AuthenticationSuccess
+  | AuthenticationError
+  | Logout;
 
 export const fromAuthorizationActions = {
   AuthorizationActionTypes,
   Authorize,
-  Logout,
-  AuthenticationError
+  AuthenticationComplete,
+  AuthenticationSuccess,
+  AuthenticationError,
+  Logout
 };

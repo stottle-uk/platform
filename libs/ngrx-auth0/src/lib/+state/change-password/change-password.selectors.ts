@@ -19,7 +19,10 @@ const selectChangePasswordResponse: MemoizedSelector<
 const selectChangePasswordError: MemoizedSelector<
   AuthState,
   auth0.Auth0Error
-> = createSelector(selectChangePasswordState, userInfo => userInfo.error);
+> = createSelector(
+  selectChangePasswordState,
+  changePassword => changePassword.error
+);
 
 export const changePasswordQuery = {
   selectChangePasswordResponse,
