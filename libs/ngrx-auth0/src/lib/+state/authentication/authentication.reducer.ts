@@ -19,10 +19,6 @@ export function authenticationReducer(
   action: AuthenticationAction
 ): AuthenticationState {
   switch (action.type) {
-    case AuthenticationActionTypes.ClearLocalStorage: {
-      return authenticationInitialState;
-    }
-
     case AuthenticationActionTypes.CheckAuthenticationStatus: {
       return {
         ...state,
@@ -33,7 +29,6 @@ export function authenticationReducer(
     case AuthenticationActionTypes.UserIsAuthenticated: {
       return {
         ...state,
-        authenticationData: action.payload.auth,
         checkingAuthenticationStatus: false
       };
     }
@@ -43,6 +38,17 @@ export function authenticationReducer(
         ...state,
         checkingAuthenticationStatus: false
       };
+    }
+
+    case AuthenticationActionTypes.SetAuthenticationState: {
+      return {
+        ...state,
+        authenticationData: action.payload.auth
+      };
+    }
+
+    case AuthenticationActionTypes.ClearLocalStorage: {
+      return authenticationInitialState;
     }
 
     default:

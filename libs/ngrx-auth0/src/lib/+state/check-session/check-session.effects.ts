@@ -9,6 +9,10 @@ import {
   UserIsAuthenticated
 } from '../authentication';
 import {
+  AuthenticationSuccess,
+  fromAuthorizationActions
+} from '../authorization';
+import {
   CheckSessionStart,
   CheckSessionSuccess,
   fromCheckSessionActions as fromActions,
@@ -23,6 +27,16 @@ export class CheckSessionEffects {
   > = this.actions$.pipe(
     ofType<UserIsAuthenticated>(
       fromAuthenticationActions.AuthenticationActionTypes.UserIsAuthenticated
+    ),
+    map(() => new fromActions.CheckSessionStart())
+  );
+
+  @Effect()
+  authenticationSuccessScheduleSessionCheck$: Observable<
+    Action
+  > = this.actions$.pipe(
+    ofType<AuthenticationSuccess>(
+      fromAuthorizationActions.AuthorizationActionTypes.AuthenticationSuccess
     ),
     map(() => new fromActions.ScheduleSessionCheck())
   );
@@ -60,7 +74,7 @@ export class CheckSessionEffects {
     map(action => action.payload.auth),
     map(
       auth =>
-        new UserIsAuthenticated({
+        new AuthenticationSuccess({
           auth
         })
     )

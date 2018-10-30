@@ -5,6 +5,7 @@ export enum AuthenticationActionTypes {
   CheckAuthenticationStatus = '[Auth-Authentication] Check Authentication Status',
   UserIsAuthenticated = '[Auth-Authentication] User Is Authenticated',
   UserIsNotAuthenticated = '[Auth-Authentication] User Is Not Authenticated',
+  SetAuthenticationState = '[Auth-Authentication] Set Authentication State',
   ClearLocalStorage = '[Auth-Authentication] Clear Local Storage'
 }
 
@@ -14,12 +15,16 @@ export class CheckAuthenticationStatus implements Action {
 
 export class UserIsAuthenticated implements Action {
   readonly type = AuthenticationActionTypes.UserIsAuthenticated;
-
-  constructor(public payload: { auth: Authentication }) {}
 }
 
 export class UserIsNotAuthenticated implements Action {
   readonly type = AuthenticationActionTypes.UserIsNotAuthenticated;
+}
+
+export class SetAuthenticationState implements Action {
+  readonly type = AuthenticationActionTypes.SetAuthenticationState;
+
+  constructor(public payload: { auth: Authentication }) {}
 }
 
 export class ClearLocalStorage implements Action {
@@ -30,6 +35,7 @@ export type AuthenticationAction =
   | CheckAuthenticationStatus
   | UserIsAuthenticated
   | UserIsNotAuthenticated
+  | SetAuthenticationState
   | ClearLocalStorage;
 
 export const fromAuthenticationActions = {
@@ -37,5 +43,6 @@ export const fromAuthenticationActions = {
   CheckAuthenticationStatus,
   UserIsAuthenticated,
   UserIsNotAuthenticated,
+  SetAuthenticationState,
   ClearLocalStorage
 };

@@ -5,9 +5,9 @@ import { AuthProviderService } from '@stottle-platform/auth0-rxjs';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import {
-  fromAuthenticationActions,
-  UserIsAuthenticated
-} from '../authentication';
+  AuthenticationSuccess,
+  fromAuthorizationActions
+} from '../authorization';
 import {
   fromUserInfoActions as fromActions,
   GetUserInfoStart
@@ -19,8 +19,8 @@ export class UserInfoEffects {
   handleAuthenticationGetUserInfoStart$: Observable<
     Action
   > = this.actions$.pipe(
-    ofType<UserIsAuthenticated>(
-      fromAuthenticationActions.AuthenticationActionTypes.UserIsAuthenticated
+    ofType<AuthenticationSuccess>(
+      fromAuthorizationActions.AuthorizationActionTypes.AuthenticationSuccess
     ),
     map(() => new fromActions.GetUserInfoStart())
   );

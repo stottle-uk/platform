@@ -3,9 +3,9 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { AuthProviderService } from '@stottle-platform/auth0-rxjs';
 import { Observable, of } from 'rxjs';
-import { catchError, exhaustMap, map, take, tap } from 'rxjs/operators';
-import { fromAuthenticationActions } from '../authentication';
+import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
 import {
+  AuthenticationComplete,
   Authorize,
   fromAuthorizationActions as fromActions,
   Logout
@@ -13,22 +13,6 @@ import {
 
 @Injectable()
 export class AuthorizationEffects {
-  @Effect()
-  handleAuthentication$: Observable<Action> = this.actions$.pipe(
-    take(1),
-    exhaustMap(() =>
-      this.auth.handleAuthentication().pipe(
-        map(
-          auth =>
-            new fromAuthenticationActions.UserIsAuthenticated({
-              auth
-            })
-        ),
-        catchError(error => of(new fromActions.AuthenticationError({ error })))
-      )
-    )
-  );
-
   @Effect({ dispatch: false })
   authorize$: Observable<void> = this.actions$.pipe(
     ofType<Authorize>(fromActions.AuthorizationActionTypes.Authorize),
@@ -37,10 +21,28 @@ export class AuthorizationEffects {
   );
 
   @Effect({ dispatch: false })
-  authorizeRedirectUrl$: Observable<string> = this.actions$.pipe(
+  authorizeSaveRedirectUrl$: Observable<string> = this.actions$.pipe(
     ofType<Authorize>(fromActions.AuthorizationActionTypes.Authorize),
     map(action => action.payload.redirectUrl),
     tap(redirectUrl => (this.auth.redirectUrl = redirectUrl))
+  );
+
+  @Effect()
+  handleAuthentication$: Observable<Action> = this.actions$.pipe(
+    ofType<AuthenticationComplete>(
+      fromActions.AuthorizationActionTypes.AuthenticationComplete
+    ),
+    exhaustMap(() =>
+      this.auth.handleAuthentication().pipe(
+        map(
+          auth =>
+            new fromActions.AuthenticationSuccess({
+              auth
+            })
+        ),
+        catchError(error => of(new fromActions.AuthenticationError({ error })))
+      )
+    )
   );
 
   @Effect({ dispatch: false })

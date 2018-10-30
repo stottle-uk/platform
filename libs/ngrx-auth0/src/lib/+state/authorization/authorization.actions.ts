@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { Authentication } from '@stottle-platform/auth0-rxjs';
 
 export enum AuthorizationActionTypes {
   Authorize = '[Auth-Authorization] Authorize',
@@ -18,14 +19,12 @@ export class Authorize implements Action {
 
 export class AuthenticationComplete implements Action {
   readonly type = AuthorizationActionTypes.AuthenticationComplete;
-
-  constructor(public payload: { error: auth0.Auth0Error }) {}
 }
 
 export class AuthenticationSuccess implements Action {
   readonly type = AuthorizationActionTypes.AuthenticationSuccess;
 
-  constructor(public payload: { error: auth0.Auth0Error }) {}
+  constructor(public payload: { auth: Authentication }) {}
 }
 
 export class AuthenticationError implements Action {

@@ -3,12 +3,12 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import {
   AuthDatesService,
-  Authentication,
   AuthProviderService
 } from '@stottle-platform/auth0-rxjs';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
+  AuthenticationSuccess,
   fromAuthorizationActions,
   Logout
 } from '../authorization/authorization.actions';
@@ -16,7 +16,6 @@ import {
   CheckAuthenticationStatus,
   ClearLocalStorage,
   fromAuthenticationActions as fromActions,
-  UserIsAuthenticated,
   UserIsNotAuthenticated
 } from './authentication.actions';
 
@@ -33,22 +32,30 @@ export class AuthenticationEffects {
         !!authState.accessToken &&
         !!authState.expiresAt &&
         this.date.getTime() < authState.expiresAt
-          ? new fromActions.UserIsAuthenticated({
-              auth: authState
-            })
+          ? new fromActions.UserIsAuthenticated()
           : new fromActions.UserIsNotAuthenticated()
     )
   );
 
   @Effect({ dispatch: false })
-  userIsAuthenticatedDeleteRedirectUrl$: Observable<
-    Authentication
+  authenticationSuccessDeleteRedirectUrl$: Observable<
+    Action
   > = this.actions$.pipe(
-    ofType<UserIsAuthenticated>(
-      fromActions.AuthenticationActionTypes.UserIsAuthenticated
+    ofType<AuthenticationSuccess>(
+      fromAuthorizationActions.AuthorizationActionTypes.AuthenticationSuccess
+    ),
+    tap(() => (this.auth.redirectUrl = null))
+  );
+
+  @Effect()
+  authenticationSuccessSetAuthenticationState$: Observable<
+    Action
+  > = this.actions$.pipe(
+    ofType<AuthenticationSuccess>(
+      fromAuthorizationActions.AuthorizationActionTypes.AuthenticationSuccess
     ),
     map(action => action.payload.auth),
-    tap(() => (this.auth.redirectUrl = null))
+    map(auth => new fromActions.SetAuthenticationState({ auth }))
   );
 
   @Effect()

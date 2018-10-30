@@ -3,11 +3,11 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { DataPersistence } from '@nrwl/nx';
 import {
-  fromAuthenticationActions,
-  UserIsAuthenticated
+  AuthenticationSuccess,
+  fromAuthorizationActions
 } from '@stottle-platform-internal/ngrx-auth0';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import * as fromRouter from '../../router-client/store';
 import {
   LoadUsers,
@@ -21,11 +21,12 @@ import { UsersPartialState } from './users.reducer';
 export class UsersEffects {
   @Effect()
   userIsAuthenticatedRedirectUser$: Observable<Action> = this.actions$.pipe(
-    ofType<UserIsAuthenticated>(
-      fromAuthenticationActions.AuthenticationActionTypes.UserIsAuthenticated
+    ofType<AuthenticationSuccess>(
+      fromAuthorizationActions.AuthorizationActionTypes.AuthenticationSuccess
     ),
     map(action => action.payload.auth),
-    map(auth => auth.redirectUrl || '/'),
+    map(auth => auth.redirectUrl),
+    filter(redirectUrl => !!redirectUrl),
     map(
       redirectUrl =>
         new fromRouter.Go({

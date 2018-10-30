@@ -12,14 +12,18 @@ import {
   AUTH_OPTIONS
 } from '@stottle-platform/auth0-rxjs';
 import { authEffects, authReducers, AUTH_FEATURE_KEY } from './+state';
+import { CallbackComponent } from './components';
+import { NgrxAuth0RoutesModule } from './ngrx-auth0-routes.moduls';
 import { AuthGuardService, AuthIntercepterService } from './services';
 
 @NgModule({
   imports: [
     StoreModule.forFeature(AUTH_FEATURE_KEY, authReducers),
     EffectsModule.forFeature(authEffects),
+    NgrxAuth0RoutesModule,
     Auth0RxjsModule
-  ]
+  ],
+  declarations: [CallbackComponent]
 })
 export class NgrxAuth0Module {
   static forRoot(authOptions: AuthOptions): ModuleWithProviders {
