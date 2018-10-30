@@ -7,13 +7,11 @@ import {
 export interface AuthenticationState {
   authenticationData: Authentication;
   checkingAuthenticationStatus: boolean;
-  error: auth0.Auth0Error;
 }
 
 export const authenticationInitialState: AuthenticationState = {
   authenticationData: null,
-  checkingAuthenticationStatus: false,
-  error: null
+  checkingAuthenticationStatus: false
 };
 
 export function authenticationReducer(
@@ -36,8 +34,7 @@ export function authenticationReducer(
       return {
         ...state,
         authenticationData: action.payload.auth,
-        checkingAuthenticationStatus: false,
-        error: null
+        checkingAuthenticationStatus: false
       };
     }
 
