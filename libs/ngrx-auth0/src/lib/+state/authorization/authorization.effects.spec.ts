@@ -1,24 +1,24 @@
-import { TestBed, async } from '@angular/core/testing';
-
-import { Observable } from 'rxjs';
-
+import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { provideMockActions } from '@ngrx/effects/testing';
-
-import { NxModule } from '@nrwl/nx';
-import { DataPersistence } from '@nrwl/nx';
+import { StoreModule } from '@ngrx/store';
+import { DataPersistence, NxModule } from '@nrwl/nx';
 import { hot } from '@nrwl/nx/testing';
-
-import { AuthorizationEffects } from './authorization.effects';
 import {
-  LoadAuthorization,
-  AuthorizationLoaded
-} from './authorization.actions';
+  AUTH0_WEB_AUTH,
+  AuthDatesService,
+  AuthProviderService,
+  AUTH_OPTIONS
+} from '@stottle-platform/auth0-rxjs';
+import { WebAuth } from 'auth0-js';
+import { Observable } from 'rxjs';
+import { Authorize } from './authorization.actions';
+import { AuthorizationEffects } from './authorization.effects';
 
-describe('AuthorizationEffects', () => {
+fdescribe('AuthorizationEffects', () => {
   let actions: Observable<any>;
   let effects: AuthorizationEffects;
+  let authProviderService: AuthProviderService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -28,6 +28,19 @@ describe('AuthorizationEffects', () => {
         EffectsModule.forRoot([])
       ],
       providers: [
+        AuthProviderService,
+        AuthDatesService,
+        {
+          provide: AUTH0_WEB_AUTH,
+          useValue: new WebAuth({
+            clientID: '',
+            domain: ''
+          })
+        },
+        {
+          provide: AUTH_OPTIONS,
+          useValue: {}
+        },
         AuthorizationEffects,
         DataPersistence,
         provideMockActions(() => actions)
@@ -35,14 +48,21 @@ describe('AuthorizationEffects', () => {
     });
 
     effects = TestBed.get(AuthorizationEffects);
+    authProviderService = TestBed.get(AuthProviderService);
   });
 
   describe('loadAuthorization$', () => {
     it('should work', () => {
-      actions = hot('-a-|', { a: new LoadAuthorization() });
-      expect(effects.loadAuthorization$).toBeObservable(
-        hot('-a-|', { a: new AuthorizationLoaded([]) })
-      );
+      actions = hot('-a-|', {
+        a: new Authorize({
+          options: {},
+          redirectUrl: ''
+        })
+      });
+
+      console.log(effects.authorize$);
+
+      expect(effects.authorize$).toBeObservable(new Observable());
     });
   });
 });

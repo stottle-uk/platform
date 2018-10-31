@@ -5,7 +5,6 @@ import { AuthProviderService } from '@stottle-platform/auth0-rxjs';
 import { Observable, of } from 'rxjs';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
 import {
-  AuthenticationComplete,
   AuthenticationSuccess,
   Authorize,
   ClearAuthenticationDetails,
@@ -31,7 +30,7 @@ export class AuthorizationEffects {
 
   @Effect()
   handleAuthentication$: Observable<Action> = this.actions$.pipe(
-    ofType<AuthenticationComplete>(
+    ofType<AuthenticationSuccess>(
       fromActions.AuthorizationActionTypes.AuthenticationComplete
     ),
     exhaustMap(() =>

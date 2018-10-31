@@ -1,57 +1,57 @@
-import { Entity, AuthorizationState } from './authorization.reducer';
+import { AuthState } from '../+shared';
 import { authorizationQuery } from './authorization.selectors';
 
 describe('Authorization Selectors', () => {
-  const ERROR_MSG = 'No Error Available';
-  const getAuthorizationId = it => it['id'];
+  let storeState: AuthState;
 
-  let storeState;
+  const authorizationData = {
+    redirectUrl: '',
+    expiresAt: 10
+  };
 
   beforeEach(() => {
-    const createAuthorization = (id: string, name = ''): Entity => ({
-      id,
-      name: name || `name-${id}`
-    });
     storeState = {
+      authentication: {
+        checkingAuthenticationStatus: false
+      },
       authorization: {
-        list: [
-          createAuthorization('PRODUCT-AAA'),
-          createAuthorization('PRODUCT-BBB'),
-          createAuthorization('PRODUCT-CCC')
-        ],
-        selectedId: 'PRODUCT-BBB',
-        error: ERROR_MSG,
-        loaded: true
+        authorizationData: authorizationData,
+        error: {}
+      },
+      changePassword: {
+        changePasswordResponse: '',
+        error: {}
+      },
+      checkSession: {
+        checkedSession: false,
+        checkingSession: false,
+        checkSessionScheduled: false,
+        error: {}
+      },
+      userInfo: {
+        error: {},
+        loaded: false,
+        loading: false,
+        userInfo: {
+          clientID: '',
+          created_at: '',
+          identities: [],
+          name: '',
+          nickname: '',
+          picture: '',
+          sub: '',
+          updated_at: '',
+          user_id: ''
+        }
       }
     };
   });
 
   describe('Authorization Selectors', () => {
     it('getAllAuthorization() should return the list of Authorization', () => {
-      const results = authorizationQuery.getAllAuthorization(storeState);
-      const selId = getAuthorizationId(results[1]);
+      const data = authorizationQuery.selectAuthorizationData(storeState);
 
-      expect(results.length).toBe(3);
-      expect(selId).toBe('PRODUCT-BBB');
-    });
-
-    it('getSelectedAuthorization() should return the selected Entity', () => {
-      const result = authorizationQuery.getSelectedAuthorization(storeState);
-      const selId = getAuthorizationId(result);
-
-      expect(selId).toBe('PRODUCT-BBB');
-    });
-
-    it("getLoaded() should return the current 'loaded' status", () => {
-      const result = authorizationQuery.getLoaded(storeState);
-
-      expect(result).toBe(true);
-    });
-
-    it("getError() should return the current 'error' storeState", () => {
-      const result = authorizationQuery.getError(storeState);
-
-      expect(result).toBe(ERROR_MSG);
+      expect(data).toBe(authorizationData);
     });
   });
 });
