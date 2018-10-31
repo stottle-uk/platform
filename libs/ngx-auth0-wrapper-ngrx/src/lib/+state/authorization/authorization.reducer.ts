@@ -1,5 +1,8 @@
 import { Authentication } from '@stottle-platform/ngx-auth0-wrapper';
-import { AuthorizationAction, AuthorizationActionTypes } from './authorization.actions';
+import {
+  AuthorizationAction,
+  AuthorizationActionTypes
+} from './authorization.actions';
 
 export interface AuthorizationState {
   authorizationData: Authentication;
@@ -16,6 +19,7 @@ export function authorizationReducer(
   action: AuthorizationAction
 ): AuthorizationState {
   switch (action.type) {
+    case AuthorizationActionTypes.ClearAuthenticationDetails:
     case AuthorizationActionTypes.Logout: {
       return authorizationInitialState;
     }
@@ -33,10 +37,6 @@ export function authorizationReducer(
         ...state,
         error: action.payload.error
       };
-    }
-
-    case AuthorizationActionTypes.ClearAuthenticationDetails: {
-      return authorizationInitialState;
     }
   }
   return state;
