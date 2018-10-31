@@ -20,7 +20,7 @@ describe('Authorization Selectors', () => {
       const isAuthenticated = authorizationQuery
         .selectIsAuthenticated(expiresAt)
         .projector({
-          ...storeState.authorization.authorizationData,
+          ...authorizationData,
           expiresAt: expiresAt + 1
         });
 
@@ -31,7 +31,7 @@ describe('Authorization Selectors', () => {
       const isAuthenticated = authorizationQuery
         .selectIsAuthenticated(expiresAt)
         .projector({
-          ...storeState.authorization.authorizationData,
+          ...authorizationData,
           expiresAt: expiresAt - 1
         });
 
