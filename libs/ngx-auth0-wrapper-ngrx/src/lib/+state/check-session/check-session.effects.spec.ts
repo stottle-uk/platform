@@ -1,45 +1,117 @@
-// import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { Actions } from '@ngrx/effects';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { cold, hot } from '@nrwl/nx/testing';
+import { AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
+import { Observable, of, throwError } from 'rxjs';
+import { auth0Error, authorizationData } from '../../testing-helpers/testing';
+import { TestingModule } from '../../testing-helpers/testing.module';
+import { AuthenticationError, AuthenticationSuccess } from '../authorization';
+import {
+  CheckSessionFailure,
+  CheckSessionStart,
+  CheckSessionSuccess,
+  ScheduleSessionCheck
+} from './check-session.actions';
+import { CheckSessionEffects } from './check-session.effects';
 
-// import { Observable } from 'rxjs';
+describe('CheckSessionEffects', () => {
+  let actions: Observable<any>;
+  let effects: CheckSessionEffects;
+  let authProviderService: AuthProviderService;
 
-// import { EffectsModule } from '@ngrx/effects';
-// import { StoreModule } from '@ngrx/store';
-// import { provideMockActions } from '@ngrx/effects/testing';
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [TestingModule.forRoot()],
+      providers: [provideMockActions(() => actions)]
+    });
 
-// import { NxModule } from '@nrwl/nx';
-// import { DataPersistence } from '@nrwl/nx';
-// import { hot } from '@nrwl/nx/testing';
+    actions = TestBed.get(Actions);
+    effects = TestBed.get(CheckSessionEffects);
+    authProviderService = TestBed.get(AuthProviderService);
+  });
 
-// import { CheckSessionEffects } from './check-session.effects';
-// import { LoadCheckSession, CheckSessionLoaded } from './check-session.actions';
+  describe('authenticationSuccessScheduleSessionCheck$', () => {
+    it('should work', () => {
+      const action = new AuthenticationSuccess({ auth: authorizationData });
+      const completion = new ScheduleSessionCheck();
 
-// describe('CheckSessionEffects', () => {
-//   let actions: Observable<any>;
-//   let effects: CheckSessionEffects;
+      actions = hot('--a-', { a: action });
+      const expected = cold('--b', { b: completion });
 
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({
-//       imports: [
-//         NxModule.forRoot(),
-//         StoreModule.forRoot({}),
-//         EffectsModule.forRoot([])
-//       ],
-//       providers: [
-//         CheckSessionEffects,
-//         DataPersistence,
-//         provideMockActions(() => actions)
-//       ]
-//     });
+      expect(effects.authenticationSuccessScheduleSessionCheck$).toBeObservable(
+        expected
+      );
+    });
+  });
 
-//     effects = TestBed.get(CheckSessionEffects);
-//   });
+  describe('scheduleSessionCheck$', () => {
+    it('should work', () => {
+      authProviderService.scheduleSessionCheck = jasmine
+        .createSpy('scheduleSessionCheck')
+        .and.returnValue(of(1));
 
-//   describe('loadCheckSession$', () => {
-//     it('should work', () => {
-//       actions = hot('-a-|', { a: new LoadCheckSession() });
-//       expect(effects.loadCheckSession$).toBeObservable(
-//         hot('-a-|', { a: new CheckSessionLoaded([]) })
-//       );
-//     });
-//   });
-// });
+      const action = new ScheduleSessionCheck();
+      const completion = new CheckSessionStart();
+
+      actions = hot('--a-', { a: action });
+      const expected = cold('--b', { b: completion });
+
+      expect(effects.scheduleSessionCheck$).toBeObservable(expected);
+    });
+  });
+
+  describe('checkSessionStart$', () => {
+    it('should work', () => {
+      authProviderService.checkSession = jasmine
+        .createSpy('checkSession')
+        .and.returnValue(of(authorizationData));
+
+      const action = new CheckSessionStart();
+      const completion = new CheckSessionSuccess({ auth: authorizationData });
+
+      actions = hot('--a-', { a: action });
+      const expected = cold('--b', { b: completion });
+
+      expect(effects.checkSessionStart$).toBeObservable(expected);
+    });
+
+    it('should handle error', () => {
+      authProviderService.checkSession = jasmine
+        .createSpy('checkSession')
+        .and.returnValue(throwError(auth0Error));
+
+      const action = new CheckSessionStart();
+      const completion = new CheckSessionFailure({ error: auth0Error });
+
+      actions = hot('--a-', { a: action });
+      const expected = cold('--b', { b: completion });
+
+      expect(effects.checkSessionStart$).toBeObservable(expected);
+    });
+  });
+
+  describe('checkSessionSuccess$', () => {
+    it('should work', () => {
+      const action = new CheckSessionSuccess({ auth: authorizationData });
+      const completion = new AuthenticationSuccess({ auth: authorizationData });
+
+      actions = hot('--a-', { a: action });
+      const expected = cold('--b', { b: completion });
+
+      expect(effects.checkSessionSuccess$).toBeObservable(expected);
+    });
+  });
+
+  describe('checkSessionFailure$', () => {
+    it('should work', () => {
+      const action = new CheckSessionFailure({ error: auth0Error });
+      const completion = new AuthenticationError({ error: auth0Error });
+
+      actions = hot('--a-', { a: action });
+      const expected = cold('--b', { b: completion });
+
+      expect(effects.checkSessionFailure$).toBeObservable(expected);
+    });
+  });
+});

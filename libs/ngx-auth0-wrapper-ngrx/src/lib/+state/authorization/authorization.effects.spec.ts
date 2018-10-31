@@ -2,17 +2,13 @@ import { TestBed } from '@angular/core/testing';
 import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { cold, hot } from '@nrwl/nx/testing';
-import {
-  Authentication,
-  AuthProviderService
-} from '@stottle-platform/ngx-auth0-wrapper';
+import { AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable, of, throwError } from 'rxjs';
 import {
   auth0AuthorizeOptions,
   auth0Error,
   authorizationData,
-  redirectUrl,
-  validTime
+  redirectUrl
 } from '../../testing-helpers/testing';
 import { TestingModule } from '../../testing-helpers/testing.module';
 import {
@@ -80,17 +76,12 @@ fdescribe('AuthorizationEffects', () => {
 
   describe('authenticationComplete$', () => {
     it('should work', () => {
-      const auth: Authentication = {
-        expiresAt: validTime,
-        redirectUrl: redirectUrl
-      };
-
       authProviderService.handleAuthentication = jasmine
         .createSpy('handleAuthentication')
-        .and.returnValue(of(auth));
+        .and.returnValue(of(authorizationData));
 
       const action = new AuthenticationComplete();
-      const completion = new AuthenticationSuccess({ auth });
+      const completion = new AuthenticationSuccess({ auth: authorizationData });
 
       actions = hot('--a-', { a: action });
       const expected = cold('--b', { b: completion });

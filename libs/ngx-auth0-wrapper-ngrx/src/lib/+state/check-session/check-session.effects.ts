@@ -4,8 +4,18 @@ import { Action } from '@ngrx/store';
 import { AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable, of } from 'rxjs';
 import { catchError, exhaustMap, map, switchMap } from 'rxjs/operators';
-import { AuthenticationSuccess, fromAuthorizationActions } from '../authorization';
-import { CheckSessionStart, CheckSessionSuccess, fromCheckSessionActions as fromActions, ScheduleSessionCheck } from './check-session.actions';
+import {
+  AuthenticationError,
+  AuthenticationSuccess,
+  fromAuthorizationActions
+} from '../authorization';
+import {
+  CheckSessionFailure,
+  CheckSessionStart,
+  CheckSessionSuccess,
+  fromCheckSessionActions as fromActions,
+  ScheduleSessionCheck
+} from './check-session.actions';
 
 @Injectable()
 export class CheckSessionEffects {
@@ -54,6 +64,20 @@ export class CheckSessionEffects {
       auth =>
         new AuthenticationSuccess({
           auth
+        })
+    )
+  );
+
+  @Effect()
+  checkSessionFailure$: Observable<Action> = this.actions$.pipe(
+    ofType<CheckSessionFailure>(
+      fromActions.CheckSessionActionTypes.CheckSessionFailure
+    ),
+    map(action => action.payload.error),
+    map(
+      error =>
+        new AuthenticationError({
+          error
         })
     )
   );
