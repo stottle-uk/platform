@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthState, fromAuthorizationActions } from '../+state';
 
@@ -7,7 +7,7 @@ import { AuthState, fromAuthorizationActions } from '../+state';
   template: `<p>loading...</p>`,
   styles: []
 })
-export class CallbackComponent {
+export class CallbackComponent implements OnInit {
   constructor(private store: Store<AuthState>) {}
 
   ngOnInit(): void {
