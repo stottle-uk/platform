@@ -7,8 +7,8 @@ describe('AuthDatesService', () => {
       providers: [AuthDatesService]
     }));
 
-  it('should be created', () => {
+  it('should return current time', () => {
     const service: AuthDatesService = TestBed.get(AuthDatesService);
-    expect(service).toBeTruthy();
+    expect(service.getTime()).toBeTruthy();
   });
 });

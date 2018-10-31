@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import * as auth0 from 'auth0-js';
+import { AuthOptions } from '../models/auth.model';
 import { AuthDatesService } from './auth-dates.service';
 import { AuthProviderService } from './auth-provider.service';
 import { AUTH0_WEB_AUTH, AUTH_OPTIONS } from './tokens';
@@ -11,6 +12,17 @@ const webAuth = new auth0.WebAuth({
 
 const mockDates: AuthDatesService = {
   getTime: () => 1000
+};
+
+const authOptions: AuthOptions = {
+  logoutOptions: {
+    returnTo: 'returnUrl'
+  },
+  options: {
+    clientID: 'clientID',
+    domain: 'domain'
+  },
+  sessionRenewalInterval: 5
 };
 
 fdescribe('AuthProviderService', () => {
@@ -27,7 +39,7 @@ fdescribe('AuthProviderService', () => {
         },
         {
           provide: AUTH_OPTIONS,
-          useValue: {}
+          useValue: authOptions
         },
         {
           provide: AuthDatesService,
@@ -50,6 +62,19 @@ fdescribe('AuthProviderService', () => {
 
     expect(authProvider.authorize).toHaveBeenCalledWith({
       mode: 'signUp'
+    });
+  });
+
+  it('should logut', () => {
+    authProvider.logout = jasmine.createSpy('logout');
+
+    service.logout({
+      clientID: 'clientID'
+    });
+
+    expect(authProvider.logout).toHaveBeenCalledWith({
+      ...authOptions.logoutOptions,
+      clientID: 'clientID'
     });
   });
 

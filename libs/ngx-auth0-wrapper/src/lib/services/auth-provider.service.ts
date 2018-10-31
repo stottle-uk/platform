@@ -125,11 +125,12 @@ export class AuthProviderService {
     predicate: (result: T) => boolean = result => !!result
   ): auth0.Auth0Callback<T> {
     return (err, result: T) => {
+      if (err) {
+        observer.error(err);
+      }
       if (predicate(result)) {
         observer.next(result);
         observer.complete();
-      } else if (err) {
-        observer.error(err);
       }
     };
   }
