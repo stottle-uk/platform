@@ -1,57 +1,38 @@
-// import { Entity, CheckSessionState } from './check-session.reducer';
-// import { checkSessionQuery } from './check-session.selectors';
+import { storeState } from '../../testing-helpers/testing';
+import { checkSessiondQuery } from './check-session.selectors';
 
-// describe('CheckSession Selectors', () => {
-//   const ERROR_MSG = 'No Error Available';
-//   const getCheckSessionId = it => it['id'];
+describe('CheckSession Selectors', () => {
+  describe('CheckSession Selectors', () => {
+    it('selectChangePasswordResponse() should return Check Session Scheduled', () => {
+      const data = checkSessiondQuery.selectCheckSessionScheduled.projector(
+        storeState.checkSession
+      );
 
-//   let storeState;
+      expect(data).toBe(storeState.checkSession.checkSessionScheduled);
+    });
 
-//   beforeEach(() => {
-//     const createCheckSession = (id: string, name = ''): Entity => ({
-//       id,
-//       name: name || `name-${id}`
-//     });
-//     storeState = {
-//       checkSession: {
-//         list: [
-//           createCheckSession('PRODUCT-AAA'),
-//           createCheckSession('PRODUCT-BBB'),
-//           createCheckSession('PRODUCT-CCC')
-//         ],
-//         selectedId: 'PRODUCT-BBB',
-//         error: ERROR_MSG,
-//         loaded: true
-//       }
-//     };
-//   });
+    it('selectChangePasswordResponse() should return Checking Session', () => {
+      const data = checkSessiondQuery.selectCheckingSession.projector(
+        storeState.checkSession
+      );
 
-//   describe('CheckSession Selectors', () => {
-//     it('getAllCheckSession() should return the list of CheckSession', () => {
-//       const results = checkSessionQuery.getAllCheckSession(storeState);
-//       const selId = getCheckSessionId(results[1]);
+      expect(data).toBe(storeState.checkSession.checkingSession);
+    });
 
-//       expect(results.length).toBe(3);
-//       expect(selId).toBe('PRODUCT-BBB');
-//     });
+    it('selectChangePasswordResponse() should return Checked Session', () => {
+      const data = checkSessiondQuery.selectCheckingSession.projector(
+        storeState.checkSession
+      );
 
-//     it('getSelectedCheckSession() should return the selected Entity', () => {
-//       const result = checkSessionQuery.getSelectedCheckSession(storeState);
-//       const selId = getCheckSessionId(result);
+      expect(data).toBe(storeState.checkSession.checkedSession);
+    });
 
-//       expect(selId).toBe('PRODUCT-BBB');
-//     });
+    it('selectChangePasswordResponse() should return Check Session Error', () => {
+      const data = checkSessiondQuery.selectCheckSessionError.projector(
+        storeState.checkSession
+      );
 
-//     it("getLoaded() should return the current 'loaded' status", () => {
-//       const result = checkSessionQuery.getLoaded(storeState);
-
-//       expect(result).toBe(true);
-//     });
-
-//     it("getError() should return the current 'error' storeState", () => {
-//       const result = checkSessionQuery.getError(storeState);
-
-//       expect(result).toBe(ERROR_MSG);
-//     });
-//   });
-// });
+      expect(data).toBe(storeState.checkSession.error);
+    });
+  });
+});

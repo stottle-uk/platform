@@ -32,7 +32,7 @@ const selectCheckedSession: MemoizedSelector<
   checkSession => checkSession.checkedSession
 );
 
-const selectCheckgSessionError: MemoizedSelector<
+const selectCheckSessionError: MemoizedSelector<
   AuthState,
   auth0.Auth0Error
 > = createSelector(selectCheckSessionState, checkSession => checkSession.error);
@@ -41,5 +41,5 @@ export const checkSessiondQuery = {
   selectCheckSessionScheduled,
   selectCheckingSession,
   selectCheckedSession,
-  selectCheckgSessionError
+  selectCheckSessionError
 };
