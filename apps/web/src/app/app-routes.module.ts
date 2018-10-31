@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuardService } from '@stottle-platform-internal/ngrx-auth0';
+import { AuthGuardService } from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 
 export const routes: Routes = [
   {

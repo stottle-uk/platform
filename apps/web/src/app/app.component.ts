@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import {
   AuthState,
   fromAuthenticationActions
-} from '@stottle-platform-internal/ngrx-auth0';
+} from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 
 @Component({
   selector: 'stottle-platform-root',

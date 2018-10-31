@@ -11,8 +11,10 @@
     "lib": ["es2017", "dom"],
     "baseUrl": ".",
     "paths": {
-      "@stottle-platform-internal/ngrx-auth0": ["libs/ngrx-auth0/src/index.ts"],
-      "@stottle-platform/bowling-game": ["libs/bowling-game/src/index.ts"]
+      "@stottle-platform/bowling-game": ["libs/bowling-game/src/index.ts"],
+      "@stottle-platform/ngx-auth0-wrapper-ngrx": [
+        "libs/ngx-auth0-wrapper-ngrx/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

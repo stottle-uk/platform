@@ -5,7 +5,7 @@ import { DataPersistence } from '@nrwl/nx';
 import {
   AuthenticationSuccess,
   fromAuthorizationActions
-} from '@stottle-platform-internal/ngrx-auth0';
+} from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import * as fromRouter from '../../router-client/store';

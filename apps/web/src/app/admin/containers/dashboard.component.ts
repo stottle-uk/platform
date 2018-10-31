@@ -5,7 +5,7 @@ import {
   changePasswordQuery,
   fromChangePasswordActions,
   userInfoQuery
-} from '@stottle-platform-internal/ngrx-auth0';
+} from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 
 @Component({
   selector: 'stottle-dashboard',

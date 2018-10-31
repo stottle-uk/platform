@@ -83,6 +83,10 @@
     "tslib": "^1.9.0",
     "tslint": "~5.11.0",
     "typescript": "~2.9.2",
-    "prettier": "1.13.7"
+    "prettier": "1.13.7",
+    "@nrwl/builders": "6.4.0",
+    "jest": "^23.0.0",
+    "@types/jest": "^23.0.0",
+    "jest-preset-angular": "6.0.1"
   }
 }

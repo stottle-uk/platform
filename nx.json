@@ -22,6 +22,9 @@
     },
     "bowling-game": {
       "tags": []
+    },
+    "ngx-auth0-wrapper-ngrx": {
+      "tags": []
     }
   }
 }

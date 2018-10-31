@@ -8,7 +8,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NxModule } from '@nrwl/nx';
-import { NgrxAuth0Module } from '@stottle-platform-internal/ngrx-auth0';
+import { NgxAuth0WrapperNgrxModule } from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 import { authOptions, environment } from '../environments/environment';
 import { AppRoutesModule } from './app-routes.module';
 import { AppComponent } from './app.component';
@@ -41,7 +41,7 @@ const ngrxModules = [
 ];
 
 const thirdPatyModules = [
-  NgrxAuth0Module.forRoot(authOptions),
+  NgxAuth0WrapperNgrxModule.forRoot(authOptions),
   NxModule.forRoot()
 ];
 
