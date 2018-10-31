@@ -35,6 +35,8 @@ export class UsersEffects {
     )
   );
 
+  //TODO: add AuthenticationSFailure to redirect ti auth failure page
+
   @Effect()
   loadUsers$ = this.dataPersistence.fetch(UsersActionTypes.LoadUsers, {
     run: (action: LoadUsers, state: UsersPartialState) => {
