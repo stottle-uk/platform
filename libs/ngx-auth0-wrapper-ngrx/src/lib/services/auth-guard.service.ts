@@ -1,10 +1,18 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  RouterStateSnapshot
+} from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { AuthDatesService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { authorizationQuery, AuthState, fromAuthorizationActions } from '../+state';
+import {
+  authorizationQuery,
+  AuthState,
+  fromAuthorizationActions
+} from '../+state';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
