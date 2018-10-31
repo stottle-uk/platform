@@ -14,7 +14,7 @@ export class AuthProviderService {
   REDIRECT_URL = `${this.localStoragePrefix}::redirect_url`;
 
   private get localStoragePrefix(): string {
-    return this.authOptions.localStoragePrefix || 'auth0-ngrx';
+    return this.authOptions.localStoragePrefix || 'ngx-auth0-wrapper';
   }
 
   get accessToken(): string {

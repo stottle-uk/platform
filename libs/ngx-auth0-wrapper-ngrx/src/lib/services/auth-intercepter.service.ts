@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { AuthDatesService } from '@stottle-platform/auth0-rxjs';
+import { AuthDatesService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { authorizationQuery, AuthState } from '../+state';

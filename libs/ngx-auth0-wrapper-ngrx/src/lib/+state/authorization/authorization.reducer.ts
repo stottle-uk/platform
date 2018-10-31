@@ -1,8 +1,5 @@
-import { Authentication } from '@stottle-platform/auth0-rxjs';
-import {
-  AuthorizationAction,
-  AuthorizationActionTypes
-} from './authorization.actions';
+import { Authentication } from '@stottle-platform/ngx-auth0-wrapper';
+import { AuthorizationAction, AuthorizationActionTypes } from './authorization.actions';
 
 export interface AuthorizationState {
   authorizationData: Authentication;

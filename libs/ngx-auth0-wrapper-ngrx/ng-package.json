@@ -6,7 +6,7 @@
     "umdModuleIds": {
       "@ngrx/store": "store",
       "@ngrx/effects": "effects",
-      "@stottle-platform/auth0-rxjs": "auth0-rxjs"
+      "@stottle-platform/ngx-auth0-wrapper": "ngx-auth0-wrapper"
     }
   }
 }

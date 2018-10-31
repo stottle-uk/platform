@@ -8,16 +8,10 @@
     "nx.json": "*"
   },
   "projects": {
-    "ngrx-auth0": {
-      "tags": []
-    },
     "web": {
       "tags": []
     },
     "web-e2e": {
-      "tags": []
-    },
-    "auth0-rxjs": {
       "tags": []
     },
     "bowling-game": {

@@ -1,19 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { AuthProviderService } from '@stottle-platform/auth0-rxjs';
+import { AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable, of } from 'rxjs';
 import { catchError, exhaustMap, map, switchMap } from 'rxjs/operators';
-import {
-  AuthenticationSuccess,
-  fromAuthorizationActions
-} from '../authorization';
-import {
-  CheckSessionStart,
-  CheckSessionSuccess,
-  fromCheckSessionActions as fromActions,
-  ScheduleSessionCheck
-} from './check-session.actions';
+import { AuthenticationSuccess, fromAuthorizationActions } from '../authorization';
+import { CheckSessionStart, CheckSessionSuccess, fromCheckSessionActions as fromActions, ScheduleSessionCheck } from './check-session.actions';
 
 @Injectable()
 export class CheckSessionEffects {

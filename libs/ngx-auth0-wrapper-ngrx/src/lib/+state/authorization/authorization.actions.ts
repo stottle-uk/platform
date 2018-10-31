@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Authentication } from '@stottle-platform/auth0-rxjs';
+import { Authentication } from '@stottle-platform/ngx-auth0-wrapper';
 
 export enum AuthorizationActionTypes {
   Authorize = '[Auth-Authorization] Authorize',

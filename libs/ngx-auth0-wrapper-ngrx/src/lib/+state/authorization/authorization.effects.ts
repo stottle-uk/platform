@@ -1,16 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { AuthProviderService } from '@stottle-platform/auth0-rxjs';
+import { AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable, of } from 'rxjs';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
-import {
-  AuthenticationSuccess,
-  Authorize,
-  ClearAuthenticationDetails,
-  fromAuthorizationActions as fromActions,
-  Logout
-} from './authorization.actions';
+import { AuthenticationSuccess, Authorize, ClearAuthenticationDetails, fromAuthorizationActions as fromActions, Logout } from './authorization.actions';
 
 @Injectable()
 export class AuthorizationEffects {

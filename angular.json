@@ -126,77 +126,7 @@
           }
         }
       }
-    },
-    "ngrx-auth0": {
-      "root": "libs/ngrx-auth0",
-      "sourceRoot": "libs/ngrx-auth0/src",
-      "projectType": "library",
-      "prefix": "stottle-platform",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "libs/ngrx-auth0/tsconfig.lib.json",
-            "project": "libs/ngrx-auth0/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "libs/ngrx-auth0/src/test.ts",
-            "tsConfig": "libs/ngrx-auth0/tsconfig.spec.json",
-            "karmaConfig": "libs/ngrx-auth0/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/ngrx-auth0/tsconfig.lib.json",
-              "libs/ngrx-auth0/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "auth0-rxjs": {
-      "root": "libs/auth0-rxjs",
-      "sourceRoot": "libs/auth0-rxjs/src",
-      "projectType": "library",
-      "prefix": "stottle-platform",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "libs/auth0-rxjs/tsconfig.lib.json",
-            "project": "libs/auth0-rxjs/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "libs/auth0-rxjs/src/test.ts",
-            "tsConfig": "libs/auth0-rxjs/tsconfig.spec.json",
-            "karmaConfig": "libs/auth0-rxjs/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/auth0-rxjs/tsconfig.lib.json",
-              "libs/auth0-rxjs/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
+    }, 
     "bowling-game": {
       "root": "libs/bowling-game",
       "sourceRoot": "libs/bowling-game/src",

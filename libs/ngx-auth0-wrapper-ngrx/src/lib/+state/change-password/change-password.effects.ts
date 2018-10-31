@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { AuthProviderService } from '@stottle-platform/auth0-rxjs';
+import { AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import {
-  ChangePasswordStart,
-  fromChangePasswordActions as fromActions
-} from './change-password.actions';
+import { ChangePasswordStart, fromChangePasswordActions as fromActions } from './change-password.actions';
 
 @Injectable()
 export class ChangePasswordEffects {

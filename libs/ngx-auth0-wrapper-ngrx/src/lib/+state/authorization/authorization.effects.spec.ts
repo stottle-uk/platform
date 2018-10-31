@@ -4,12 +4,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { StoreModule } from '@ngrx/store';
 import { DataPersistence, NxModule } from '@nrwl/nx';
 import { hot } from '@nrwl/nx/testing';
-import {
-  AUTH0_WEB_AUTH,
-  AuthDatesService,
-  AuthProviderService,
-  AUTH_OPTIONS
-} from '@stottle-platform/auth0-rxjs';
+import { AUTH0_WEB_AUTH, AuthDatesService, AuthProviderService, AUTH_OPTIONS } from '@stottle-platform/ngx-auth0-wrapper';
 import { WebAuth } from 'auth0-js';
 import { Observable } from 'rxjs';
 import { Authorize } from './authorization.actions';
