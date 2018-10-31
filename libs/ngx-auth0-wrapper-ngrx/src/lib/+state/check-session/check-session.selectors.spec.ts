@@ -20,7 +20,7 @@ describe('CheckSession Selectors', () => {
     });
 
     it('selectChangePasswordResponse() should return Checked Session', () => {
-      const data = checkSessiondQuery.selectCheckingSession.projector(
+      const data = checkSessiondQuery.selectCheckedSession.projector(
         storeState.checkSession
       );
 
