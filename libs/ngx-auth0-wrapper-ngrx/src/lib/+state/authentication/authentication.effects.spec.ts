@@ -7,6 +7,7 @@ import {
   AuthProviderService
 } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable } from 'rxjs';
+import { authorizationData, validTime } from '../../testing-helpers/testing';
 import { TestingModule } from '../../testing-helpers/testing.module';
 import { ClearAuthenticationDetails } from '../authorization';
 import { CheckSessionStart } from '../check-session';
@@ -42,10 +43,7 @@ describe('AuthenticationEffects', () => {
         .and.returnValue(1);
       authProviderService.getAuthState = jasmine
         .createSpy('getAuthState')
-        .and.returnValue({
-          expiresAt: 2,
-          accessToken: 'accessToken'
-        });
+        .and.returnValue(authorizationData);
 
       const action = new CheckAuthenticationStatus();
       const completion = new UserIsAuthenticated();
@@ -59,7 +57,7 @@ describe('AuthenticationEffects', () => {
     it('should dispatch UserIsNotAuthenticated', () => {
       authDatesService.getTime = jasmine
         .createSpy('getTime')
-        .and.returnValue(1);
+        .and.returnValue(validTime);
       authProviderService.getAuthState = jasmine.createSpy('getAuthState');
 
       const action = new CheckAuthenticationStatus();

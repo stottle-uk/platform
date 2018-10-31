@@ -6,8 +6,14 @@ import {
   Authentication,
   AuthProviderService
 } from '@stottle-platform/ngx-auth0-wrapper';
-import { Auth0Error } from 'auth0-js';
 import { Observable, of, throwError } from 'rxjs';
+import {
+  auth0AuthorizeOptions,
+  auth0Error,
+  authorizationData,
+  redirectUrl,
+  validTime
+} from '../../testing-helpers/testing';
 import { TestingModule } from '../../testing-helpers/testing.module';
 import {
   AuthenticationComplete,
@@ -38,10 +44,8 @@ fdescribe('AuthorizationEffects', () => {
   describe('authorize$', () => {
     it('should work', () => {
       const options = {
-        options: {
-          scope: 'login'
-        },
-        redirectUrl: ''
+        options: auth0AuthorizeOptions,
+        redirectUrl: redirectUrl
       };
       authProviderService.authorize = jasmine.createSpy('authorize');
 
@@ -60,10 +64,8 @@ fdescribe('AuthorizationEffects', () => {
   describe('authorizeSaveRedirectUrl$', () => {
     it('should work', () => {
       const options = {
-        options: {
-          scope: 'login'
-        },
-        redirectUrl: 'redirectUrl'
+        options: auth0AuthorizeOptions,
+        redirectUrl: redirectUrl
       };
 
       const action = new Authorize(options);
@@ -79,8 +81,8 @@ fdescribe('AuthorizationEffects', () => {
   describe('authenticationComplete$', () => {
     it('should work', () => {
       const auth: Authentication = {
-        expiresAt: 1,
-        redirectUrl: 'redirectUrl'
+        expiresAt: validTime,
+        redirectUrl: redirectUrl
       };
 
       authProviderService.handleAuthentication = jasmine
@@ -98,16 +100,12 @@ fdescribe('AuthorizationEffects', () => {
     });
 
     it('should handle error', () => {
-      const error: Auth0Error = {
-        code: '500'
-      };
-
       authProviderService.handleAuthentication = jasmine
         .createSpy('handleAuthentication')
-        .and.returnValue(throwError(error));
+        .and.returnValue(throwError(auth0Error));
 
       const action = new AuthenticationComplete();
-      const completion = new AuthenticationError({ error });
+      const completion = new AuthenticationError({ error: auth0Error });
 
       actions = hot('--a-', { a: action });
       const expected = cold('--b', { b: completion });
@@ -119,13 +117,9 @@ fdescribe('AuthorizationEffects', () => {
 
   describe('authenticationSuccessDeleteRedirectUrl$', () => {
     it('should work', () => {
-      const auth: Authentication = {
-        expiresAt: 1,
-        redirectUrl: 'redirectUrl'
-      };
-      authProviderService.redirectUrl = 'redirectUrl';
+      authProviderService.redirectUrl = redirectUrl;
 
-      const action = new AuthenticationSuccess({ auth });
+      const action = new AuthenticationSuccess({ auth: authorizationData });
 
       actions = hot('--a-', { a: action });
       const expected = cold('--b', { b: action });

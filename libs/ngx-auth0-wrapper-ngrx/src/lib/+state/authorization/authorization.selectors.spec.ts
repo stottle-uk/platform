@@ -1,52 +1,12 @@
-import { AuthState } from '../+shared';
+import {
+  auth0Error,
+  authorizationData,
+  expiresAt,
+  storeState
+} from '../../testing-helpers/testing';
 import { authorizationQuery } from './authorization.selectors';
 
 describe('Authorization Selectors', () => {
-  let storeState: AuthState;
-
-  const authorizationData = {
-    redirectUrl: '',
-    expiresAt: 10
-  };
-
-  beforeEach(() => {
-    storeState = {
-      authentication: {
-        checkingAuthenticationStatus: false
-      },
-      authorization: {
-        authorizationData: authorizationData,
-        error: {}
-      },
-      changePassword: {
-        changePasswordResponse: '',
-        error: {}
-      },
-      checkSession: {
-        checkedSession: false,
-        checkingSession: false,
-        checkSessionScheduled: false,
-        error: {}
-      },
-      userInfo: {
-        error: {},
-        loaded: false,
-        loading: false,
-        userInfo: {
-          clientID: '',
-          created_at: '',
-          identities: [],
-          name: '',
-          nickname: '',
-          picture: '',
-          sub: '',
-          updated_at: '',
-          user_id: ''
-        }
-      }
-    };
-  });
-
   describe('Authorization Selectors', () => {
     it('selectAuthorizationData() should return Authorization data', () => {
       const data = authorizationQuery.selectAuthorizationData.projector(
@@ -58,11 +18,10 @@ describe('Authorization Selectors', () => {
 
     it('selectIsAuthenticated() should return true if access token is valid', () => {
       const isAuthenticated = authorizationQuery
-        .selectIsAuthenticated(1)
+        .selectIsAuthenticated(expiresAt)
         .projector({
-          ...storeState.authorization,
-          accessToken: 'accessToken',
-          expiresAt: 2
+          ...storeState.authorization.authorizationData,
+          expiresAt: expiresAt + 1
         });
 
       expect(isAuthenticated).toBeTruthy();
@@ -70,11 +29,10 @@ describe('Authorization Selectors', () => {
 
     it('selectIsAuthenticated() should return false if access token is invalid', () => {
       const isAuthenticated = authorizationQuery
-        .selectIsAuthenticated(2)
+        .selectIsAuthenticated(expiresAt)
         .projector({
-          ...storeState.authorization,
-          accessToken: 'accessToken',
-          expiresAt: 1
+          ...storeState.authorization.authorizationData,
+          expiresAt: expiresAt - 1
         });
 
       expect(isAuthenticated).toBeFalsy();
@@ -83,10 +41,10 @@ describe('Authorization Selectors', () => {
     it('selectAuthorizationError() should return authentication errors', () => {
       const error = authorizationQuery.selectAuthorizationError.projector({
         ...storeState.authorization,
-        error: 'error'
+        error: auth0Error
       });
 
-      expect(error).toBe('error');
+      expect(error).toBe(auth0Error);
     });
   });
 });

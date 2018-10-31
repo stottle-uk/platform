@@ -1,3 +1,4 @@
+import { auth0Error } from '../../testing-helpers/testing';
 import {
   AuthenticationError,
   AuthenticationSuccess,
@@ -59,9 +60,7 @@ describe('Authorization Reducer', () => {
 
     it('should set error for AuthenticationError', () => {
       const action = new AuthenticationError({
-        error: {
-          code: '500'
-        }
+        error: auth0Error
       });
       const result: AuthorizationState = authorizationReducer(
         authorizationInitialState,
