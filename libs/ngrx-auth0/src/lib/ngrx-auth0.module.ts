@@ -1,9 +1,8 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
+import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import {
-  Auth0RxjsModule,
   auth0WebAuthFactory,
   AUTH0_WEB_AUTH,
   AuthDatesService,
@@ -11,17 +10,45 @@ import {
   AuthProviderService,
   AUTH_OPTIONS
 } from '@stottle-platform/auth0-rxjs';
-import { authEffects, authReducers, AUTH_FEATURE_KEY } from './+state';
+import {
+  AuthenticationEffects,
+  authenticationReducer,
+  AuthorizationEffects,
+  authorizationReducer,
+  AuthState,
+  AUTH_FEATURE_KEY,
+  ChangePasswordEffects,
+  changePasswordReducer,
+  CheckSessionEffects,
+  checkSessionReducer,
+  UserInfoEffects,
+  userInfoReducer
+} from './+state';
 import { CallbackComponent } from './components';
 import { NgrxAuth0RoutesModule } from './ngrx-auth0-routes.moduls';
 import { AuthGuardService, AuthIntercepterService } from './services';
+
+export const authReducers: ActionReducerMap<AuthState> = {
+  authentication: authenticationReducer,
+  authorization: authorizationReducer,
+  changePassword: changePasswordReducer,
+  checkSession: checkSessionReducer,
+  userInfo: userInfoReducer
+};
+
+export const authEffects = [
+  AuthenticationEffects,
+  AuthorizationEffects,
+  ChangePasswordEffects,
+  CheckSessionEffects,
+  UserInfoEffects
+];
 
 @NgModule({
   imports: [
     StoreModule.forFeature(AUTH_FEATURE_KEY, authReducers),
     EffectsModule.forFeature(authEffects),
-    NgrxAuth0RoutesModule,
-    Auth0RxjsModule
+    NgrxAuth0RoutesModule
   ],
   declarations: [CallbackComponent]
 })

@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { AuthProviderService } from '@stottle-platform/auth0-rxjs';
 import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, switchMap } from 'rxjs/operators';
 import {
   AuthenticationSuccess,
   fromAuthorizationActions
@@ -44,7 +44,7 @@ export class CheckSessionEffects {
     ofType<CheckSessionStart>(
       fromActions.CheckSessionActionTypes.CheckSessionStart
     ),
-    switchMap(() =>
+    exhaustMap(() =>
       this.auth.checkSession().pipe(
         map(auth => new fromActions.CheckSessionSuccess({ auth })),
         catchError(error => of(new fromActions.CheckSessionFailure({ error })))
