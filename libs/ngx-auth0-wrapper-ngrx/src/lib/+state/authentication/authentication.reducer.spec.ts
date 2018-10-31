@@ -1,42 +1,61 @@
-// import { AuthenticationLoaded } from './authentication.actions';
-// import { authenticationInitialState, authenticationReducer, AuthenticationState, Entity } from './authentication.reducer';
+import {
+  CheckAuthenticationStatus,
+  UserIsAuthenticated,
+  UserIsNotAuthenticated
+} from './authentication.actions';
+import {
+  authenticationInitialState,
+  authenticationReducer,
+  AuthenticationState
+} from './authentication.reducer';
 
-// describe('Authentication Reducer', () => {
-//   const getAuthenticationId = it => it['id'];
-//   let createAuthentication;
+describe('Authentication Reducer', () => {
+  let populatedState: AuthenticationState;
 
-//   beforeEach(() => {
-//     createAuthentication = (id: string, name = ''): Entity => ({
-//       id,
-//       name: name || `name-${id}`
-//     });
-//   });
+  beforeEach(() => {
+    populatedState = {
+      checkingAuthenticationStatus: true
+    };
+  });
 
-//   describe('valid Authentication actions ', () => {
-//     it('should return set the list of known Authentication', () => {
-//       const authentications = [
-//         createAuthentication('PRODUCT-AAA'),
-//         createAuthentication('PRODUCT-zzz')
-//       ];
-//       const action = new AuthenticationLoaded(authentications);
-//       const result: AuthenticationState = authenticationReducer(
-//         authenticationInitialState,
-//         action
-//       );
-//       const selId: string = getAuthenticationId(result.list[1]);
+  describe('valid Authentication actions ', () => {
+    it('should set checkingAuthenticationStatus to true for CheckAuthenticationStatus', () => {
+      const action = new CheckAuthenticationStatus();
+      const result: AuthenticationState = authenticationReducer(
+        authenticationInitialState,
+        action
+      );
 
-//       expect(result.loaded).toBe(true);
-//       expect(result.list.length).toBe(2);
-//       expect(selId).toBe('PRODUCT-zzz');
-//     });
-//   });
+      expect(result.checkingAuthenticationStatus).toBe(true);
+    });
 
-//   describe('unknown action', () => {
-//     it('should return the initial state', () => {
-//       const action = {} as any;
-//       const result = authenticationReducer(authenticationInitialState, action);
+    it('should set checkingAuthenticationStatus to false for UserIsAuthenticated', () => {
+      const action = new UserIsAuthenticated();
+      const result: AuthenticationState = authenticationReducer(
+        populatedState,
+        action
+      );
 
-//       expect(result).toBe(authenticationInitialState);
-//     });
-//   });
-// });
+      expect(result.checkingAuthenticationStatus).toBe(false);
+    });
+
+    it('should set checkingAuthenticationStatus to false for UserIsAuthenticated', () => {
+      const action = new UserIsNotAuthenticated();
+      const result: AuthenticationState = authenticationReducer(
+        populatedState,
+        action
+      );
+
+      expect(result.checkingAuthenticationStatus).toBe(false);
+    });
+  });
+
+  describe('unknown action', () => {
+    it('should return the initial state', () => {
+      const action = {} as any;
+      const result = authenticationReducer(undefined, action);
+
+      expect(result).toBe(authenticationInitialState);
+    });
+  });
+});
