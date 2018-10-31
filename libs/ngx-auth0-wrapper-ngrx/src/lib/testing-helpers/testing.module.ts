@@ -57,7 +57,8 @@ export class TestingModule {
         AuthDatesService,
         AuthGuardService,
         AuthProviderService,
-        DataPersistence
+        DataPersistence,
+        AuthIntercepterService
       ]
     };
   }
