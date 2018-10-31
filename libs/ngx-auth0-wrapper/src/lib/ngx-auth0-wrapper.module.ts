@@ -1,8 +1,8 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import * as auth0 from 'auth0-js';
-import { NgxAuth0WrapperNgrxRoutesModule } from 'libs/ngx-auth0-wrapper-ngrx/src/lib/ngx-auth0-wrapper-ngrx-routes.moduls';
 import { CallbackComponent } from './components/callback.component';
 import { AuthOptions } from './models/auth.model';
+import { NgxAuth0WrapperRoutesModule } from './ngx-auth0-wrapper-routes.module';
 import {
   AUTH0_WEB_AUTH,
   AuthDatesService,
@@ -18,7 +18,7 @@ export function auth0WebAuthFactory(options: auth0.AuthOptions) {
 }
 
 @NgModule({
-  imports: [NgxAuth0WrapperNgrxRoutesModule],
+  imports: [NgxAuth0WrapperRoutesModule],
   declarations: [CallbackComponent]
 })
 export class NgxAuth0WrapperModule {

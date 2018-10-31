@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { AuthDatesService, AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
+import {
+  AuthDatesService,
+  AuthProviderService
+} from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { fromAuthorizationActions } from '../authorization';
 import { fromCheckSessionActions } from '../check-session';
-import { CheckAuthenticationStatus, fromAuthenticationActions as fromActions, UserIsAuthenticated, UserIsNotAuthenticated } from './authentication.actions';
+import {
+  CheckAuthenticationStatus,
+  fromAuthenticationActions as fromActions,
+  UserIsAuthenticated,
+  UserIsNotAuthenticated
+} from './authentication.actions';
 
 @Injectable()
 export class AuthenticationEffects {
