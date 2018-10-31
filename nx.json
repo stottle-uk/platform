@@ -25,6 +25,9 @@
     },
     "ngx-auth0-wrapper-ngrx": {
       "tags": []
+    },
+    "ngx-auth0-wrapper": {
+      "tags": []
     }
   }
 }

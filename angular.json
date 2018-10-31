@@ -259,6 +259,41 @@
           }
         }
       }
+    },
+    "ngx-auth0-wrapper": {
+      "root": "libs/ngx-auth0-wrapper",
+      "sourceRoot": "libs/ngx-auth0-wrapper/src",
+      "projectType": "library",
+      "prefix": "stottle-platform",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/ngx-auth0-wrapper/tsconfig.lib.json",
+            "project": "libs/ngx-auth0-wrapper/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ngx-auth0-wrapper/tsconfig.lib.json",
+              "libs/ngx-auth0-wrapper/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/ngx-auth0-wrapper/jest.config.js",
+            "tsConfig": "libs/ngx-auth0-wrapper/tsconfig.spec.json",
+            "setupFile": "libs/ngx-auth0-wrapper/src/test-setup.ts"
+          }
+        }
+      }
     }
   },
   "schematics": {
