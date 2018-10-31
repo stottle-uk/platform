@@ -1,48 +1,78 @@
-// import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { Actions } from '@ngrx/effects';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { cold, hot } from '@nrwl/nx/testing';
+import { AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
+import { Observable, of, throwError } from 'rxjs';
+import { TestingModule } from '../../testing-helpers/testing.module';
+import {
+  ChangePasswordFailure,
+  ChangePasswordStart,
+  ChangePasswordSuccess
+} from './change-password.actions';
+import { ChangePasswordEffects } from './change-password.effects';
 
-// import { Observable } from 'rxjs';
+describe('ChangePasswordEffects', () => {
+  let actions: Observable<any>;
+  let effects: ChangePasswordEffects;
+  let authProviderService: AuthProviderService;
 
-// import { EffectsModule } from '@ngrx/effects';
-// import { StoreModule } from '@ngrx/store';
-// import { provideMockActions } from '@ngrx/effects/testing';
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [TestingModule.forRoot()],
+      providers: [provideMockActions(() => actions)]
+    });
 
-// import { NxModule } from '@nrwl/nx';
-// import { DataPersistence } from '@nrwl/nx';
-// import { hot } from '@nrwl/nx/testing';
+    actions = TestBed.get(Actions);
+    effects = TestBed.get(ChangePasswordEffects);
+    authProviderService = TestBed.get(AuthProviderService);
+  });
 
-// import { ChangePasswordEffects } from './change-password.effects';
-// import {
-//   LoadChangePassword,
-//   ChangePasswordLoaded
-// } from './change-password.actions';
+  describe('loadChangePassword$', () => {
+    it('should return ChangePasswordSuccess if successful', () => {
+      const response = 'Password Request';
+      authProviderService.changePassword = jasmine
+        .createSpy('changePassword')
+        .and.returnValue(of(response));
 
-// describe('ChangePasswordEffects', () => {
-//   let actions: Observable<any>;
-//   let effects: ChangePasswordEffects;
+      const action = new ChangePasswordStart({
+        options: {
+          connection: 'connection',
+          email: 'email'
+        }
+      });
+      const completion = new ChangePasswordSuccess({
+        response: response
+      });
 
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({
-//       imports: [
-//         NxModule.forRoot(),
-//         StoreModule.forRoot({}),
-//         EffectsModule.forRoot([])
-//       ],
-//       providers: [
-//         ChangePasswordEffects,
-//         DataPersistence,
-//         provideMockActions(() => actions)
-//       ]
-//     });
+      actions = hot('--a-', { a: action });
+      const expected = cold('--b', { b: completion });
 
-//     effects = TestBed.get(ChangePasswordEffects);
-//   });
+      expect(effects.changePasswordStart$).toBeObservable(expected);
+    });
 
-//   describe('loadChangePassword$', () => {
-//     it('should work', () => {
-//       actions = hot('-a-|', { a: new LoadChangePassword() });
-//       expect(effects.loadChangePassword$).toBeObservable(
-//         hot('-a-|', { a: new ChangePasswordLoaded([]) })
-//       );
-//     });
-//   });
-// });
+    it('should return ChangePasswordSuccess if successful', () => {
+      const error = {
+        code: '500'
+      };
+      authProviderService.changePassword = jasmine
+        .createSpy('changePassword')
+        .and.returnValue(throwError(error));
+
+      const action = new ChangePasswordStart({
+        options: {
+          connection: 'connection',
+          email: 'email'
+        }
+      });
+      const completion = new ChangePasswordFailure({
+        error: error
+      });
+
+      actions = hot('--a-', { a: action });
+      const expected = cold('--b', { b: completion });
+
+      expect(effects.changePasswordStart$).toBeObservable(expected);
+    });
+  });
+});
