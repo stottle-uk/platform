@@ -48,10 +48,45 @@ describe('Authorization Selectors', () => {
   });
 
   describe('Authorization Selectors', () => {
-    it('getAllAuthorization() should return the list of Authorization', () => {
-      const data = authorizationQuery.selectAuthorizationData(storeState);
+    it('selectAuthorizationData() should return Authorization data', () => {
+      const data = authorizationQuery.selectAuthorizationData.projector(
+        storeState.authorization
+      );
 
       expect(data).toBe(authorizationData);
+    });
+
+    it('selectIsAuthenticated() should return true if access token is valid', () => {
+      const isAuthenticated = authorizationQuery
+        .selectIsAuthenticated(1)
+        .projector({
+          ...storeState.authorization,
+          accessToken: 'accessToken',
+          expiresAt: 2
+        });
+
+      expect(isAuthenticated).toBeTruthy();
+    });
+
+    it('selectIsAuthenticated() should return false if access token is invalid', () => {
+      const isAuthenticated = authorizationQuery
+        .selectIsAuthenticated(2)
+        .projector({
+          ...storeState.authorization,
+          accessToken: 'accessToken',
+          expiresAt: 1
+        });
+
+      expect(isAuthenticated).toBeFalsy();
+    });
+
+    it('selectAuthorizationError() should return authentication errors', () => {
+      const error = authorizationQuery.selectAuthorizationError.projector({
+        ...storeState.authorization,
+        error: 'error'
+      });
+
+      expect(error).toBe('error');
     });
   });
 });

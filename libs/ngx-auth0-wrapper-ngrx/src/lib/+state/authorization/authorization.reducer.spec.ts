@@ -75,7 +75,7 @@ describe('Authorization Reducer', () => {
   describe('unknown action', () => {
     it('should return the initial state', () => {
       const action = {} as any;
-      const result = authorizationReducer(authorizationInitialState, action);
+      const result = authorizationReducer(undefined, action);
 
       expect(result).toBe(authorizationInitialState);
     });
