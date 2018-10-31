@@ -1,57 +1,36 @@
-// import { Entity, UserInfoState } from './user-info.reducer';
-// import { userInfoQuery } from './user-info.selectors';
+import { storeState } from '../../testing-helpers/testing';
+import { userInfoQuery } from './user-info.selectors';
 
-// describe('UserInfo Selectors', () => {
-//   const ERROR_MSG = 'No Error Available';
-//   const getUserInfoId = it => it['id'];
+describe('UserInfo Selectors', () => {
+  describe('UserInfo Selectors', () => {
+    it('selectUserInfo() should return User Info', () => {
+      const data = userInfoQuery.selectUserInfo.projector(storeState.userInfo);
 
-//   let storeState;
+      expect(data).toBe(storeState.userInfo.userInfo);
+    });
 
-//   beforeEach(() => {
-//     const createUserInfo = (id: string, name = ''): Entity => ({
-//       id,
-//       name: name || `name-${id}`
-//     });
-//     storeState = {
-//       userInfo: {
-//         list: [
-//           createUserInfo('PRODUCT-AAA'),
-//           createUserInfo('PRODUCT-BBB'),
-//           createUserInfo('PRODUCT-CCC')
-//         ],
-//         selectedId: 'PRODUCT-BBB',
-//         error: ERROR_MSG,
-//         loaded: true
-//       }
-//     };
-//   });
+    it('selectUserInfoError() should return Error', () => {
+      const data = userInfoQuery.selectUserInfoError.projector(
+        storeState.userInfo
+      );
 
-//   describe('UserInfo Selectors', () => {
-//     it('getAllUserInfo() should return the list of UserInfo', () => {
-//       const results = userInfoQuery.getAllUserInfo(storeState);
-//       const selId = getUserInfoId(results[1]);
+      expect(data).toBe(storeState.userInfo.error);
+    });
 
-//       expect(results.length).toBe(3);
-//       expect(selId).toBe('PRODUCT-BBB');
-//     });
+    it('selectUserInfoIsLoading() should return Loading', () => {
+      const data = userInfoQuery.selectUserInfoIsLoading.projector(
+        storeState.userInfo
+      );
 
-//     it('getSelectedUserInfo() should return the selected Entity', () => {
-//       const result = userInfoQuery.getSelectedUserInfo(storeState);
-//       const selId = getUserInfoId(result);
+      expect(data).toBe(storeState.userInfo.loading);
+    });
 
-//       expect(selId).toBe('PRODUCT-BBB');
-//     });
+    it('selectUserInfoIsLoading() should return Loaded', () => {
+      const data = userInfoQuery.selectUserInfoIsLoaded.projector(
+        storeState.userInfo
+      );
 
-//     it("getLoaded() should return the current 'loaded' status", () => {
-//       const result = userInfoQuery.getLoaded(storeState);
-
-//       expect(result).toBe(true);
-//     });
-
-//     it("getError() should return the current 'error' storeState", () => {
-//       const result = userInfoQuery.getError(storeState);
-
-//       expect(result).toBe(ERROR_MSG);
-//     });
-//   });
-// });
+      expect(data).toBe(storeState.userInfo.loaded);
+    });
+  });
+});

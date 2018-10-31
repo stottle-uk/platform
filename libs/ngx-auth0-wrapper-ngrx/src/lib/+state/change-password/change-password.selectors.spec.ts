@@ -10,6 +10,7 @@ describe('ChangePassword Selectors', () => {
 
       expect(data).toBe(storeState.changePassword.changePasswordResponse);
     });
+
     it('selectChangePasswordError() should return Change Password Error', () => {
       const data = changePasswordQuery.selectChangePasswordError.projector({
         ...storeState.changePassword,
