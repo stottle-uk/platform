@@ -26,6 +26,7 @@ export class AuthenticationEffects {
     map(() => this.auth.getAuthState()),
     map(
       authState =>
+        !!authState &&
         !!authState.accessToken &&
         !!authState.expiresAt &&
         this.date.getTime() < authState.expiresAt
