@@ -4,7 +4,14 @@ import { Action } from '@ngrx/store';
 import { AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable, of } from 'rxjs';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
-import { AuthenticationSuccess, Authorize, ClearAuthenticationDetails, fromAuthorizationActions as fromActions, Logout } from './authorization.actions';
+import {
+  AuthenticationComplete,
+  AuthenticationSuccess,
+  Authorize,
+  ClearAuthenticationDetails,
+  fromAuthorizationActions as fromActions,
+  Logout
+} from './authorization.actions';
 
 @Injectable()
 export class AuthorizationEffects {
@@ -23,8 +30,8 @@ export class AuthorizationEffects {
   );
 
   @Effect()
-  handleAuthentication$: Observable<Action> = this.actions$.pipe(
-    ofType<AuthenticationSuccess>(
+  authenticationComplete$: Observable<Action> = this.actions$.pipe(
+    ofType<AuthenticationComplete>(
       fromActions.AuthorizationActionTypes.AuthenticationComplete
     ),
     exhaustMap(() =>
