@@ -19,11 +19,7 @@ export function changePasswordReducer(
 ): ChangePasswordState {
   switch (action.type) {
     case ChangePasswordActionTypes.ChangePasswordStart: {
-      return {
-        ...state,
-        changePasswordResponse: null,
-        error: null
-      };
+      return changePasswordInitialState;
     }
 
     case ChangePasswordActionTypes.ChangePasswordSuccess: {

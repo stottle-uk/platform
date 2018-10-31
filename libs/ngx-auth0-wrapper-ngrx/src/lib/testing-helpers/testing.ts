@@ -1,5 +1,5 @@
 import { Authentication } from '@stottle-platform/ngx-auth0-wrapper';
-import { Auth0Error, AuthorizeOptions } from 'auth0-js';
+import { Auth0Error, AuthorizeOptions, ChangePasswordOptions } from 'auth0-js';
 import { AuthState } from '../+state';
 
 export const redirectUrl = 'redirectUrl';
@@ -21,17 +21,17 @@ export const storeState: AuthState = {
   },
   authorization: {
     authorizationData: authorizationData,
-    error: {}
+    error: null
   },
   changePassword: {
-    changePasswordResponse: '',
-    error: {}
+    changePasswordResponse: 'passwordChanged',
+    error: null
   },
   checkSession: {
     checkedSession: false,
     checkingSession: false,
     checkSessionScheduled: false,
-    error: {}
+    error: null
   },
   userInfo: {
     error: {},
@@ -57,4 +57,9 @@ export const auth0AuthorizeOptions: AuthorizeOptions = {
 
 export const auth0Error: Auth0Error = {
   code: '500'
+};
+
+export const auth0ChangePasswordOptions: ChangePasswordOptions = {
+  connection: 'connection',
+  email: 'email'
 };

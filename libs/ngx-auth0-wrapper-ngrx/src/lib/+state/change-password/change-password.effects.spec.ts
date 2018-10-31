@@ -4,6 +4,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { cold, hot } from '@nrwl/nx/testing';
 import { AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable, of, throwError } from 'rxjs';
+import { auth0ChangePasswordOptions } from '../../testing-helpers/testing';
 import { TestingModule } from '../../testing-helpers/testing.module';
 import {
   ChangePasswordFailure,
@@ -36,10 +37,7 @@ describe('ChangePasswordEffects', () => {
         .and.returnValue(of(response));
 
       const action = new ChangePasswordStart({
-        options: {
-          connection: 'connection',
-          email: 'email'
-        }
+        options: auth0ChangePasswordOptions
       });
       const completion = new ChangePasswordSuccess({
         response: response

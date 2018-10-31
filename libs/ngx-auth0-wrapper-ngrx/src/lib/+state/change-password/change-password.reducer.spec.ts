@@ -1,47 +1,67 @@
-// import { ChangePasswordLoaded } from './change-password.actions';
-// import {
-//   ChangePasswordState,
-//   Entity,
-//   initialState,
-//   changePasswordReducer
-// } from './change-password.reducer';
+import {
+  auth0ChangePasswordOptions,
+  auth0Error,
+  storeState
+} from '../../testing-helpers/testing';
+import {
+  ChangePasswordFailure,
+  ChangePasswordStart,
+  ChangePasswordSuccess
+} from './change-password.actions';
+import {
+  changePasswordInitialState,
+  changePasswordReducer,
+  ChangePasswordState
+} from './change-password.reducer';
 
-// describe('ChangePassword Reducer', () => {
-//   const getChangePasswordId = it => it['id'];
-//   let createChangePassword;
+describe('ChangePassword Reducer', () => {
+  describe('valid ChangePassword actions ', () => {
+    it('should return initial state for ChangePasswordStart', () => {
+      const action = new ChangePasswordStart({
+        options: auth0ChangePasswordOptions
+      });
+      const result: ChangePasswordState = changePasswordReducer(
+        storeState.changePassword,
+        action
+      );
 
-//   beforeEach(() => {
-//     createChangePassword = (id: string, name = ''): Entity => ({
-//       id,
-//       name: name || `name-${id}`
-//     });
-//   });
+      expect(result).toBe(changePasswordInitialState);
+    });
 
-//   describe('valid ChangePassword actions ', () => {
-//     it('should return set the list of known ChangePassword', () => {
-//       const changePasswords = [
-//         createChangePassword('PRODUCT-AAA'),
-//         createChangePassword('PRODUCT-zzz')
-//       ];
-//       const action = new ChangePasswordLoaded(changePasswords);
-//       const result: ChangePasswordState = changePasswordReducer(
-//         initialState,
-//         action
-//       );
-//       const selId: string = getChangePasswordId(result.list[1]);
+    it('should set changePasswordResponse for ChangePasswordSuccess', () => {
+      const action = new ChangePasswordSuccess({
+        response: storeState.changePassword.changePasswordResponse
+      });
+      const result: ChangePasswordState = changePasswordReducer(
+        changePasswordInitialState,
+        action
+      );
 
-//       expect(result.loaded).toBe(true);
-//       expect(result.list.length).toBe(2);
-//       expect(selId).toBe('PRODUCT-zzz');
-//     });
-//   });
+      expect(result).toEqual(storeState.changePassword);
+    });
 
-//   describe('unknown action', () => {
-//     it('should return the initial state', () => {
-//       const action = {} as any;
-//       const result = changePasswordReducer(initialState, action);
+    it('should set error for ChangePasswordFailure', () => {
+      const action = new ChangePasswordFailure({
+        error: auth0Error
+      });
+      const result: ChangePasswordState = changePasswordReducer(
+        changePasswordInitialState,
+        action
+      );
 
-//       expect(result).toBe(initialState);
-//     });
-//   });
-// });
+      expect(result).toEqual({
+        ...changePasswordInitialState,
+        error: auth0Error
+      });
+    });
+  });
+
+  describe('unknown action', () => {
+    it('should return the initial state', () => {
+      const action = {} as any;
+      const result = changePasswordReducer(undefined, action);
+
+      expect(result).toBe(changePasswordInitialState);
+    });
+  });
+});
