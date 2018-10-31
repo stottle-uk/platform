@@ -47,7 +47,7 @@ export function userInfoReducer(
       return {
         ...state,
         error: action.payload.error,
-        loaded: true,
+        loaded: false,
         loading: false
       };
     }

@@ -1,39 +1,73 @@
-// import { UserInfoLoaded } from './user-info.actions';
-// import { Entity, userInfoInitialState, userInfoReducer, UserInfoState } from './user-info.reducer';
+import { auth0Error, userInfo } from '../../testing-helpers/testing';
+import {
+  GetUserInfoFailure,
+  GetUserInfoStart,
+  GetUserInfoSuccess
+} from './user-info.actions';
+import {
+  userInfoInitialState,
+  userInfoReducer,
+  UserInfoState
+} from './user-info.reducer';
 
-// describe('UserInfo Reducer', () => {
-//   const getUserInfoId = it => it['id'];
-//   let createUserInfo;
+describe('UserInfo Reducer', () => {
+  describe('valid UserInfo actions ', () => {
+    it('should return set loading for GetUserInfoStart', () => {
+      const action = new GetUserInfoStart();
+      const result: UserInfoState = userInfoReducer(
+        userInfoInitialState,
+        action
+      );
 
-//   beforeEach(() => {
-//     createUserInfo = (id: string, name = ''): Entity => ({
-//       id,
-//       name: name || `name-${id}`
-//     });
-//   });
+      expect(result).toEqual({
+        ...userInfoInitialState,
+        error: null,
+        loaded: false,
+        loading: true
+      });
+    });
 
-//   describe('valid UserInfo actions ', () => {
-//     it('should return set the list of known UserInfo', () => {
-//       const userInfos = [
-//         createUserInfo('PRODUCT-AAA'),
-//         createUserInfo('PRODUCT-zzz')
-//       ];
-//       const action = new UserInfoLoaded(userInfos);
-//       const result: UserInfoState = userInfoReducer(userInfoInitialState, action);
-//       const selId: string = getUserInfoId(result.list[1]);
+    it('should return set userInfo for GetUserInfoSuccess', () => {
+      const action = new GetUserInfoSuccess({
+        userInfo: userInfo
+      });
+      const result: UserInfoState = userInfoReducer(
+        userInfoInitialState,
+        action
+      );
 
-//       expect(result.loaded).toBe(true);
-//       expect(result.list.length).toBe(2);
-//       expect(selId).toBe('PRODUCT-zzz');
-//     });
-//   });
+      expect(result).toEqual({
+        ...userInfoInitialState,
+        userInfo: action.payload.userInfo,
+        loaded: true,
+        loading: false
+      });
+    });
 
-//   describe('unknown action', () => {
-//     it('should return the initial state', () => {
-//       const action = {} as any;
-//       const result = userInfoReducer(userInfoInitialState, action);
+    it('should return set error for GetUserInfoFailure', () => {
+      const action = new GetUserInfoFailure({
+        error: auth0Error
+      });
+      const result: UserInfoState = userInfoReducer(
+        userInfoInitialState,
+        action
+      );
 
-//       expect(result).toBe(userInfoInitialState);
-//     });
-//   });
-// });
+      expect(result).toEqual({
+        ...userInfoInitialState,
+        error: action.payload.error,
+        loaded: false,
+        loading: false
+      });
+    });
+  });
+
+  describe('unknown action', () => {
+    it('should return the initial state', () => {
+      const action = {} as any;
+      const result = userInfoReducer(undefined, action);
+
+      expect(result).toBe(userInfoInitialState);
+    });
+  });
+});
