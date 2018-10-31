@@ -4,13 +4,19 @@ import { Action } from '@ngrx/store';
 import { AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { AuthenticationSuccess, fromAuthorizationActions } from '../authorization';
-import { fromUserInfoActions as fromActions, GetUserInfoStart } from './user-info.actions';
+import {
+  AuthenticationSuccess,
+  fromAuthorizationActions
+} from '../authorization';
+import {
+  fromUserInfoActions as fromActions,
+  GetUserInfoStart
+} from './user-info.actions';
 
 @Injectable()
 export class UserInfoEffects {
   @Effect()
-  handleAuthenticationGetUserInfoStart$: Observable<
+  authenticationSuccessGetUserInfoStart$: Observable<
     Action
   > = this.actions$.pipe(
     ofType<AuthenticationSuccess>(

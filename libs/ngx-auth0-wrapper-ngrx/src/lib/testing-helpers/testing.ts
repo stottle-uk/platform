@@ -1,10 +1,26 @@
 import { Authentication } from '@stottle-platform/ngx-auth0-wrapper';
-import { Auth0Error, AuthorizeOptions, ChangePasswordOptions } from 'auth0-js';
+import {
+  Auth0Error,
+  Auth0UserProfile,
+  AuthorizeOptions,
+  ChangePasswordOptions
+} from 'auth0-js';
 import { AuthState } from '../+state';
 
 export const redirectUrl = 'redirectUrl';
 export const accessToken = 'accessToken';
 export const expiresAt = 2;
+export const userInfo: Auth0UserProfile = {
+  clientID: 'clientID',
+  created_at: 'created_at',
+  identities: [],
+  name: 'name',
+  nickname: 'nickname',
+  picture: 'picture',
+  sub: 'sub',
+  updated_at: '',
+  user_id: 'user_id'
+};
 
 export const authorizationData: Authentication = {
   expiresAt: expiresAt,
@@ -37,17 +53,7 @@ export const storeState: AuthState = {
     error: {},
     loaded: false,
     loading: false,
-    userInfo: {
-      clientID: '',
-      created_at: '',
-      identities: [],
-      name: '',
-      nickname: '',
-      picture: '',
-      sub: '',
-      updated_at: '',
-      user_id: ''
-    }
+    userInfo: userInfo
   }
 };
 
