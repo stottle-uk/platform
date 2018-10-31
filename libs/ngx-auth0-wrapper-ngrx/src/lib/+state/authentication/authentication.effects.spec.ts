@@ -1,17 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { Actions, EffectsModule } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { StoreModule } from '@ngrx/store';
-import { DataPersistence, NxModule } from '@nrwl/nx';
 import { cold, hot } from '@nrwl/nx/testing';
 import {
-  AUTH0_WEB_AUTH,
   AuthDatesService,
-  AuthProviderService,
-  AUTH_OPTIONS
+  AuthProviderService
 } from '@stottle-platform/ngx-auth0-wrapper';
-import { WebAuth } from 'auth0-js';
 import { Observable } from 'rxjs';
+import { TestingModule } from '../../testing-helpers/testing.module';
 import { ClearAuthenticationDetails } from '../authorization';
 import { CheckSessionStart } from '../check-session';
 import {
@@ -29,29 +25,8 @@ describe('AuthenticationEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NxModule.forRoot(),
-        StoreModule.forRoot({}),
-        EffectsModule.forRoot([])
-      ],
-      providers: [
-        AuthProviderService,
-        AuthDatesService,
-        {
-          provide: AUTH0_WEB_AUTH,
-          useValue: new WebAuth({
-            clientID: '',
-            domain: ''
-          })
-        },
-        {
-          provide: AUTH_OPTIONS,
-          useValue: {}
-        },
-        AuthenticationEffects,
-        DataPersistence,
-        provideMockActions(() => actions)
-      ]
+      imports: [TestingModule.forRoot()],
+      providers: [provideMockActions(() => actions)]
     });
 
     actions = TestBed.get(Actions);
