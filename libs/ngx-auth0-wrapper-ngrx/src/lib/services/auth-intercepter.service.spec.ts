@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
-import { AuthDatesService } from '@stottle-platform/ngx-auth0-wrapper';
+import { TestingModule } from '../testing-helpers/testing.module';
 import { AuthIntercepterService } from './auth-intercepter.service';
 
 describe('AuthIntercepterService', () => {
@@ -8,8 +7,7 @@ describe('AuthIntercepterService', () => {
 
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({})],
-      providers: [AuthIntercepterService, AuthDatesService]
+      imports: [TestingModule.forRoot()]
     }));
 
   beforeEach(() => {

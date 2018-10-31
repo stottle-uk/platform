@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 import { AuthDatesService } from '@stottle-platform/ngx-auth0-wrapper';
+import { TestingModule } from '../testing-helpers/testing.module';
 import { AuthGuardService } from './auth-guard.service';
 
 describe('AuthGuardService', () => {
@@ -8,7 +8,7 @@ describe('AuthGuardService', () => {
 
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({})],
+      imports: [TestingModule.forRoot()],
       providers: [AuthGuardService, AuthDatesService]
     }));
 
