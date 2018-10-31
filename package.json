@@ -44,7 +44,6 @@
     "@ngrx/entity": "6.1.0",
     "@ngrx/router-store": "6.1.0",
     "@ngrx/store": "6.1.0",
-    "@ngrx/store-devtools": "^6.1.0",
     "@nrwl/nx": "6.4.0",
     "@stottle-platform/ngx-auth0-wrapper": "0.0.1",
     "@stottle-platform/ngx-auth0-wrapper-ngrx": "0.0.1",
