@@ -3,6 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { DataPersistence } from '@nrwl/nx';
 import {
+  AuthenticationError,
   AuthenticationSuccess,
   fromAuthorizationActions
 } from '@stottle-platform/ngx-auth0-wrapper-ngrx';
@@ -20,7 +21,7 @@ import { UsersPartialState } from './users.reducer';
 @Injectable()
 export class UsersEffects {
   @Effect()
-  userIsAuthenticatedRedirectUser$: Observable<Action> = this.actions$.pipe(
+  authenticationSuccessdRedirectUser$: Observable<Action> = this.actions$.pipe(
     ofType<AuthenticationSuccess>(
       fromAuthorizationActions.AuthorizationActionTypes.AuthenticationSuccess
     ),
@@ -35,7 +36,20 @@ export class UsersEffects {
     )
   );
 
-  //TODO: add AuthenticationSFailure to redirect ti auth failure page
+  @Effect()
+  authenticationErrorRedirectUser$: Observable<Action> = this.actions$.pipe(
+    ofType<AuthenticationError>(
+      fromAuthorizationActions.AuthorizationActionTypes.AuthenticationError
+    ),
+    map(
+      () =>
+        new fromRouter.Go({
+          path: ['/']
+        })
+    )
+  );
+
+  //TODO: add AuthenticationSFailure to redirect to auth failure page
 
   @Effect()
   loadUsers$ = this.dataPersistence.fetch(UsersActionTypes.LoadUsers, {
