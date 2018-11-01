@@ -5,6 +5,7 @@ import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import {
   auth0WebAuthFactory,
   AUTH0_WEB_AUTH,
+  AUTH0_WEB_AUTH_OPTIONS,
   AuthDatesService,
   AuthOptions,
   AuthProviderService,
@@ -58,12 +59,17 @@ export class NgxAuth0WrapperNgrxModule {
       ngModule: NgxAuth0WrapperNgrxModule,
       providers: [
         {
-          provide: AUTH0_WEB_AUTH,
-          useFactory: auth0WebAuthFactory(authOptions.options)
-        },
-        {
           provide: AUTH_OPTIONS,
           useValue: authOptions
+        },
+        {
+          provide: AUTH0_WEB_AUTH_OPTIONS,
+          useValue: authOptions.options
+        },
+        {
+          provide: AUTH0_WEB_AUTH,
+          useFactory: auth0WebAuthFactory,
+          deps: [AUTH0_WEB_AUTH_OPTIONS]
         },
         {
           provide: HTTP_INTERCEPTORS,
