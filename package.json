@@ -46,7 +46,7 @@
     "@ngrx/store": "6.1.0",
     "@nrwl/nx": "6.4.0",
     "@stottle-platform/ngx-auth0-wrapper": "0.0.3",
-    "@stottle-platform/ngx-auth0-wrapper-ngrx": "0.0.2",
+    "@stottle-platform/ngx-auth0-wrapper-ngrx": "0.0.3",
     "auth0-js": "^9.8.0",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
