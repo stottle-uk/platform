@@ -3,12 +3,13 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'stottle-coding-katas',
   template: `
+    <h1>
+      Coding Katas
+    </h1>
     <p>
-      coding-katas works!
+      Playground for katas and prototypes
     </p>
     <a routerLink="bowling-game">Bowling Game</a>
-
-    <router-outlet></router-outlet>
   `,
   styles: []
 })
