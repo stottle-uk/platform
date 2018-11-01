@@ -5,16 +5,14 @@ import { AuthOptions } from './models/auth.model';
 import { NgxAuth0WrapperRoutesModule } from './ngx-auth0-wrapper-routes.module';
 import {
   AUTH0_WEB_AUTH,
+  AUTH0_WEB_AUTH_OPTIONS,
   AuthDatesService,
   AuthProviderService,
   AUTH_OPTIONS
 } from './services';
 
 export function auth0WebAuthFactory(options: auth0.AuthOptions) {
-  const auth = function() {
-    return new auth0.WebAuth(options);
-  };
-  return auth;
+  return new auth0.WebAuth(options);
 }
 
 @NgModule({
@@ -27,12 +25,17 @@ export class NgxAuth0WrapperModule {
       ngModule: NgxAuth0WrapperModule,
       providers: [
         {
-          provide: AUTH0_WEB_AUTH,
-          useFactory: auth0WebAuthFactory(authOptions.options)
+          provide: AUTH_OPTIONS,
+          useValue: authOptions
         },
         {
-          provide: AUTH_OPTIONS,
-          useValue: authOptions.logoutOptions
+          provide: AUTH0_WEB_AUTH_OPTIONS,
+          useValue: authOptions.options
+        },
+        {
+          provide: AUTH0_WEB_AUTH,
+          useFactory: auth0WebAuthFactory,
+          deps: [AUTH0_WEB_AUTH_OPTIONS]
         },
         AuthDatesService,
         AuthProviderService
