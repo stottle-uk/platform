@@ -12,9 +12,9 @@ import { Component, OnInit } from '@angular/core';
   <p>
     My current employment is architecting and writing the front-end for 
     a content sharing subscription platform with messaging chat. 
-    In previous roles I have contributed to a microservcies solution written 
-    in C# and node.js for a quoting engine on a comparison site and a contnet 
-    distribution service for label packaging images and data for FMCG's. 
+    In previous roles I have contributed to a microservices solution written 
+    in C# and node.js for a quoting engine on a comparison site and a content 
+    distribution service for label packaging images and data for FMCG's.
   </p>
   <h4>Languages</h4>
   <ul>
@@ -28,13 +28,24 @@ import { Component, OnInit } from '@angular/core';
     <li>.Net Core 2</li>
     <li>.Net Framework</li>
   </ul>
+  <h4>Storage</h4>
+  <ul>
+    <li>CosmosDb</li>
+    <li>MongoDb</li>
+    <li>T-SQL</li>
+  </ul>
   <h4>Technologies</h4>
   <ul>
     <li>Azure</li>
     <li>AWS</li>
+    <li>Docker</li>
   </ul>
-  <h3>Emplyemnt History</h3>
-
+  <h4>Languages</h4>
+  <ul>
+    <li>English (Native speaker)</li>
+    <li>Brazilian Portuguese (intermediate)</li>
+  </ul>
+  <h3>Employemnt History</h3>
   `,
   styles: []
 })
