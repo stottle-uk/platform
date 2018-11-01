@@ -1,6 +1,6 @@
 {
   "name": "@stottle-platform/ngx-auth0-wrapper",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Angular wrapper library for Auth0",
   "license": "MIT",
   "repository": {
