@@ -3,11 +3,13 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'stottle-blog',
   template: `
-  <h2>Medium Articles</h2>
-  <p>
-    Articles I have written and published on <a href="https://medium.com/@stuarttottle/">medium.com</a>. 
-    I write articles to confirm my understanding of a subject or technology and I hope others will find them useful.
-  </p>
+  <div class="content">
+    <h2>Medium Articles</h2>
+    <p >
+      Articles I have written and published on <a href="https://medium.com/@stuarttottle/">medium.com</a>. 
+      I write articles to confirm my understanding of a subject or technology and I hope others will find them useful.
+    </p>
+  </div>
   <mat-nav-list>
     <mat-divider></mat-divider>
     <a mat-list-item *ngFor="let item of blogItems" [href]="item.link" target="_blank">

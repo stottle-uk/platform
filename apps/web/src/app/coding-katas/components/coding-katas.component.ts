@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'stottle-coding-katas',
   template: `
+  <div class="content">
     <h1>
       Coding Katas
     </h1>
@@ -10,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
       Playground for katas and prototypes
     </p>
     <a routerLink="bowling-game">Bowling Game</a>
+  </div>
   `,
   styles: []
 })

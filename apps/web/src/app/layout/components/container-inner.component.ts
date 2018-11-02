@@ -32,14 +32,14 @@ import { DomSanitizer } from '@angular/platform-browser';
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
           </button>
 
-          <span fxFlex="100" class="title">{{title}}</span>
+          <span fxFlex="100">{{title}}</span>
 
           <a
             *ngFor="let link of links"
             [href]="link.link"
             target="_blank"
             mat-icon-button>
-            <mat-icon aria-label="nav github icon" [svgIcon]="link.name"></mat-icon>
+            <mat-icon aria-label="nav icon" [svgIcon]="link.name"></mat-icon>
           </a>
           <button
             type="button"
@@ -57,32 +57,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
     </mat-sidenav-content>
   </mat-sidenav-container>
-  `,
-  styles: [
-    `
-      .body-container {
-        margin: 20px;
-      }
-
-      .sidenav-container {
-        height: 100%;
-      }
-
-      .sidenav {
-        width: 200px;
-      }
-
-      .mat-toolbar.mat-primary {
-        position: sticky;
-        top: 0;
-        z-index: 1;
-      }
-
-      .title {
-        text-align: center;
-      }
-    `
-  ]
+  `
 })
 export class ContainerInnerComponent {
   @Input() isAuthenticated: boolean;
@@ -100,7 +75,7 @@ export class ContainerInnerComponent {
     {
       name: 'social-linkedin',
       url: 'assets/icons-social/linkedin.svg',
-      link: 'https://github.com/stottle-uk/platform'
+      link: 'https://www.linkedin.com/in/stuarttottle'
     }
   ];
 

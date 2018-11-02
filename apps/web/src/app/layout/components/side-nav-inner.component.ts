@@ -16,8 +16,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 
     <a mat-list-item routerLink="/admin" (click)="itemSelected.emit()">Admin</a>
   </mat-nav-list>
-  `,
-  styles: []
+  `
 })
 export class SideNavInnerComponent {
   @Output() itemSelected = new EventEmitter();

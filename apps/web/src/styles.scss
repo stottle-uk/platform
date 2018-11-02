@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.body-container {
+  margin: 16px 0;
+  .content {
+    margin: 0 16px;
+  }
+  .cards {
+    flex-wrap: wrap;
+  }
+  .card-container {
+    margin-bottom: 20px;
+  }
+}
+
+.sidenav-container {
+  height: 100%;
+  .sidenav {
+    width: 200px;
+  }
+  .mat-toolbar.mat-primary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+}

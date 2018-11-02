@@ -25,7 +25,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "apps/web/src/styles.css"
+              "apps/web/src/styles.scss"
             ],
             "scripts": []
           },
@@ -76,7 +76,7 @@
             "karmaConfig": "apps/web/karma.conf.js",
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "apps/web/src/styles.css"
+              "apps/web/src/styles.scss"
             ],
             "scripts": [],
             "assets": [
@@ -93,9 +93,7 @@
               "apps/web/tsconfig.app.json",
               "apps/web/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -120,13 +118,11 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/web-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
-    }, 
+    },
     "bowling-game": {
       "root": "libs/bowling-game",
       "sourceRoot": "libs/bowling-game/src",
@@ -148,9 +144,7 @@
               "libs/bowling-game/tsconfig.lib.json",
               "libs/bowling-game/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -175,9 +169,7 @@
               "libs/ngx-auth0-wrapper-ngrx/tsconfig.lib.json",
               "libs/ngx-auth0-wrapper-ngrx/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -210,9 +202,7 @@
               "libs/ngx-auth0-wrapper/tsconfig.lib.json",
               "libs/ngx-auth0-wrapper/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {

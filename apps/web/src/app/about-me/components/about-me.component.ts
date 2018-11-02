@@ -1,56 +1,254 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'stottle-about-me',
   template: `
-  <h2>Stuart Tottle</h2>
-  <h3>Software Engineer</h3>
-  <p>
-    I am blah...
-  </p>
-  <h3>What I do</h3>
-  <p>
-    My current employment is architecting and writing the front-end for 
-    a content sharing subscription platform with messaging chat. 
-    In previous roles I have contributed to a microservices solution written 
-    in C# and node.js for a quoting engine on a comparison site and a content 
-    distribution service for label packaging images and data for FMCG's.
-  </p>
-  <h4>Languages</h4>
-  <ul>
-    <li>JavaScript (ECMAScript 6)</li>
-    <li>Typescript 3</li>
-    <li>C# 6</li>
-  </ul>
-  <h4>Frameworks</h4>
-  <ul>
-    <li>Angular 6</li>
-    <li>.Net Core 2</li>
-    <li>.Net Framework</li>
-  </ul>
-  <h4>Storage</h4>
-  <ul>
-    <li>CosmosDb</li>
-    <li>MongoDb</li>
-    <li>T-SQL</li>
-  </ul>
-  <h4>Technologies</h4>
-  <ul>
-    <li>Azure</li>
-    <li>AWS</li>
-    <li>Docker</li>
-  </ul>
-  <h4>Languages</h4>
-  <ul>
-    <li>English (Native speaker)</li>
-    <li>Brazilian Portuguese (intermediate)</li>
-  </ul>
-  <h3>Employemnt History</h3>
+  <div class="content">
+    <h2>Stuart Tottle</h2>
+    <h3>Software Engineer</h3>
+    <p>
+      My current employment is architecting and writing the front-end for 
+      a content sharing subscription platform with messaging chat. It is written 
+      in Angular and uses NGRX, Auth0, split.io and Signalr for optimistic updates.
+    </p>
+    <p>
+      In previous roles I have contributed to a microservices solution written 
+      in C# and node.js for a quoting engine on a comparison site and a content 
+      distribution service for FMCG's label packaging images and data to supermarkets.
+    </p>
+    <h4>Languages</h4>
+    <ul>
+      <li>JavaScript (ECMAScript 6)</li>
+      <li>Typescript 3</li>
+      <li>C# 6</li>
+    </ul>
+    <h4>Frameworks</h4>
+    <ul>
+      <li>Angular 6</li>
+      <li>.Net Core 2</li>
+      <li>.Net Framework</li>
+    </ul>
+    <h4>Storage</h4>
+    <ul>
+      <li>CosmosDb</li>
+      <li>MongoDb</li>
+      <li>T-SQL</li>
+    </ul>
+    <h4>Technologies</h4>
+    <ul>
+      <li>Azure</li>
+      <li>AWS</li>
+      <li>Docker</li>
+    </ul>
+    <h4>Languages</h4>
+    <ul>
+      <li>English (Native speaker)</li>
+      <li>Brazilian Portuguese (intermediate)</li>
+    </ul>
+    <h3>Employemnt History</h3>
+  </div>
+
+  <mat-nav-list>
+    <mat-divider></mat-divider>
+    <mat-list-item *ngFor="let item of employment; let i = index" (click)="openDialog(i)">
+      <mat-icon mat-list-icon>work</mat-icon>
+      <h4 mat-line>
+        {{item.name}}
+        <small>({{item.description}})</small>
+      </h4>
+      <p mat-line>{{item.jobTitle}}</p>
+      <p mat-line>{{item.from}} - {{item.to}}</p>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-nav-list>
+
+  <ng-template #employmentItem>
+    <h1 mat-dialog-title>
+      <button mat-icon-button mat-dialog-close>
+        <mat-icon aria-label="close icon">close</mat-icon>
+      </button>
+
+      {{selectedItem.name}}
+    </h1>
+    <div mat-dialog-content>
+      <p>{{selectedItem | json}}</p>
+    </div>
+  </ng-template>
   `,
   styles: []
 })
 export class AboutMeComponent implements OnInit {
-  constructor() {}
+  @ViewChild('employmentItem') employmentItem: TemplateRef<any>;
+  selectedItem: any;
+
+  constructor(public dialog: MatDialog) {}
 
   ngOnInit() {}
+
+  openDialog(index: number): void {
+    this.selectedItem = this.employment[index];
+    this.dialog.open(this.employmentItem, {
+      height: '100%',
+      width: '100%',
+      maxWidth: '100%',
+      minWidth: '100%'
+    });
+  }
+
+  employment = [
+    {
+      body: '',
+      content: {
+        statements: [
+          'Comparethemarket are the largest comparison site in the UK and I work in the quoting team that maps customer data to insurance providers data structures and return quotes to the clients.',
+          'The team in which I work are currently migrating API’s into smaller microservices written in ASP.NET Core and NodeJs that run in docker containers, uses RabbitMq for messaging and stores data in MongoDb.',
+          'All code is tested and is written in a BDD style and we regularly pair and mob on stories for instant code reviews and sustained concentration. Performance is paramount and we are always load testing with Locust.',
+          'I ported a .Net Framework diagnostics web passed application over to .Net Core along and re-wrote the front end in Angular. All the code is fully tested, runs in Docker and is deployed using GoCD Pipelines.',
+          'I also took a lead role in writing a NodeJs solution with Express which aggregates data from various sources.',
+          'The work is managed in 2-week sprints and most development is done in pairs or mobs. I give input into the style of coding and pragmatically follow SOLID principles and all code is fully tested with Unit and Integration tests.'
+        ]
+      },
+      description: 'Comparison site',
+      from: '2017-06-13',
+      imageUrl: 'images/comparethemarket_logo.jpg',
+      jobTitle: 'Senior Software Engineer',
+      location: 'Peterborough, UK',
+      name: 'Compare the Market',
+      to: '2018-03-09',
+      type: 'employment'
+    },
+    {
+      body: '',
+      content: {
+        statements: [
+          "Brandbank create, manage and syndicate FMCG product content for omnichannel use and the integration team, in which I work, manage the public facing API's which consume and distribute data and images.",
+          "I was the Technical Lead of the Brandbank Integration team and provided technical direction and solution architecture on in-house software development projects and contributed to a large multi-technology code base which drives the public API's by creating enhancements and new features at the request of the business.",
+          'I was instrumental in the expansion of the development team within integration and implemented an Agile way of working with 2 week sprints.',
+          'I worked with the BA’s to create User Stories and Acceptance Criteria for the backlog and worked with the developers to architect the system and create the tasks for the sprints. I also worked with the product owner and the Integration Team Lead to prioritise the road map/backlog.',
+          'I worked with the infrastructure team and other technical leads to define hardware and hosting requirements to define the best tool for the job. This could be cloud hosted (azure) or on premise.',
+          'I defined and created integrations for customers who wanted data in a specific bespoke format. The solution would normally consume data from one API, map and transform to a new structure (Json, Xml or csv) and upload to another API or FTP site. I worked with the customer and read documentation to learn the structure of their data and APIs to either do the work myself, pass on to my colleagues or outsource to 3rd Parties.',
+          'I also architected and created a demo retailer shop that our parent company Nielsen now uses for AB testing with major brands who wish to gauge consumer reaction for new products or changes existing products.',
+          "The shop was originally created as a demo to provide integration code examples via NPM and Nuget and hosted on GitHub, but one of the product managers recognised it's potential and I developed a working MVP based on requirements set by our parent company. There is current discussion within Nielsen on how it will be developed further and which parts of the code can be made public for code examples.",
+          'When I arrived in the team many tasks involved running SQL scripts directly in SSMS or using legacy WinForm apps. I therefore architected and developed the Integration Management Portal (IMP) around my usual tasks with the aim to enable staff outside of integration to perform tasks.',
+          'The IMP and Demo Shop are web based applications built with AngularJs 1.6, .Net Web API 2, document storage (MongoDb) and Identity Server 3 for authentication (OAuth and OpenId Connect).',
+          'In six months, our team developed the IMP into customer facing external site which provides API documentation with code examples, has an authenticated area to give customers details of their integration setup and credentials and allows internal staff to perform tasks with traceability and logging.',
+          'I worked with my co-developers on code reviews to ensure that code that we write can still be understood in 6 months or by another developer. We try to write in a fluent style to hide the complexity behind small classes and functions that adhere to SOLID principles and self-document.',
+          'I contributed to internal Nuget packages to maximise code re-use and abstract away complexity which colleagues use and maintain so custom integrations are well tested, have reliable logging and a consistent architecture.'
+        ]
+      },
+      description: 'Digital content provider',
+      from: '2014-10-01',
+      imageUrl: 'images/brandbank.png',
+      jobTitle: 'Integration Technical Lead',
+      location: 'Norwich, UK',
+      name: 'Brandbank',
+      to: '2017-06-09',
+      type: 'employment'
+    },
+    {
+      body: '',
+      content: {
+        statements: [
+          'Wildpacks recruit counsellors and support staff for Summer Camps in USA. I maintain 3 separate applications whose purpose are to gather applicant details and allow camp directors to search place them at camps.',
+          'They are ASP.Net MVC apps hosted on Azure (Virtual Machines and Web Apps) with MySQL and T-SQL databases.',
+          'The application has around 50 regular admin users plus approximately 1000 applicants each year from all around the world that apply to work at the summer camps.',
+          'I inherited the code base and have learnt the systems through speaking to users of the application and reading the code. The previous programmer was no longer available so I had to learn the systems from brief documentation and the understanding of the users.',
+          'I am the only developer working on this project and my role is to understand and analyse requirements from the users and build them into the existing system and fix bugs.',
+          'The daily users are from both sides of the Atlantic and it’s important to understand the cultural differences when new requests and incidents are reported.'
+        ]
+      },
+      description: 'Summer Camp Recruiter',
+      from: '2016-08-15',
+      imageUrl: 'images/wildpacks_logo.png',
+      jobTitle: 'Lead Developer',
+      location: 'Edinburgh, UK',
+      name: 'Wild Packs',
+      to: '2018-01-09',
+      type: 'client'
+    },
+    {
+      body: '',
+      content: {
+        statements: [
+          'I provided business analysis and project management for IT development projects reporting to the head of IT.',
+          'I had the responsibility of delivering effective solutions for the business that match the needs. of the indented users by interpreting their requirements, making use of proven modern technologies and having well-designed intuitive user interfaces',
+          'I created user stories based on requirements set by the IT manager by learning business workflows and interviewing staff.',
+          'The team used Team Foundation Server (TFS) for managing code and the backlog items and their tasks which was managed by holding short regular meetings with the developers and business stakeholders.',
+          'As part of my role I created wireframes, database diagrams, test scripts, release notes and how-to documentation. I also use my SQL and programming knowledge to provide working prototypes.',
+          'I worked with support to help document bugs and feature requests to add them to the backlog.',
+          "I always thoroughly test all applications with which I am involved from the users' perspective and I provided presentations, training and support to the IT support team on new releases and help with end user queries.",
+          'I managed several IT projects including the development of two web based applications that provide data capture and a staffing/scheduling/payments system. They were both greenfield projects with a small team and we managed the project in with short cycles of work to ensure the IT manager was aware of progress.',
+          'The data capture solution is a Web and Android application was a success and is now used by BMW, MINI, Nissan, GSK, Vauxhall, BAT and Diageo at experiential events to gather and report on leads and customer feedback. It is generating revenue for the company and it is still being developed.'
+        ]
+      },
+      description: 'Experiential Marking Agency',
+      from: '2011-06-11',
+      imageUrl: 'images/tro_logo.jpg',
+      jobTitle: 'Senior Business Analyst',
+      location: 'Norwich, UK',
+      name: 'TRO Group',
+      to: '2014-02-11',
+      type: 'employment'
+    },
+    {
+      body: '',
+      content: {
+        statements: [
+          'I worked for an independent stockbrokers and I lead projects in planning, designing, writing and supporting useful applications with SQL database back-ends using Excel VBA, VB.net, ASP.net, PHP and MySQL.',
+          'The role included documenting working practises and providing day to day support and training to ensure end-users get the most out of the technology and applications they were using. I maintained the network infrastructure and help devise cost-effective and imaginative solutions and supported several Stockbroker specific applications (Bloomberg, Proquote and Investmaster Suite).',
+          'I took an active role in procurement and I looked to gain the most out Active Directory and the products supplied with Windows Server. I wrote log-on scripts, web pages and intranets and made use of Group Policy to ensure the security, resilience and the standardisation of customer correspondence.',
+          'I completed data mining exercises to retrieve specific customer related information set by the management from SQL Databases. Using the data, I presented the information to the advisory team in easy to understand layout in Excel and wrote mass Mail Merge documents to display the advice given to the client.'
+        ]
+      },
+      description: 'Independent stockbrokers',
+      from: '2009-09-01',
+      imageUrl: 'images/bandc_logo.png',
+      jobTitle: 'Systems Analyst',
+      location: 'Norwich, UK',
+      name: 'Barratt and Cooke',
+      to: '2011-06-01',
+      type: 'employment'
+    },
+    {
+      body: '',
+      content: {
+        statements: [
+          'I taught English grammar, reading, writing and listening to speakers of all levels of English.'
+        ]
+      },
+      description: 'Foreign Language School',
+      from: '2008-04-01',
+      imageUrl: 'images/asap_logo.png',
+      jobTitle: 'English Teacher',
+      location: 'Sao Paulo, Brazil',
+      name: 'ASAP Idomas',
+      to: '2009-04-01',
+      type: 'employment'
+    },
+    {
+      body: '',
+      content: {
+        statements: [
+          'Provided 1st and 2nd line technical support to 3000 end-users in a multi Domain and Operating System environment located in 35 locations throughout the UK and Ireland. This included supporting Telephony, Call Routing Software, Active Directory, Exchange, Citrix and 3rd Party and bespoke applications using ITIL based practises.',
+          'Worked my way up through the company from Junior IT Assistant and Service Desk staff to become an important member of the IT department.',
+          'Responded to customers either by telephone, emails or internal requests by categorising and logging the ticket on a bespoke helpdesk system to identify the agreed SLA. I then resolved the incidents or passed the ticket to the appropriate team after suitable troubleshooting and researching had been carried out first.',
+          "Provided applications support for bespoke magazine advert and customer booking/Canvassing applications in various Contact Centre's. I diagnosed and identified problems associated with customers' use of the applications and I made changes to the user interface and background configurations when required.",
+          'Collaborated with software development team to resolve software issues and bugs and developed testing procedures for new software releases and updates as well as writing and distributing the release notes.',
+          'Worked to reduce the time and manpower required to compile reports for Accounts and Contact Centre teams by determining their reporting requirements. I used Crystal Reports and VBA forms and functions in Excel to create easy to use reports from various data sources including SQL databases.',
+          'Supported and resolved issues with 3rd party suppliers with VoIP Telephony and Contact Centre software that included Real Time stats, Historical Reporting, Wall Boards and Skills Based Routing for Incoming and Outgoing Calls using Avaya Site Administration and Callmedia Management Console.',
+          'Liaised with other departments around the in the Magazine and Digital forms of advertising to ensure deadlines were met and any system changes were communicated. ',
+          'Involved in Contact Centre consolidation projects and provided out of hours support when required and actively involved myself in team meetings and contributed ideas to the efficient running of the Service Desk.'
+        ]
+      },
+      description: 'Online car advertisements',
+      from: '2001-09-01',
+      imageUrl: 'images/autotrader_logo.png',
+      jobTitle: 'Applications Support Specialist',
+      location: 'Reading, UK',
+      name: 'Auto Trader',
+      to: '2008-04-01',
+      type: 'employment'
+    }
+  ];
 }
