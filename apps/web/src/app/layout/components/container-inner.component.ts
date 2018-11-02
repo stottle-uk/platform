@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'stottle-container-inner',
@@ -32,11 +34,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
           <span fxFlex="100" class="title">{{title}}</span>
 
+          <a
+            *ngFor="let link of links"
+            [href]="link.link"
+            target="_blank"
+            mat-icon-button>
+            <mat-icon aria-label="nav github icon" [svgIcon]="link.name"></mat-icon>
+          </a>
           <button
             type="button"
             mat-icon-button
             (click)="authAction()">
-            <mat-icon aria-label="Side nav toggle icon">{{authIcon}}</mat-icon>
+            <mat-icon aria-label="Auth icon">{{authIcon}}</mat-icon>
           </button>
         </mat-toolbar-row>
 
@@ -82,6 +91,18 @@ export class ContainerInnerComponent {
   @Output() logout = new EventEmitter();
 
   title = 'stottle.uk';
+  links = [
+    {
+      name: 'social-github',
+      url: 'assets/icons-social/github-circle-white-transparent.svg',
+      link: 'https://github.com/stottle-uk/platform'
+    },
+    {
+      name: 'social-linkedin',
+      url: 'assets/icons-social/linkedin.svg',
+      link: 'https://github.com/stottle-uk/platform'
+    }
+  ];
 
   get mode(): string {
     return this.isHandset ? 'over' : 'side';
@@ -97,6 +118,15 @@ export class ContainerInnerComponent {
 
   get authIcon(): string {
     return this.isAuthenticated ? 'logout' : 'person';
+  }
+
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    this.links.forEach(icon =>
+      iconRegistry.addSvgIcon(
+        icon.name,
+        sanitizer.bypassSecurityTrustResourceUrl(icon.url)
+      )
+    );
   }
 
   authAction(): void {
