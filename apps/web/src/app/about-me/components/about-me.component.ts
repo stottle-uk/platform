@@ -88,12 +88,7 @@ export class AboutMeComponent implements OnInit {
 
   openDialog(index: number): void {
     this.selectedItem = this.employment[index];
-    this.dialog.open(this.employmentItem, {
-      height: '100%',
-      width: '100%',
-      maxWidth: '100%',
-      minWidth: '100%'
-    });
+    this.dialog.open(this.employmentItem, {});
   }
 
   employment = [
