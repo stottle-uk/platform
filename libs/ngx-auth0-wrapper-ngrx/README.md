@@ -26,7 +26,7 @@ npm install @stottle-platform/ngx-auth0-wrapper-ngrx @stottle-platform-wrapper a
 
 Import the `NgxAuth0WrapperNgrxModule` in your root module and provide the options. The `AuthOptions` could go into your environment.\*.ts files.
 
-The `options` and `logoutOptions` use the modals from the Auth0-js library.
+The `options` and `logoutOptions` use the interfaces from the Auth0-js library.
 
 ```javascript
 import { NgxAuth0WrapperNgrxModule } from 'stottle-platform/ngx-auth0-wrapper-ngrx';
