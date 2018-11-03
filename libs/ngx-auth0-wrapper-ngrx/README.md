@@ -1,4 +1,4 @@
-# @stottle-platform/ngx-auth-wrapper-ngrx
+# @stottle-platform/ngx-auth0-wrapper-ngrx
 
 An Angular service which wraps selected methods from the auth0-js library to use observables and stores authentication data in NGRX.
 
