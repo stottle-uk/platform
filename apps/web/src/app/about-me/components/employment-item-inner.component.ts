@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Employment } from '../+state/employment/employment.model';
 
 @Component({
   selector: 'stottle-employment-item-inner',
   template: `
-    <p>
-      employment-item-inner works!
-    </p>
+  <pre>{{employmentHistoryItem | json}}</pre>
   `
 })
-export class EmploymentItemInnerComponent {}
+export class EmploymentItemInnerComponent {
+  @Input() employmentHistoryItem: Employment[];
+}

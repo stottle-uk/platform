@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { EmploymentState } from '../+state/employment/employment.reducer';
 
 @Component({
   selector: 'stottle-about-me-page',
@@ -8,7 +10,9 @@ import { Component, OnInit } from '@angular/core';
   `
 })
 export class AboutMePageComponent implements OnInit {
-  constructor() {}
+  constructor(private store: Store<EmploymentState>) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // this.store.dispatch(new fromEmploymentActions.GetEmploymentHistoryStart());
+  }
 }
