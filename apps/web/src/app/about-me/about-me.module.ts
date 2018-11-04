@@ -5,8 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { EmploymentEffects } from './+state/employment/employment.effects';
 import {
   employmentReducer,
-  EMPLOYMENT_FEATURE_KEY,
-  initialState as employmentInitialState
+  EMPLOYMENT_FEATURE_KEY
 } from './+state/employment/employment.reducer';
 import { AboutMeRoutesModule } from './about-me-routes.module';
 import { AboutMePageInnerComponent } from './components/about-me-page-inner.component';
@@ -21,11 +20,9 @@ import { EmploymentService } from './services/employment.service';
 @NgModule({
   imports: [
     SharedModule,
-    AboutMeRoutesModule,
-    StoreModule.forFeature(EMPLOYMENT_FEATURE_KEY, employmentReducer, {
-      initialState: employmentInitialState
-    }),
-    EffectsModule.forFeature([EmploymentEffects])
+    StoreModule.forFeature(EMPLOYMENT_FEATURE_KEY, employmentReducer),
+    EffectsModule.forFeature([EmploymentEffects]),
+    AboutMeRoutesModule
   ],
   providers: [EmploymentService],
   declarations: [

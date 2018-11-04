@@ -27,6 +27,13 @@ import { Component } from '@angular/core';
 export class BlogComponent {
   blogItems = [
     {
+      name: 'Angular -  Authentication with Auth0 and NGRX',
+      description:
+        'My interpretation of how auth0 can be integrated with NGRX in an Angular Application..',
+      link:
+        'https://medium.com/@stuarttottle/angular-authentication-with-auth0-and-ngrx-e22228b04b3'
+    },
+    {
       name: 'Upload to Azure Blob Storage in Angular',
       description:
         'Upload to azure blob storage using microsofts azure javascript library with no server side code.',
