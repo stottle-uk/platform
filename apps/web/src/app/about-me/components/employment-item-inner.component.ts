@@ -8,5 +8,5 @@ import { Employment } from '../+state/employment/employment.model';
   `
 })
 export class EmploymentItemInnerComponent {
-  @Input() employmentHistoryItem: Employment[];
+  @Input() employmentHistoryItem: Employment;
 }

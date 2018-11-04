@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Employment } from '../+state/employment/employment.model';
 
 @Component({
   selector: 'stottle-employment-inner',
@@ -19,5 +20,5 @@ import { Component, Input } from '@angular/core';
   `
 })
 export class EmploymentInnerComponent {
-  @Input() employmentHistory: any[];
+  @Input() employmentHistory: Employment[];
 }
