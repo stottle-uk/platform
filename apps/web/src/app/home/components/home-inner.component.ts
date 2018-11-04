@@ -6,8 +6,8 @@ import { Component } from '@angular/core';
   <div class="content">
     <h1>stottle.uk</h1>
     
-    <div fxLayout="column" fxLayout.md="row" class="cards">
-      <mat-card fxFlex="100" fxFlex.gt-sm="48" fxFlexOffset.gt-sm="2" *ngFor="let card of cards" class="card-container">
+    <div fxLayout="column" fxLayout.gt-sm="row" class="cards">
+      <mat-card fxFlex="100" fxFlex.gt-sm="48"  fxFlexOffset.gt-sm="2" *ngFor="let card of cards" class="card-container">
         <img mat-card-image [src]="card.image" [alt]="card.imageAlt">
         <mat-card-content>
           <h2>{{card.title}}</h2>
