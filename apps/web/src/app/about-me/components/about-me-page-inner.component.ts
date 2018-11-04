@@ -22,9 +22,11 @@ import { Component } from '@angular/core';
       <li>Typescript 3</li>
       <li>C# 6</li>
     </ul>
-    <h4>Frameworks</h4>
+    <h4>Frameworks/Libraries</h4>
     <ul>
       <li>Angular 6</li>
+      <li>RxJS</li>
+      <li>NGRX</li>
       <li>.Net Core 2</li>
       <li>.Net Framework</li>
     </ul>
