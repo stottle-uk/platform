@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Employment } from '../+state/employment/employment.model';
 
 @Component({
@@ -10,7 +10,7 @@ import { Employment } from '../+state/employment/employment.model';
       type="button"
       aria-label="Toggle sidenav"
       mat-icon-button
-      (click)="drawer.toggle()">
+      (click)="back.emit()">
       <mat-icon aria-label="Side nav toggle icon">arrow_back</mat-icon>
     </button>
 
@@ -23,6 +23,7 @@ import { Employment } from '../+state/employment/employment.model';
 })
 export class EmploymentItemInnerComponent {
   @Input() employmentHistoryItem: Employment;
+  @Output() back = new EventEmitter();
 
   get name(): string {
     return this.employmentHistoryItem && this.employmentHistoryItem.name;

@@ -7,11 +7,7 @@ import {
 
 @Component({
   selector: 'stottle-platform-root',
-  template: `
-  <stottle-container>
-    <router-outlet></router-outlet>
-  </stottle-container>
-  `
+  template: `<stottle-container></stottle-container>`
 })
 export class AppComponent implements OnInit {
   title = 'stottle.uk';

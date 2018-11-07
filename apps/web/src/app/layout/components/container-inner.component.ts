@@ -52,7 +52,7 @@ import { DomSanitizer } from '@angular/platform-browser';
       </mat-toolbar>
 
       <main class="body-container">
-        <ng-content></ng-content>
+        <router-outlet></router-outlet>
       </main>
 
     </mat-sidenav-content>
