@@ -18,7 +18,20 @@ import { Employment } from '../+state/employment/employment.model';
 
   </mat-toolbar>
 
-  <pre>{{employmentHistoryItem | json}}</pre>
+  <div class="content">
+
+    <mat-card>
+      <mat-card-content>
+        <h2>{{jobTitle}}</h2>
+        <h3>{{description}}</h3>
+        <h4>{{location}} <small>({{from}} - {{to}})</small></h4>
+        <ul>
+          <li *ngFor="let statement of statements">{{statement}}</li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
   `
 })
 export class EmploymentItemInnerComponent {
@@ -27,5 +40,32 @@ export class EmploymentItemInnerComponent {
 
   get name(): string {
     return this.employmentHistoryItem && this.employmentHistoryItem.name;
+  }
+
+  get jobTitle(): string {
+    return this.employmentHistoryItem && this.employmentHistoryItem.jobTitle;
+  }
+
+  get location(): string {
+    return this.employmentHistoryItem && this.employmentHistoryItem.location;
+  }
+
+  get description(): string {
+    return this.employmentHistoryItem && this.employmentHistoryItem.description;
+  }
+
+  get from(): string {
+    return this.employmentHistoryItem && this.employmentHistoryItem.from;
+  }
+
+  get to(): string {
+    return this.employmentHistoryItem && this.employmentHistoryItem.to;
+  }
+
+  get statements(): string[] {
+    return (
+      this.employmentHistoryItem &&
+      this.employmentHistoryItem.content.statements
+    );
   }
 }

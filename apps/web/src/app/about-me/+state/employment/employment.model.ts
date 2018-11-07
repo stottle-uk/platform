@@ -4,6 +4,9 @@ export interface Employment {
   content: EmploymentContent;
   jobTitle: string;
   location: string;
+  description: string;
+  from: string;
+  to: string;
 }
 
 export interface EmploymentContent {
