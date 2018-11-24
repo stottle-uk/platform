@@ -22,6 +22,9 @@
     },
     "ngx-auth0-wrapper": {
       "tags": []
+    },
+    "ngx-signalr-wrapper": {
+      "tags": []
     }
   }
 }
