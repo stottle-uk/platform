@@ -93,9 +93,7 @@
               "apps/web/tsconfig.app.json",
               "apps/web/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -120,9 +118,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/web-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -148,9 +144,7 @@
               "libs/bowling-game/tsconfig.lib.json",
               "libs/bowling-game/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -175,9 +169,7 @@
               "libs/ngx-auth0-wrapper-ngrx/tsconfig.lib.json",
               "libs/ngx-auth0-wrapper-ngrx/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -210,9 +202,7 @@
               "libs/ngx-auth0-wrapper/tsconfig.lib.json",
               "libs/ngx-auth0-wrapper/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -221,34 +211,6 @@
             "jestConfig": "libs/ngx-auth0-wrapper/jest.config.js",
             "tsConfig": "libs/ngx-auth0-wrapper/tsconfig.spec.json",
             "setupFile": "libs/ngx-auth0-wrapper/src/test-setup.ts"
-          }
-        }
-      }
-    },
-    "ngx-signalr-wrapper": {
-      "root": "libs/ngx-signalr-wrapper",
-      "sourceRoot": "libs/ngx-signalr-wrapper/src",
-      "projectType": "library",
-      "prefix": "stottle-platform",
-      "architect": {
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "libs/ngx-signalr-wrapper/src/test.ts",
-            "tsConfig": "libs/ngx-signalr-wrapper/tsconfig.spec.json",
-            "karmaConfig": "libs/ngx-signalr-wrapper/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/ngx-signalr-wrapper/tsconfig.lib.json",
-              "libs/ngx-signalr-wrapper/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
