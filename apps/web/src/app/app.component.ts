@@ -6,7 +6,7 @@ import {
   fromAuthenticationActions
 } from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 import { SignalrService } from '@stottle-platform/ngx-signalr-wrapper';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 
 //
 
@@ -37,9 +37,10 @@ export class AppComponent implements OnInit {
       .select(authorizationQuery.selectIsAuthenticated(new Date().getTime()))
       .pipe(
         filter(accessToken => !!accessToken),
+        take(1),
         switchMap(accessToken =>
           this.signalrService
-            .stopAndStart('https://localhost:44305/stottlehub/', {
+            .start('https://localhost:44305/stottlehub/', {
               accessTokenFactory: () => accessToken
             })
             .pipe(switchMap(() => this.signalrService.setupListners()))
@@ -47,6 +48,19 @@ export class AppComponent implements OnInit {
       )
       .subscribe(result => console.log(result), error => console.error(error));
 
+    this.signalrService.onClose().pipe(
+      switchMap(() =>
+        this.signalrService
+          .start('https://localhost:44305/stottlehub/', {
+            accessTokenFactory: () =>
+              this.store
+                .select(authorizationQuery.selectAuthorizationData)
+                .pipe(map(data => data.accessToken))
+                .toPromise()
+          })
+          .pipe(switchMap(() => this.signalrService.setupListners()))
+      )
+    );
     // interval(10000)
     //   .pipe(
     //     switchMap(() =>

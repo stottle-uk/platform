@@ -36,10 +36,8 @@ export class SignalrService {
 
     return of({ url, options }).pipe(
       take(1),
-      tap(options => this.options$.next(options)),
       filter(() => this.reconnect$.value),
       buildConnection(this.hubConnectionBuilder),
-      throwErrorOnConnectionClosed(),
       tap(connection => (this.hubConnection = connection)),
       startConnection(),
       tap(() => this.isConnected$.next(true)),
@@ -58,11 +56,8 @@ export class SignalrService {
     );
   }
 
-  stopAndStart(url: string, options: IHttpConnectionOptions): Observable<void> {
-    if (this.isConnected$.value) {
-      return this.stop(true);
-    }
-    return this.start(url, options);
+  onClose(): Observable<any> {
+    return of(this.hubConnection).pipe(throwErrorOnConnectionClosed());
   }
 
   invoke(methodName: string, ...args: any[]): Observable<void> {
