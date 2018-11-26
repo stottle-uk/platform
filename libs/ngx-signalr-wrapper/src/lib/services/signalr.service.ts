@@ -1,16 +1,12 @@
 import { Inject, Injectable } from '@angular/core';
-import {
-  HubConnection,
-  HubConnectionBuilder,
-  IHttpConnectionOptions
-} from '@aspnet/signalr';
-import { BehaviorSubject, from, Observable, of, timer } from 'rxjs';
-import { delayWhen, filter, retryWhen, scan, take, tap } from 'rxjs/operators';
+import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
+import { catchError, filter, first, map, switchMap, tap } from 'rxjs/operators';
 import {
   buildConnection,
+  onConnectionClosed,
   SignalrOptions,
-  startConnection,
-  throwErrorOnConnectionClosed
+  startConnection
 } from './signalr-operators';
 import { SIGNALR_CONNECTION_BULDER } from './tokens';
 
@@ -19,54 +15,52 @@ import { SIGNALR_CONNECTION_BULDER } from './tokens';
 })
 export class SignalrService {
   private hubConnection: HubConnection;
-  private reconnect$ = new BehaviorSubject<boolean>(true);
   private isConnected$ = new BehaviorSubject<boolean>(false);
-  private options$ = new BehaviorSubject<SignalrOptions>({
-    options: {},
-    url: ''
-  });
 
   constructor(
     @Inject(SIGNALR_CONNECTION_BULDER)
     private hubConnectionBuilder: HubConnectionBuilder
   ) {}
 
-  start(url: string, options: IHttpConnectionOptions): Observable<void> {
-    this.reconnect$.next(true);
-
-    return of({ url, options }).pipe(
-      take(1),
-      tap(options => this.options$.next(options)),
-      filter(() => this.reconnect$.value),
-      buildConnection(this.hubConnectionBuilder),
-      throwErrorOnConnectionClosed(),
-      tap(connection => (this.hubConnection = connection)),
-      startConnection(),
-      tap(() => this.isConnected$.next(true)),
-      retryWhen(errors =>
-        errors.pipe(
-          scan(errorCount => ++errorCount, 0),
-          delayWhen(retryCount => timer(3000 * retryCount))
+  start(signalrOptions: SignalrOptions): Observable<void> {
+    return this.stop(true).pipe(
+      first(tryReconnect => tryReconnect),
+      switchMap(() =>
+        of(this.hubConnectionBuilder).pipe(
+          buildConnection(signalrOptions),
+          tap(connection => (this.hubConnection = connection)),
+          startConnection(),
+          tap(() => this.isConnected$.next(true))
         )
       )
     );
   }
 
-  stop(reconnect: boolean): Observable<void> {
-    return from(this.hubConnection.stop()).pipe(
-      tap(() => this.reconnect$.next(reconnect))
+  stop(tryReconnect: boolean): Observable<boolean> {
+    if (!this.isConnected$.value) {
+      return of(tryReconnect);
+    }
+
+    return from(this.hubConnection.stop()).pipe(map(() => tryReconnect));
+  }
+
+  onClose(): Observable<HubConnection> {
+    return this.isConnected$.pipe(
+      filter(isConnected => isConnected),
+      switchMap(() => of(this.hubConnection).pipe(onConnectionClosed())),
+      tap(() => this.isConnected$.next(false)),
+      catchError(error => {
+        this.isConnected$.next(false);
+        return throwError(error);
+      })
     );
   }
 
-  stopAndStart(url: string, options: IHttpConnectionOptions): Observable<void> {
-    if (this.isConnected$.value) {
-      return this.stop(true);
-    }
-    return this.start(url, options);
-  }
-
   invoke(methodName: string, ...args: any[]): Observable<void> {
-    return from(this.hubConnection.invoke(methodName, args));
+    return this.isConnected$.pipe(
+      filter(isConnected => isConnected),
+      switchMap(() => from(this.hubConnection.invoke(methodName, args)))
+    );
   }
 
   setupListners(): Observable<void> {
