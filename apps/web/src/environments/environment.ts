@@ -17,5 +17,5 @@ export const authOptions: AuthOptions = {
     returnTo: 'http://localhost:4200'
   },
   localStoragePrefix: 'stottle-web',
-  sessionRenewalInterval: 30 * 60000
+  sessionRenewalInterval: 10000 // 30 * 60000
 };

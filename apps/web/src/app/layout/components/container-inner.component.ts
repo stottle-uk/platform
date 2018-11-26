@@ -53,6 +53,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
       <main class="body-container">
         <router-outlet></router-outlet>
+        <ng-content></ng-content>
       </main>
 
     </mat-sidenav-content>
