@@ -1,13 +1,6 @@
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { from, Observable, timer } from 'rxjs';
-import {
-  delayWhen,
-  map,
-  retryWhen,
-  scan,
-  switchMap,
-  tap
-} from 'rxjs/operators';
+import { delayWhen, map, retryWhen, scan, switchMap } from 'rxjs/operators';
 import { SignalrOptions } from '../models/signalr-connection';
 
 export const buildConnection = (opts: SignalrOptions) => (
@@ -21,10 +14,7 @@ export const buildConnection = (opts: SignalrOptions) => (
 export const startConnection = () => (
   source: Observable<HubConnection>
 ): Observable<void> => {
-  console.log('startConnection');
-
   return source.pipe(
-    tap(console.log),
     switchMap(connection => from(connection.start())),
     retryWhen(errors =>
       errors.pipe(

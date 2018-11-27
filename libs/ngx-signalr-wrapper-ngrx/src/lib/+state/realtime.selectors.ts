@@ -1,41 +1,40 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { RealtimeState } from './realtime.reducer';
+import { SignalrOptions } from '@stottle-platform/ngx-signalr-wrapper';
+import { RealtimeState, REALTIME_FEATURE_KEY } from './realtime.reducer';
 
-// Lookup the 'Realtime' feature state managed by NgRx
-const getRealtimeState = createFeatureSelector<RealtimeState>('realtime');
-
-const getLoaded = createSelector(
-  getRealtimeState,
-  (state: RealtimeState) => state.loaded
+const getRealtimeState = createFeatureSelector<RealtimeState>(
+  REALTIME_FEATURE_KEY
 );
+
+const getOptions = createSelector(
+  getRealtimeState,
+  (state: RealtimeState) => state.options
+);
+
+const getIsConnecting = createSelector(
+  getRealtimeState,
+  (state: RealtimeState) => state.isConnecting
+);
+
+const getIsConnected = createSelector(
+  getRealtimeState,
+  (state: RealtimeState) => state.isConnected
+);
+
+const getIsAutoReconnectEnabled = createSelector(
+  getOptions,
+  (options: SignalrOptions) => !!options && options.onCloseAutoReconnect
+);
+
 const getError = createSelector(
   getRealtimeState,
   (state: RealtimeState) => state.error
 );
 
-const getAllRealtime = createSelector(
-  getRealtimeState,
-  getLoaded,
-  (state: RealtimeState, isLoaded) => {
-    return isLoaded ? state.list : [];
-  }
-);
-const getSelectedId = createSelector(
-  getRealtimeState,
-  (state: RealtimeState) => state.selectedId
-);
-const getSelectedRealtime = createSelector(
-  getAllRealtime,
-  getSelectedId,
-  (realtime, id) => {
-    const result = realtime.find(it => it['id'] === id);
-    return result ? Object.assign({}, result) : undefined;
-  }
-);
-
 export const realtimeQuery = {
-  getLoaded,
-  getError,
-  getAllRealtime,
-  getSelectedRealtime
+  getOptions,
+  getIsConnecting,
+  getIsConnected,
+  getIsAutoReconnectEnabled,
+  getError
 };

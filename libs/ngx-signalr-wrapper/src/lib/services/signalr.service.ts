@@ -50,6 +50,8 @@ export class SignalrService {
       switchMap(() => of(this.hubConnection).pipe(onConnectionClosed())),
       tap(() => this.isConnected$.next(false)),
       catchError(error => {
+        console.log(error);
+
         this.isConnected$.next(false);
         return throwError(error);
       })

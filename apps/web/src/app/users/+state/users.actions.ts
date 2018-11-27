@@ -1,11 +1,13 @@
 import { Action } from '@ngrx/store';
+import { Authentication } from '@stottle-platform/ngx-auth0-wrapper';
 import { Entity } from './users.reducer';
 
 export enum UsersActionTypes {
   LoadUsers = '[Users] Load Users',
   UsersLoaded = '[Users] Users Loaded',
   UsersLoadError = '[Users] Users Load Error',
-  ConnectToRealtimeService = '[Users] Connect Tp Realtime Service'
+  AuthenticationRedirect = '[Users] Authentication Redirect',
+  ConnectToRealtimeService = '[Users] Connect To Realtime Service'
 }
 
 export class LoadUsers implements Action {
@@ -22,14 +24,22 @@ export class UsersLoaded implements Action {
   constructor(public payload: Entity[]) {}
 }
 
+export class AuthenticationRedirect implements Action {
+  readonly type = UsersActionTypes.AuthenticationRedirect;
+
+  constructor(public payload: { auth: Authentication }) {}
+}
+
 export class ConnectToRealtimeService implements Action {
   readonly type = UsersActionTypes.ConnectToRealtimeService;
+  constructor(public payload: { auth: Authentication }) {}
 }
 
 export type UsersAction =
   | LoadUsers
   | UsersLoaded
   | UsersLoadError
+  | AuthenticationRedirect
   | ConnectToRealtimeService;
 
 export const fromUsersActions = {
@@ -37,5 +47,6 @@ export const fromUsersActions = {
   LoadUsers,
   UsersLoaded,
   UsersLoadError,
+  AuthenticationRedirect,
   ConnectToRealtimeService
 };
