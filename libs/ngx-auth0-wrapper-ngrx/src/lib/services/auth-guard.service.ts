@@ -7,19 +7,13 @@ import {
 import { select, Store } from '@ngrx/store';
 import { AuthDatesService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { first, map, skipUntil, tap } from 'rxjs/operators';
 import {
+  authenticationQuery,
   authorizationQuery,
   AuthState,
   fromAuthorizationActions
 } from '../+state';
-
-// return zip(
-//   this.store.select(authenticationQuery.selectAuthenticationStatusChecked),
-//   this.store.select(
-//     authorizationQuery.selectIsAuthenticated(this.date.getTime())
-//   )
-// ).pipe(map(([]) => true));
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
@@ -35,6 +29,11 @@ export class AuthGuardService implements CanActivate {
     return this.store.pipe(
       select(authorizationQuery.selectIsAuthenticated(this.date.getTime())),
       map(accessToken => !!accessToken),
+      skipUntil(
+        this.store
+          .select(authenticationQuery.selectAuthenticationStatusChecked)
+          .pipe(first(statusChecked => statusChecked))
+      ),
       tap(isAuthenticated =>
         this.showLoginFormIfNotAuthenticated(isAuthenticated, state)
       )

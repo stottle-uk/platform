@@ -5,7 +5,6 @@ import { AuthProviderService } from '@stottle-platform/ngx-auth0-wrapper';
 import { Observable, of } from 'rxjs';
 import { catchError, exhaustMap, map, switchMap } from 'rxjs/operators';
 import {
-  AuthenticationError,
   AuthenticationSuccess,
   fromAuthorizationActions
 } from '../authorization';
@@ -62,7 +61,7 @@ export class CheckSessionEffects {
     map(action => action.payload.auth),
     map(
       auth =>
-        new AuthenticationSuccess({
+        new fromAuthorizationActions.AuthenticationSuccess({
           auth
         })
     )
@@ -76,7 +75,7 @@ export class CheckSessionEffects {
     map(action => action.payload.error),
     map(
       error =>
-        new AuthenticationError({
+        new fromAuthorizationActions.AuthenticationError({
           error
         })
     )

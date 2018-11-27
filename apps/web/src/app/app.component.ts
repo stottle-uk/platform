@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  AuthState,
-  fromAuthenticationActions
-} from '@stottle-platform/ngx-auth0-wrapper-ngrx';
+import { AuthState } from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 import { SignalrService } from '@stottle-platform/ngx-signalr-wrapper';
 
 //
@@ -26,11 +23,7 @@ export class AppComponent implements OnInit {
     private signalrService: SignalrService
   ) {}
 
-  ngOnInit(): void {
-    this.store.dispatch(
-      new fromAuthenticationActions.CheckAuthenticationStatus()
-    );
-  }
+  ngOnInit(): void {}
 
   closeConnection(): void {
     this.signalrService.stop(true).subscribe();

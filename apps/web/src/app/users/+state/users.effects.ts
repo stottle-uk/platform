@@ -5,11 +5,12 @@ import { DataPersistence } from '@nrwl/nx';
 import {
   AuthenticationError,
   AuthenticationSuccess,
+  fromAuthenticationActions,
   fromAuthorizationActions
 } from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 import { fromRealtimeActions } from 'libs/ngx-signalr-wrapper-ngrx/src/lib/+state/realtime.actions';
 import { Observable } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 import * as fromRouter from '../../router-client/store';
 import {
   AuthenticationRedirect,
@@ -24,6 +25,12 @@ import { UsersPartialState } from './users.reducer';
 
 @Injectable()
 export class UsersEffects {
+  @Effect()
+  init$: Observable<Action> = this.actions$.pipe(
+    take(1),
+    map(() => new fromAuthenticationActions.CheckAuthenticationStatus())
+  );
+
   @Effect()
   authenticationSuccess$: Observable<Action> = this.actions$.pipe(
     ofType<AuthenticationSuccess>(

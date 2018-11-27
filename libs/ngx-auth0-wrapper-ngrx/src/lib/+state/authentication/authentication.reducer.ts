@@ -23,13 +23,7 @@ export function authenticationReducer(
       };
     }
 
-    case AuthenticationActionTypes.UserIsAuthenticated: {
-      return {
-        ...state,
-        authenticationStatusChecked: true
-      };
-    }
-
+    case AuthenticationActionTypes.UserIsAuthenticated:
     case AuthenticationActionTypes.UserIsNotAuthenticated: {
       return {
         ...state,

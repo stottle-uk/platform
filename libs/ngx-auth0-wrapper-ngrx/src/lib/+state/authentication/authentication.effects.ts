@@ -8,11 +8,10 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { fromAuthorizationActions } from '../authorization';
-import { fromCheckSessionActions } from '../check-session';
+import { CheckSessionSuccess, fromCheckSessionActions } from '../check-session';
 import {
   CheckAuthenticationStatus,
   fromAuthenticationActions as fromActions,
-  UserIsAuthenticated,
   UserIsNotAuthenticated
 } from './authentication.actions';
 
@@ -30,19 +29,17 @@ export class AuthenticationEffects {
         !!authState.accessToken &&
         !!authState.expiresAt &&
         this.date.getTime() < authState.expiresAt
-          ? new fromActions.UserIsAuthenticated()
+          ? new fromCheckSessionActions.CheckSessionStart()
           : new fromActions.UserIsNotAuthenticated()
     )
   );
 
   @Effect()
-  userIsAuthenticatedScheduleSessionCheck$: Observable<
-    Action
-  > = this.actions$.pipe(
-    ofType<UserIsAuthenticated>(
-      fromActions.AuthenticationActionTypes.UserIsAuthenticated
+  checkSessionSuccess$: Observable<Action> = this.actions$.pipe(
+    ofType<CheckSessionSuccess>(
+      fromCheckSessionActions.CheckSessionActionTypes.CheckSessionSuccess
     ),
-    map(() => new fromCheckSessionActions.CheckSessionStart())
+    map(() => new fromActions.UserIsAuthenticated())
   );
 
   @Effect()
