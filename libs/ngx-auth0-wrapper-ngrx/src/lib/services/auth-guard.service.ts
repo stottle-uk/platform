@@ -30,9 +30,10 @@ export class AuthGuardService implements CanActivate {
       select(authorizationQuery.selectIsAuthenticated(this.date.getTime())),
       map(accessToken => !!accessToken),
       skipUntil(
-        this.store
-          .select(authenticationQuery.selectAuthenticationStatusChecked)
-          .pipe(first(statusChecked => statusChecked))
+        this.store.pipe(
+          select(authenticationQuery.selectAuthenticationStatusChecked),
+          first(statusChecked => statusChecked)
+        )
       ),
       tap(isAuthenticated =>
         this.showLoginFormIfNotAuthenticated(isAuthenticated, state)
