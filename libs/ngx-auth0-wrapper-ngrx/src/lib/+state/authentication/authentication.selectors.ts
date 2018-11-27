@@ -8,14 +8,14 @@ const selectAuthenticationState: MemoizedSelector<
   AuthenticationState
 > = createSelector(selectAuthState, auth => auth.authentication);
 
-const selectCheckingAuthenticationStatus: MemoizedSelector<
+const selectAuthenticationStatusChecked: MemoizedSelector<
   AuthState,
   boolean
 > = createSelector(
   selectAuthenticationState,
-  authentication => authentication.checkingAuthenticationStatus
+  authentication => authentication.authenticationStatusChecked
 );
 
 export const authenticationQuery = {
-  selectCheckingAuthenticationStatus
+  selectAuthenticationStatusChecked
 };

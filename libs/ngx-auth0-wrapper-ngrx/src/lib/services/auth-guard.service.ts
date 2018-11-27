@@ -14,6 +14,13 @@ import {
   fromAuthorizationActions
 } from '../+state';
 
+// return zip(
+//   this.store.select(authenticationQuery.selectAuthenticationStatusChecked),
+//   this.store.select(
+//     authorizationQuery.selectIsAuthenticated(this.date.getTime())
+//   )
+// ).pipe(map(([]) => true));
+
 @Injectable()
 export class AuthGuardService implements CanActivate {
   constructor(

@@ -14,7 +14,7 @@ describe('Authentication Reducer', () => {
 
   beforeEach(() => {
     populatedState = {
-      checkingAuthenticationStatus: true
+      authenticationStatusChecked: true
     };
   });
 
@@ -26,7 +26,7 @@ describe('Authentication Reducer', () => {
         action
       );
 
-      expect(result.checkingAuthenticationStatus).toBe(true);
+      expect(result.authenticationStatusChecked).toBe(true);
     });
 
     it('should set checkingAuthenticationStatus to false for UserIsAuthenticated', () => {
@@ -36,7 +36,7 @@ describe('Authentication Reducer', () => {
         action
       );
 
-      expect(result.checkingAuthenticationStatus).toBe(false);
+      expect(result.authenticationStatusChecked).toBe(false);
     });
 
     it('should set checkingAuthenticationStatus to false for UserIsAuthenticated', () => {
@@ -46,7 +46,7 @@ describe('Authentication Reducer', () => {
         action
       );
 
-      expect(result.checkingAuthenticationStatus).toBe(false);
+      expect(result.authenticationStatusChecked).toBe(false);
     });
   });
 

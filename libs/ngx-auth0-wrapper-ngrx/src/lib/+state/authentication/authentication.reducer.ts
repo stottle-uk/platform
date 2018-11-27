@@ -4,11 +4,11 @@ import {
 } from './authentication.actions';
 
 export interface AuthenticationState {
-  checkingAuthenticationStatus: boolean;
+  authenticationStatusChecked: boolean;
 }
 
 export const authenticationInitialState: AuthenticationState = {
-  checkingAuthenticationStatus: false
+  authenticationStatusChecked: false
 };
 
 export function authenticationReducer(
@@ -19,21 +19,21 @@ export function authenticationReducer(
     case AuthenticationActionTypes.CheckAuthenticationStatus: {
       return {
         ...state,
-        checkingAuthenticationStatus: true
+        authenticationStatusChecked: false
       };
     }
 
     case AuthenticationActionTypes.UserIsAuthenticated: {
       return {
         ...state,
-        checkingAuthenticationStatus: false
+        authenticationStatusChecked: true
       };
     }
 
     case AuthenticationActionTypes.UserIsNotAuthenticated: {
       return {
         ...state,
-        checkingAuthenticationStatus: false
+        authenticationStatusChecked: true
       };
     }
 

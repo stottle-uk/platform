@@ -4,12 +4,12 @@ import { authenticationQuery } from './authentication.selectors';
 describe('Authentication Selectors', () => {
   describe('Authentication Selectors', () => {
     it('selectCheckingAuthenticationStatus() should return checkingAuthenticationStatus', () => {
-      const result = authenticationQuery.selectCheckingAuthenticationStatus.projector(
+      const result = authenticationQuery.selectAuthenticationStatusChecked.projector(
         storeState.authentication
       );
 
       expect(result).toBe(
-        storeState.authentication.checkingAuthenticationStatus
+        storeState.authentication.authenticationStatusChecked
       );
     });
   });

@@ -33,7 +33,7 @@ export const inValidTime: number = authorizationData.expiresAt - 1;
 
 export const storeState: AuthState = {
   authentication: {
-    checkingAuthenticationStatus: false
+    authenticationStatusChecked: false
   },
   authorization: {
     authorizationData: authorizationData,
