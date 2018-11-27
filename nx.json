@@ -25,6 +25,9 @@
     },
     "ngx-signalr-wrapper": {
       "tags": []
+    },
+    "ngx-signalr-wrapper-ngrx": {
+      "tags": []
     }
   }
 }

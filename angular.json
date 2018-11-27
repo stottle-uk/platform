@@ -93,7 +93,9 @@
               "apps/web/tsconfig.app.json",
               "apps/web/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -118,7 +120,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/web-e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -144,7 +148,9 @@
               "libs/bowling-game/tsconfig.lib.json",
               "libs/bowling-game/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -169,7 +175,9 @@
               "libs/ngx-auth0-wrapper-ngrx/tsconfig.lib.json",
               "libs/ngx-auth0-wrapper-ngrx/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "test": {
@@ -202,7 +210,9 @@
               "libs/ngx-auth0-wrapper/tsconfig.lib.json",
               "libs/ngx-auth0-wrapper/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "test": {
@@ -243,7 +253,44 @@
               "libs/ngx-signalr-wrapper/tsconfig.lib.json",
               "libs/ngx-signalr-wrapper/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "ngx-signalr-wrapper-ngrx": {
+      "root": "libs/ngx-signalr-wrapper-ngrx",
+      "sourceRoot": "libs/ngx-signalr-wrapper-ngrx/src",
+      "projectType": "library",
+      "prefix": "stottle-platform",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/ngx-signalr-wrapper-ngrx/tsconfig.lib.json",
+            "project": "libs/ngx-signalr-wrapper-ngrx/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/ngx-signalr-wrapper-ngrx/src/test.ts",
+            "tsConfig": "libs/ngx-signalr-wrapper-ngrx/tsconfig.spec.json",
+            "karmaConfig": "libs/ngx-signalr-wrapper-ngrx/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ngx-signalr-wrapper-ngrx/tsconfig.lib.json",
+              "libs/ngx-signalr-wrapper-ngrx/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
