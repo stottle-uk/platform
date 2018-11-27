@@ -23,7 +23,7 @@ export class SignalrService {
   ) {}
 
   start(signalrOptions: SignalrOptions): Observable<void> {
-    return this.stop(true).pipe(
+    return this.stop(signalrOptions.onCloseAutoReconnect).pipe(
       first(tryReconnect => tryReconnect),
       switchMap(() =>
         of(this.hubConnectionBuilder).pipe(
