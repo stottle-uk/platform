@@ -4,7 +4,14 @@ import {
   IHttpConnectionOptions
 } from '@aspnet/signalr';
 import { from, Observable, timer } from 'rxjs';
-import { delayWhen, map, retryWhen, scan, switchMap } from 'rxjs/operators';
+import {
+  delayWhen,
+  map,
+  retryWhen,
+  scan,
+  switchMap,
+  tap
+} from 'rxjs/operators';
 
 export interface SignalrOptions {
   url: string;
@@ -21,8 +28,11 @@ export const buildConnection = (opts: SignalrOptions) => (
 
 export const startConnection = () => (
   source: Observable<HubConnection>
-): Observable<void> =>
-  source.pipe(
+): Observable<void> => {
+  console.log('startConnection');
+
+  return source.pipe(
+    tap(console.log),
     switchMap(connection => from(connection.start())),
     retryWhen(errors =>
       errors.pipe(
@@ -31,6 +41,7 @@ export const startConnection = () => (
       )
     )
   );
+};
 
 export const onConnectionClosed = () => (
   source: Observable<HubConnection>
