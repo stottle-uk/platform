@@ -38,7 +38,6 @@ export class AppComponent implements OnInit {
       .select(authorizationQuery.selectIsAuthenticated(new Date().getTime()))
       .pipe(
         filter(accessToken => !!accessToken),
-        take(1),
         switchMap(accessToken =>
           this.signalrService
             .start({
