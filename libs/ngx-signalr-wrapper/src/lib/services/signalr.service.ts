@@ -2,10 +2,10 @@ import { Inject, Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, first, map, switchMap, tap } from 'rxjs/operators';
+import { SignalrOptions } from '../models/signalr-connection';
 import {
   buildConnection,
   onConnectionClosed,
-  SignalrOptions,
   startConnection
 } from './signalr-operators';
 import { SIGNALR_CONNECTION_BULDER } from './tokens';

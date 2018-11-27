@@ -8,9 +8,11 @@ import {
   fromAuthorizationActions
 } from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import * as fromRouter from '../../router-client/store';
 import {
+  ConnectToRealtimeService,
+  fromUsersActions,
   LoadUsers,
   UsersActionTypes,
   UsersLoaded,
@@ -47,6 +49,14 @@ export class UsersEffects {
           path: ['/']
         })
     )
+  );
+
+  @Effect()
+  connectToRealtimeService$: Observable<Action> = this.actions$.pipe(
+    ofType<ConnectToRealtimeService>(
+      fromUsersActions.UsersActionTypes.ConnectToRealtimeService
+    ),
+    switchMap(() => this.s)
   );
 
   //TODO: add AuthenticationSFailure to redirect to auth failure page

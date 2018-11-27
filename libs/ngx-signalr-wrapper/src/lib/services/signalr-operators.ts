@@ -1,8 +1,4 @@
-import {
-  HubConnection,
-  HubConnectionBuilder,
-  IHttpConnectionOptions
-} from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { from, Observable, timer } from 'rxjs';
 import {
   delayWhen,
@@ -12,11 +8,7 @@ import {
   switchMap,
   tap
 } from 'rxjs/operators';
-
-export interface SignalrOptions {
-  url: string;
-  options: IHttpConnectionOptions;
-}
+import { SignalrOptions } from '../models/signalr-connection';
 
 export const buildConnection = (opts: SignalrOptions) => (
   source: Observable<HubConnectionBuilder>
