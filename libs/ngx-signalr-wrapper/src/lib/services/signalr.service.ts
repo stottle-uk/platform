@@ -47,12 +47,16 @@ export class SignalrService {
   onClose(): Observable<HubConnection> {
     return this.isConnected$.pipe(
       filter(isConnected => isConnected),
-      switchMap(() => of(this.hubConnection).pipe(onConnectionClosed())),
-      tap(() => this.isConnected$.next(false)),
-      catchError(error => {
-        this.isConnected$.next(false);
-        return throwError(error);
-      })
+      switchMap(() =>
+        of(this.hubConnection).pipe(
+          onConnectionClosed(),
+          tap(() => this.isConnected$.next(false)),
+          catchError(error => {
+            this.isConnected$.next(false);
+            return throwError(error);
+          })
+        )
+      )
     );
   }
 

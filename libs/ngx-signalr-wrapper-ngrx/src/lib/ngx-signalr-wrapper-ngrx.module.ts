@@ -1,21 +1,12 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { NgxAuth0WrapperModule } from '@stottle-platform/ngx-auth0-wrapper';
-import {
-  hubConnectionBuilder,
-  SIGNALR_CONNECTION_BULDER
-} from '@stottle-platform/ngx-signalr-wrapper';
+import { hubConnectionBuilder, SIGNALR_CONNECTION_BULDER } from '@stottle-platform/ngx-signalr-wrapper';
 import { RealtimeEffects } from './+state/realtime.effects';
-import {
-  initialState as realtimeInitialState,
-  realtimeReducer,
-  REALTIME_FEATURE_KEY
-} from './+state/realtime.reducer';
+import { initialState as realtimeInitialState, realtimeReducer, REALTIME_FEATURE_KEY } from './+state/realtime.reducer';
 
 @NgModule({
   imports: [
-    NgxAuth0WrapperModule,
     StoreModule.forFeature(REALTIME_FEATURE_KEY, realtimeReducer, {
       initialState: realtimeInitialState
     }),
