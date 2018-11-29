@@ -3,17 +3,9 @@ import { Store } from '@ngrx/store';
 import { AuthState } from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 import { SignalrService } from '@stottle-platform/ngx-signalr-wrapper';
 
-//
-
 @Component({
   selector: 'stottle-platform-root',
-  template: `
-  
-  <stottle-container>
-  <button (click)="closeConnection()">close</button>
-  </stottle-container>
-  
-  `
+  template: `<stottle-container></stottle-container>`
 })
 export class AppComponent implements OnInit {
   title = 'stottle.uk';
