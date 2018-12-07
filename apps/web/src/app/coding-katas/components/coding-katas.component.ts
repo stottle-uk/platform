@@ -11,6 +11,8 @@ import { Component, OnInit } from '@angular/core';
       Playground for katas and prototypes
     </p>
     <a routerLink="bowling-game">Bowling Game</a>
+    <a routerLink="manage-contacts">Manage Contacts</a>
+
   </div>
   `,
   styles: []

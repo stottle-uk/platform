@@ -10,6 +10,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NxModule } from '@nrwl/nx';
 import { NgxAuth0WrapperNgrxModule } from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 import { NgxSignalrWrapperNgrxModule } from '@stottle-platform/ngx-signalr-wrapper-ngrx';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryContactsService } from 'libs/manage-contacts/src/lib/services/in-memerory-contacts.service'; // TODO: SORT OUT THIS
 import { authOptions, environment } from '../environments/environment';
 import { AppRoutesModule } from './app-routes.module';
 import { AppComponent } from './app.component';
@@ -22,6 +24,9 @@ const angularModules = [
   BrowserModule,
   BrowserAnimationsModule,
   HttpClientModule,
+  HttpClientInMemoryWebApiModule.forRoot(InMemoryContactsService, {
+    delay: 500
+  }),
   ServiceWorkerModule.register('ngsw-worker.js', {
     enabled: environment.production
   })
