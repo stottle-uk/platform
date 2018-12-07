@@ -20,4 +20,8 @@ export class ContactsService {
   getContact(id: number): Observable<IContact> {
     return this.httpClient.get<IContact>(`api/contacts/${id}`);
   }
+
+  updateContact(contact: IContact): Observable<IContact> {
+    return this.httpClient.put<IContact>(`api/contacts/${contact.id}`, contact);
+  }
 }

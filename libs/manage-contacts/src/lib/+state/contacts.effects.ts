@@ -14,7 +14,10 @@ import {
   GetContactsStart,
   GetContactsSuccess,
   GetContactStart,
-  GetContactSuccess
+  GetContactSuccess,
+  UpdateContactFailure,
+  UpdateContactStart,
+  UpdateContactSuccess
 } from './contacts.actions';
 import { ContactsPartialState } from './contacts.reducer';
 
@@ -80,6 +83,24 @@ export class ContactsEffects {
         ),
       onError: (action: GetContactStart, error) =>
         new GetContactsFailure({ error })
+    }
+  );
+
+  @Effect()
+  updateContactStart$ = this.dataPersistence.optimisticUpdate(
+    ContactsActionTypes.UpdateContactStart,
+    {
+      run: (action: UpdateContactStart, state: ContactsPartialState) =>
+        this.contactsService.updateContact(action.payload.contact).pipe(
+          map(
+            contact =>
+              new UpdateContactSuccess({
+                contact
+              })
+          )
+        ),
+      undoAction: (action: UpdateContactStart, error) =>
+        new UpdateContactFailure({ error })
     }
   );
 

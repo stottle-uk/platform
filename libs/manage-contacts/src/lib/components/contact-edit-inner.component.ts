@@ -92,7 +92,7 @@ export class ContactEditInnerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.contact) {
+    if (this.contact && this.contactForm.pristine) {
       this.contactForm.setValue({
         id: this.contact.id,
         name: this.contact.name,

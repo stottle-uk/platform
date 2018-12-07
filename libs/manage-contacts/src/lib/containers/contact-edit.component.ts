@@ -24,9 +24,7 @@ export class ContactEditComponent implements OnInit {
 
   onContactUpdated(contact: Contact): void {
     this.store.dispatch(
-      new fromContactsActions.EditContact({
-        id: contact.id
-      })
+      new fromContactsActions.UpdateContactStart({ contact })
     );
   }
 }

@@ -72,6 +72,22 @@ export function contactsReducer(
       };
     }
 
+    case ContactsActionTypes.UpdateContactStart: {
+      return adapter.upsertOne(action.payload.contact, {
+        ...state,
+        loaded: false,
+        loading: true
+      });
+    }
+
+    case ContactsActionTypes.UpdateContactSuccess: {
+      return {
+        ...state,
+        loaded: true,
+        loading: false
+      };
+    }
+
     default:
       return state;
   }
