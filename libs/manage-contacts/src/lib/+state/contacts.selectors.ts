@@ -14,6 +14,13 @@ const getSelectedContactId = createSelector(
   (state: ContactsState) => state.selectedContactId
 );
 
+const getSelectedContact = createSelector(
+  getContactsState,
+  getSelectedContactId,
+  (state: ContactsState, selectedContactId: number) =>
+    state.entities[selectedContactId]
+);
+
 const getIsLoaded = createSelector(
   getContactsState,
   (state: ContactsState) => state.loaded
@@ -34,6 +41,7 @@ const { selectAll: selectAllContacts } = adapter.getSelectors(getContactsState);
 export const contactsQuery = {
   selectAllContacts,
   getSelectedContactId,
+  getSelectedContact,
   getIsLoaded,
   getIsLoading,
   getError

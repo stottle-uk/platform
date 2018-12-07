@@ -1,5 +1,4 @@
 import { DataSource } from '@angular/cdk/collections';
-import { MatPaginator, MatSort } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { fromContactsActions } from '../+state/contacts.actions';
@@ -8,11 +7,7 @@ import { ContactsState } from '../+state/contacts.reducer';
 import { contactsQuery } from '../+state/contacts.selectors';
 
 export class ContactsDataSource extends DataSource<Contact> {
-  constructor(
-    private store: Store<ContactsState>,
-    private paginator: MatPaginator,
-    private sort: MatSort
-  ) {
+  constructor(private store: Store<ContactsState>) {
     super();
   }
 

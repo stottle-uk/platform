@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { IContact } from '../models/contacts.http';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +9,15 @@ import { Observable } from 'rxjs';
 export class ContactsService {
   constructor(private httpClient: HttpClient) {}
 
-  getContacts(skip: number, take: number, sortOrder: string): Observable<any> {
-    return this.httpClient.get('api/contacts');
+  getContacts(
+    skip: number,
+    take: number,
+    sortOrder: string
+  ): Observable<IContact[]> {
+    return this.httpClient.get<IContact[]>('api/contacts');
   }
 
-  getContact(id: string): Observable<any> {
-    return this.httpClient.get(`api/contacts/${id}`);
+  getContact(id: number): Observable<IContact> {
+    return this.httpClient.get<IContact>(`api/contacts/${id}`);
   }
 }
