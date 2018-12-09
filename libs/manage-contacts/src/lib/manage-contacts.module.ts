@@ -21,7 +21,7 @@ import {
   contactsReducer,
   CONTACTS_FEATURE_KEY
 } from './+state/contacts.reducer';
-import { ContactEditInnerComponent } from './components/contact-edit-inner.component';
+import { ContactFormComponent } from './components/contact-form.component';
 import { ContactsListInnerComponent } from './components/contacts-list-inner.component';
 import { ContactsComponent } from './components/contacts.component';
 import { ContactEditComponent } from './containers/contact-edit.component';
@@ -53,7 +53,7 @@ import { ManageContactsRoutesModule } from './manage-contacts-routes.module';
     ContactsListComponent,
     ContactsListInnerComponent,
     ContactEditComponent,
-    ContactEditInnerComponent
+    ContactFormComponent
   ]
 })
 export class ManageContactsModule {}

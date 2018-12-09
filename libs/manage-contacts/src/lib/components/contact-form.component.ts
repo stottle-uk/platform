@@ -17,7 +17,7 @@ import {
 import { Contact } from '../+state/contacts.model';
 
 @Component({
-  selector: 'stottle-platform-contact-edit-inner',
+  selector: 'stottle-platform-contact-form',
   template: `
     <mat-toolbar color="accent">
 
@@ -74,7 +74,7 @@ import { Contact } from '../+state/contacts.model';
     `
   ]
 })
-export class ContactEditInnerComponent implements OnInit, OnChanges {
+export class ContactFormComponent implements OnInit, OnChanges {
   @Input() contact: Contact;
   @Input() saving: boolean;
   @Output() contactUpdated = new EventEmitter<Contact>();

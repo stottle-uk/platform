@@ -8,12 +8,12 @@ import { contactsQuery } from '../+state/contacts.selectors';
 @Component({
   selector: 'stottle-platform-contact-edit',
   template: `
-    <stottle-platform-contact-edit-inner
+    <stottle-platform-contact-form
       [contact]="contact$ | async"
       [saving]="saving$ | async"
       (contactUpdated)="onContactUpdated($event)"
       (cancel)="onCancel()"
-    ></stottle-platform-contact-edit-inner>
+    ></stottle-platform-contact-form>
   `,
   styles: []
 })
