@@ -17,8 +17,21 @@ import {
 import { Contact } from '../+state/contacts.model';
 
 @Component({
-  selector: 'stottle-contact-edit-inner',
+  selector: 'stottle-platform-contact-edit-inner',
   template: `
+    <mat-toolbar color="accent">
+
+      <button
+        type="button"
+        mat-icon-button
+        (click)="cancel.emit()">
+        <mat-icon aria-label="Side nav toggle icon">arrow_back</mat-icon>
+      </button>
+
+      <span fxFlex="100">Editing - {{contactName}} ({{contactId}})</span>
+
+    </mat-toolbar>
+
     <form class="example-form" [formGroup]="contactForm">
       <mat-form-field class="example-full-width">
         <input matInput type="text" placeholder="Your name" formControlName="name">
@@ -61,6 +74,7 @@ import { Contact } from '../+state/contacts.model';
 export class ContactEditInnerComponent implements OnInit, OnChanges {
   @Input() contact: Contact;
   @Output() contactUpdated = new EventEmitter<Contact>();
+  @Output() cancel = new EventEmitter();
 
   contactForm = this.fb.group({
     id: [0],
@@ -70,6 +84,14 @@ export class ContactEditInnerComponent implements OnInit, OnChanges {
     phone: [null, [Validators.required]],
     age: [null, [Validators.required]]
   });
+
+  get contactId(): number {
+    return this.contact && this.contact.id;
+  }
+
+  get contactName(): string {
+    return this.contact && this.contact.name;
+  }
 
   get idControl(): AbstractControl {
     return this.contactForm.controls.id;

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -15,6 +16,7 @@ import {
   GetContactsSuccess,
   GetContactStart,
   GetContactSuccess,
+  UpdateContactCancel,
   UpdateContactFailure,
   UpdateContactStart,
   UpdateContactSuccess
@@ -104,10 +106,20 @@ export class ContactsEffects {
     }
   );
 
+  @Effect({ dispatch: false })
+  updateContactCancel$: Observable<void> = this.actions$.pipe(
+    ofType<UpdateContactCancel>(
+      fromContactsActions.ContactsActionTypes.UpdateContactCancel
+    ),
+    tap(id => this.location.back()),
+    switchMap(() => EMPTY)
+  );
+
   constructor(
     private actions$: Actions,
     private contactsService: ContactsService,
     private router: Router,
+    private location: Location,
     private dataPersistence: DataPersistence<ContactsPartialState>
   ) {}
 }

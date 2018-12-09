@@ -11,6 +11,7 @@ import {
   MatPaginatorModule,
   MatSortModule,
   MatTableModule,
+  MatToolbarModule,
   ShowOnDirtyErrorStateMatcher
 } from '@angular/material';
 import { EffectsModule } from '@ngrx/effects';
@@ -21,8 +22,10 @@ import {
   CONTACTS_FEATURE_KEY
 } from './+state/contacts.reducer';
 import { ContactEditInnerComponent } from './components/contact-edit-inner.component';
+import { ContactsListInnerComponent } from './components/contacts-list-inner.component';
 import { ContactsComponent } from './components/contacts.component';
 import { ContactEditComponent } from './containers/contact-edit.component';
+import { ContactsListComponent } from './containers/contacts-list.component';
 import { ManageContactsRoutesModule } from './manage-contacts-routes.module';
 
 @NgModule({
@@ -39,6 +42,7 @@ import { ManageContactsRoutesModule } from './manage-contacts-routes.module';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
+    MatToolbarModule,
     ManageContactsRoutesModule
   ],
   providers: [
@@ -46,6 +50,8 @@ import { ManageContactsRoutesModule } from './manage-contacts-routes.module';
   ],
   declarations: [
     ContactsComponent,
+    ContactsListComponent,
+    ContactsListInnerComponent,
     ContactEditComponent,
     ContactEditInnerComponent
   ]
