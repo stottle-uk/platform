@@ -11,12 +11,12 @@ import { ContactsDataSource } from './contacts-datasource';
 @Component({
   selector: 'stottle-platform-contacts-list-inner',
   template: `
-  <div class="mat-elevation-z8">
+  <div class="table-contacts-container">
     <table
+      class="table-contacts"
       mat-table
       [dataSource]="dataSource"
       matSort
-      aria-label="Elements"
     >
 
       <ng-container matColumnDef="id">
@@ -29,9 +29,29 @@ import { ContactsDataSource } from './contacts-datasource';
         <td mat-cell *matCellDef="let row">{{ row.name }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="street">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Street</th>
+        <td mat-cell *matCellDef="let row">{{ row.street }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+        <td mat-cell *matCellDef="let row">{{ row.phone }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="age">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Age</th>
+        <td mat-cell *matCellDef="let row">{{ row.age }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="edit">
-        <th mat-header-cell *matHeaderCellDef>Edit</th>
-        <td mat-cell *matCellDef="let row">
+        <th mat-header-cell *matHeaderCellDef class="align-right">&nbsp;</th>
+        <td mat-cell *matCellDef="let row" class="align-right">
           <button mat-mini-fab (click)="contactSelected.emit(row.id)">
             <mat-icon>edit</mat-icon>
           </button>
@@ -44,7 +64,17 @@ import { ContactsDataSource } from './contacts-datasource';
 
   </div>
   `,
-  styles: []
+  styles: [
+    `
+      .table-contacts {
+        width: 100%;
+      }
+
+      .align-right {
+        text-align: right;
+      }
+    `
+  ]
 })
 export class ContactsListInnerComponent {
   @Input() dataSource: ContactsDataSource;
@@ -53,5 +83,5 @@ export class ContactsListInnerComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns = ['id', 'name', 'edit'];
+  displayedColumns = ['id', 'name', 'street', 'email', 'phone', 'age', 'edit'];
 }
