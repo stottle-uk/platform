@@ -12,7 +12,6 @@ import {
   distinctUntilChanged,
   filter,
   map,
-  skip,
   tap
 } from 'rxjs/operators';
 import { Contact } from '../+state/contacts.model';
@@ -72,6 +71,10 @@ export class ContactEditInnerComponent implements OnInit, OnChanges {
     age: [null, [Validators.required]]
   });
 
+  get idControl(): AbstractControl {
+    return this.contactForm.controls.id;
+  }
+
   get emailControl(): AbstractControl {
     return this.contactForm.controls.email;
   }
@@ -84,7 +87,6 @@ export class ContactEditInnerComponent implements OnInit, OnChanges {
         filter(() => this.contactForm.valid),
         debounceTime(200),
         distinctUntilChanged(),
-        skip(1),
         map(contact => contact as Contact),
         tap(contact => this.contactUpdated.emit(contact))
       )
@@ -92,15 +94,20 @@ export class ContactEditInnerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.contact && this.contactForm.pristine) {
-      this.contactForm.setValue({
-        id: this.contact.id,
-        name: this.contact.name,
-        street: this.contact.street,
-        email: this.contact.email,
-        phone: this.contact.phone,
-        age: this.contact.age
-      });
+    if (this.contact && this.idControl.value !== this.contact.id) {
+      this.contactForm.setValue(
+        {
+          id: this.contact.id,
+          name: this.contact.name,
+          street: this.contact.street,
+          email: this.contact.email,
+          phone: this.contact.phone,
+          age: this.contact.age
+        },
+        {
+          emitEvent: false
+        }
+      );
     }
   }
 }
