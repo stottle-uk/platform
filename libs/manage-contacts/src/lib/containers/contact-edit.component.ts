@@ -10,6 +10,7 @@ import { contactsQuery } from '../+state/contacts.selectors';
   template: `
     <stottle-platform-contact-edit-inner
       [contact]="contact$ | async"
+      [saving]="saving$ | async"
       (contactUpdated)="onContactUpdated($event)"
       (cancel)="onCancel()"
     ></stottle-platform-contact-edit-inner>
@@ -18,6 +19,7 @@ import { contactsQuery } from '../+state/contacts.selectors';
 })
 export class ContactEditComponent {
   contact$ = this.store.select(contactsQuery.getSelectedContact);
+  saving$ = this.store.select(contactsQuery.getIsLoading);
 
   constructor(private store: Store<ContactsState>) {}
 

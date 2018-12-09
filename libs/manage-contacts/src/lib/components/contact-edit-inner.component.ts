@@ -28,44 +28,47 @@ import { Contact } from '../+state/contacts.model';
         <mat-icon aria-label="Side nav toggle icon">arrow_back</mat-icon>
       </button>
 
-      <span fxFlex="100">Editing - {{contactName}} ({{contactId}})</span>
+      <span fxFlex="100" *ngIf="!saving">Editing - {{contactName}} ({{contactId}})</span>
+      <span fxFlex="100" *ngIf="saving">Saving ({{contactId}})</span>
 
     </mat-toolbar>
 
-    <form class="example-form" [formGroup]="contactForm">
-      <mat-form-field class="example-full-width">
+    <form class="contact-form" [formGroup]="contactForm">
+      <mat-form-field class="contact-full-width">
         <input matInput type="text" placeholder="Your name" formControlName="name">
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="contact-full-width">
         <input matInput type="text" placeholder="Your Address" formControlName="street">
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="contact-full-width">
         <input matInput type="email" placeholder="Your Email" formControlName="email">
         <mat-error *ngIf="emailControl.hasError('email')">
           Please enter a valid email address
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="contact-full-width">
         <input matInput type="tel" placeholder="Your Phone" formControlName="phone">
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="contact-full-width">
         <input matInput type="number" placeholder="Your Age" formControlName="age">
       </mat-form-field>
     </form>
   `,
   styles: [
     `
-      .example-form {
+      .contact-form {
+        margin: 0 auto;
+        padding: 20px;
         min-width: 150px;
         max-width: 500px;
         width: 100%;
       }
 
-      .example-full-width {
+      .contact-full-width {
         width: 100%;
       }
     `
@@ -73,6 +76,7 @@ import { Contact } from '../+state/contacts.model';
 })
 export class ContactEditInnerComponent implements OnInit, OnChanges {
   @Input() contact: Contact;
+  @Input() saving: boolean;
   @Output() contactUpdated = new EventEmitter<Contact>();
   @Output() cancel = new EventEmitter();
 
