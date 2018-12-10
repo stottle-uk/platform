@@ -17,7 +17,7 @@ export interface ContactsPartialState {
 
 export const adapter: EntityAdapter<Contact> = createEntityAdapter<Contact>({
   selectId: contact => contact.id,
-  sortComparer: false
+  sortComparer: (a, b) => (a.id > b.id ? 1 : -1)
 });
 
 export const initialState: ContactsState = adapter.getInitialState({
@@ -72,6 +72,7 @@ export function contactsReducer(
       };
     }
 
+    case ContactsActionTypes.AddContactStart:
     case ContactsActionTypes.UpdateContactStart: {
       return adapter.upsertOne(action.payload.contact, {
         ...state,
@@ -80,6 +81,7 @@ export function contactsReducer(
       });
     }
 
+    case ContactsActionTypes.AddContactSuccess:
     case ContactsActionTypes.UpdateContactSuccess: {
       return {
         ...state,

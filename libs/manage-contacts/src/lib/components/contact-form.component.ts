@@ -28,8 +28,8 @@ import { Contact } from '../+state/contacts.model';
         <mat-icon aria-label="Side nav toggle icon">arrow_back</mat-icon>
       </button>
 
-      <span fxFlex="100" *ngIf="!saving">Editing - {{contactName}} ({{contactId}})</span>
-      <span fxFlex="100" *ngIf="saving">Saving ({{contactId}})</span>
+      <span fxFlex="100" *ngIf="!saving">{{headerLabel}}</span>
+      <span fxFlex="100" *ngIf="saving">Saving</span>
 
     </mat-toolbar>
 
@@ -54,8 +54,12 @@ import { Contact } from '../+state/contacts.model';
       </mat-form-field>
 
       <mat-form-field class="contact-full-width">
-        <input matInput type="number" placeholder="Your Age" formControlName="age">
+        <input matInput type="number" min="10" max="99" placeholder="Your Age" formControlName="age">
       </mat-form-field>
+
+      <div class="header-container">
+        <button mat-raised-button color="primary" (click)="submitForm()">Save</button>
+      </div>
     </form>
   `,
   styles: [
@@ -63,9 +67,7 @@ import { Contact } from '../+state/contacts.model';
       .contact-form {
         margin: 0 auto;
         padding: 20px;
-        min-width: 150px;
         max-width: 500px;
-        width: 100%;
       }
 
       .contact-full-width {
@@ -74,20 +76,24 @@ import { Contact } from '../+state/contacts.model';
     `
   ]
 })
-export class ContactFormComponent implements OnInit, OnChanges {
+export class ContactFormComponent implements OnChanges {
   @Input() contact: Contact;
   @Input() saving: boolean;
-  @Output() contactUpdated = new EventEmitter<Contact>();
+  @Output() contactSaved = new EventEmitter<Contact>();
   @Output() cancel = new EventEmitter();
 
   contactForm = this.fb.group({
-    id: [0],
+    id: [null],
     name: [null, [Validators.required]],
     street: [null, [Validators.required]],
     email: [null, [Validators.required, Validators.email]],
     phone: [null, [Validators.required]],
     age: [null, [Validators.required]]
   });
+
+  get headerLabel(): string {
+    return !!this.contact ? `Editing - ${this.contactName} (${this.contactId})` : 'Create new contact'
+  }
 
   get contactId(): number {
     return this.contact && this.contact.id;
@@ -105,19 +111,7 @@ export class ContactFormComponent implements OnInit, OnChanges {
     return this.contactForm.controls.email;
   }
 
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.contactForm.valueChanges
-      .pipe(
-        filter(() => this.contactForm.valid),
-        debounceTime(200),
-        distinctUntilChanged(),
-        map(contact => contact as Contact),
-        tap(contact => this.contactUpdated.emit(contact))
-      )
-      .subscribe();
-  }
+  constructor(private fb: FormBuilder) { }
 
   ngOnChanges() {
     if (this.contact && this.idControl.value !== this.contact.id) {
@@ -134,6 +128,15 @@ export class ContactFormComponent implements OnInit, OnChanges {
           emitEvent: false
         }
       );
+    }
+  }
+
+  submitForm(): void {
+    if (this.contactForm.valid) {
+      this.contactSaved.emit({
+        ...this.contactForm.value,
+        id: !!this.contact ? this.contact.id : undefined
+      })
     }
   }
 }

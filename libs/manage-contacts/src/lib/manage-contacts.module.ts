@@ -27,6 +27,7 @@ import { ContactsComponent } from './components/contacts.component';
 import { ContactEditComponent } from './containers/contact-edit.component';
 import { ContactsListComponent } from './containers/contacts-list.component';
 import { ManageContactsRoutesModule } from './manage-contacts-routes.module';
+import { ContactAddComponent } from './containers/contact-add.component';
 
 @NgModule({
   imports: [
@@ -52,8 +53,9 @@ import { ManageContactsRoutesModule } from './manage-contacts-routes.module';
     ContactsComponent,
     ContactsListComponent,
     ContactsListInnerComponent,
+    ContactAddComponent,
     ContactEditComponent,
     ContactFormComponent
   ]
 })
-export class ManageContactsModule {}
+export class ManageContactsModule { }

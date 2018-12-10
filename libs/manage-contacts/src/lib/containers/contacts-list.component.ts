@@ -10,6 +10,7 @@ import { ContactsDataSource } from '../components/contacts-datasource';
     <stottle-platform-contacts-list-inner
       [dataSource]="dataSource"
       (contactSelected)="onContactSelected($event)"
+      (newContact)="onNewContact()"
     ></stottle-platform-contacts-list-inner>
   `,
   styles: []
@@ -17,7 +18,7 @@ import { ContactsDataSource } from '../components/contacts-datasource';
 export class ContactsListComponent implements OnInit {
   dataSource: ContactsDataSource;
 
-  constructor(private store: Store<ContactsState>) {}
+  constructor(private store: Store<ContactsState>) { }
 
   ngOnInit() {
     this.dataSource = new ContactsDataSource(this.store);
@@ -31,6 +32,10 @@ export class ContactsListComponent implements OnInit {
   }
 
   onContactSelected(id: number): void {
-    this.store.dispatch(new fromContactsActions.EditContact({ id }));
+    this.store.dispatch(new fromContactsActions.UpdateContact({ id }));
+  }
+
+  onNewContact(): void {
+    this.store.dispatch(new fromContactsActions.AddContact());
   }
 }

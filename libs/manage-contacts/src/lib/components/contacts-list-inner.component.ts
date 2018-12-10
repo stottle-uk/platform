@@ -16,6 +16,10 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'stottle-platform-contacts-list-inner',
   template: `
+  <div class="header-container">
+    <button mat-raised-button color="primary" (click)="newContact.emit()">Add Contact</button>
+  </div>
+
   <div class="table-contacts-container">
     <table
       class="table-contacts"
@@ -71,6 +75,11 @@ import { Subscription } from 'rxjs';
   `,
   styles: [
     `
+      .header-container {
+        padding: 15px;
+        text-align: right;
+      }
+
       .table-contacts {
         width: 100%;
       }
@@ -84,6 +93,7 @@ import { Subscription } from 'rxjs';
 export class ContactsListInnerComponent implements OnInit, OnDestroy {
   @Input() dataSource: ContactsDataSource;
   @Output() contactSelected = new EventEmitter<number>();
+  @Output() newContact = new EventEmitter();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { fromContactsActions } from '../+state/contacts.actions';
+import { Component, OnInit } from '@angular/core';
 import { Contact } from '../+state/contacts.model';
-import { ContactsState } from '../+state/contacts.reducer';
 import { contactsQuery } from '../+state/contacts.selectors';
+import { Store } from '@ngrx/store';
+import { ContactsState } from '../+state/contacts.reducer';
+import { fromContactsActions } from '../+state/contacts.actions';
 
 @Component({
-  selector: 'stottle-platform-contact-edit',
+  selector: 'stottle-contact-add',
   template: `
     <stottle-platform-contact-form
-      [contact]="contact$ | async"
       [saving]="saving$ | async"
       (contactSaved)="onContactUpdated($event)"
       (cancel)="onCancel()"
@@ -17,19 +16,19 @@ import { contactsQuery } from '../+state/contacts.selectors';
   `,
   styles: []
 })
-export class ContactEditComponent {
-  contact$ = this.store.select(contactsQuery.getSelectedContact);
+export class ContactAddComponent {
   saving$ = this.store.select(contactsQuery.getIsLoading);
 
   constructor(private store: Store<ContactsState>) { }
 
   onContactUpdated(contact: Contact): void {
     this.store.dispatch(
-      new fromContactsActions.UpdateContactStart({ contact })
+      new fromContactsActions.AddContactStart({ contact })
     );
   }
 
   onCancel(): void {
-    this.store.dispatch(new fromContactsActions.UpdateContactCancel());
+    this.store.dispatch(new fromContactsActions.AddContactCancel());
   }
+
 }

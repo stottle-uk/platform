@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { DataPersistence } from '@nrwl/nx';
-import { EMPTY, Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { EMPTY, Observable, of } from 'rxjs';
+import { map, switchMap, tap, catchError } from 'rxjs/operators';
 import { ContactEditComponent } from '../containers/contact-edit.component';
 import { ContactsService } from '../services/contacts.service';
 import {
   ContactsActionTypes,
-  EditContact,
+  UpdateContact,
   fromContactsActions,
   GetContactsFailure,
   GetContactsStart,
@@ -19,41 +19,87 @@ import {
   UpdateContactCancel,
   UpdateContactFailure,
   UpdateContactStart,
-  UpdateContactSuccess
+  UpdateContactSuccess,
+  AddContact,
+  AddContactStart,
+  AddContactSuccess,
+  AddContactFailure,
+  GetContactFailure,
+  AddContactCancel
 } from './contacts.actions';
 import { ContactsPartialState } from './contacts.reducer';
+import { Action } from '@ngrx/store';
 
 @Injectable()
 export class ContactsEffects {
   @Effect()
-  getContactsStart$ = this.dataPersistence.fetch(
-    ContactsActionTypes.GetContactsStart,
-    {
-      run: (action: GetContactsStart, state: ContactsPartialState) =>
-        this.contactsService
-          .getContacts(
-            action.payload.skip,
-            action.payload.take,
-            action.payload.sortOrder
-          )
-          .pipe(
-            map(
-              contacts =>
-                new GetContactsSuccess({
-                  contacts
-                })
-            )
-          ),
-      onError: (action: GetContactsStart, error) =>
-        new GetContactsFailure({ error })
-    }
+  getContactsStart$: Observable<Action> = this.actions$.pipe(
+    ofType<GetContactsStart>(fromContactsActions.ContactsActionTypes.GetContactsStart),
+    map(action => action.payload),
+    switchMap(payload => this.contactsService.getContacts(
+      payload.skip,
+      payload.take,
+      payload.sortOrder
+    ).pipe(
+      map(contacts => new GetContactsSuccess({ contacts })),
+      catchError(error => of(new GetContactsFailure({ error })))
+    ))
+  );
+
+  @Effect()
+  getContactStart$: Observable<Action> = this.actions$.pipe(
+    ofType<GetContactStart>(fromContactsActions.ContactsActionTypes.GetContactStart),
+    map(action => action.payload.id),
+    switchMap(id => this.contactsService.getContact(id).pipe(
+      map(contact => new GetContactSuccess({ contact })),
+      catchError(error => of(new GetContactFailure({ error })))
+    ))
   );
 
   @Effect({ dispatch: false })
-  editContact$: Observable<void> = this.actions$.pipe(
-    ofType<EditContact>(fromContactsActions.ContactsActionTypes.EditContact),
+  addContact$: Observable<void> = this.actions$.pipe(
+    ofType<AddContact>(fromContactsActions.ContactsActionTypes.AddContact),
+    tap(id => this.router.navigate(['coding-katas', 'manage-contacts', 'add'])),
+    switchMap(() => EMPTY)
+  );
+
+  @Effect()
+  addContactStart$: Observable<Action> = this.actions$.pipe(
+    ofType<AddContactStart>(fromContactsActions.ContactsActionTypes.AddContactStart),
+    map(action => action.payload.contact),
+    switchMap(contact => this.contactsService.addContact(contact).pipe(
+      map(() => new AddContactSuccess({ contact })),
+      catchError(error => of(new AddContactFailure({ error })))
+    ))
+  );
+
+  @Effect({ dispatch: false })
+  updateContact$: Observable<void> = this.actions$.pipe(
+    ofType<UpdateContact>(fromContactsActions.ContactsActionTypes.UpdateContact),
     map(action => action.payload.id),
     tap(id => this.router.navigate(['coding-katas', 'manage-contacts', id])),
+    switchMap(() => EMPTY)
+  );
+
+  @Effect()
+  updateContactStart$: Observable<Action> = this.actions$.pipe(
+    ofType<UpdateContactStart>(fromContactsActions.ContactsActionTypes.UpdateContactStart),
+    map(action => action.payload.contact),
+    switchMap(contact => this.contactsService.updateContact(contact).pipe(
+      map(() => new UpdateContactSuccess({ contact })),
+      catchError(error => of(new UpdateContactFailure({ error })))
+    ))
+  );
+
+  @Effect({ dispatch: false })
+  updateContactCancel$: Observable<void> = this.actions$.pipe(
+    ofType<AddContactCancel | UpdateContactCancel | AddContactSuccess | UpdateContactSuccess>(
+      fromContactsActions.ContactsActionTypes.AddContactCancel,
+      fromContactsActions.ContactsActionTypes.UpdateContactCancel,
+      fromContactsActions.ContactsActionTypes.AddContactSuccess,
+      fromContactsActions.ContactsActionTypes.UpdateContactSuccess,
+    ),
+    tap(id => this.location.back()),
     switchMap(() => EMPTY)
   );
 
@@ -70,56 +116,11 @@ export class ContactsEffects {
     }
   );
 
-  @Effect()
-  getContactStart$ = this.dataPersistence.fetch(
-    ContactsActionTypes.GetContactStart,
-    {
-      run: (action: GetContactStart, state: ContactsPartialState) =>
-        this.contactsService.getContact(action.payload.id).pipe(
-          map(
-            contact =>
-              new GetContactSuccess({
-                contact
-              })
-          )
-        ),
-      onError: (action: GetContactStart, error) =>
-        new GetContactsFailure({ error })
-    }
-  );
-
-  @Effect()
-  updateContactStart$ = this.dataPersistence.optimisticUpdate(
-    ContactsActionTypes.UpdateContactStart,
-    {
-      run: (action: UpdateContactStart, state: ContactsPartialState) =>
-        this.contactsService.updateContact(action.payload.contact).pipe(
-          map(
-            contact =>
-              new UpdateContactSuccess({
-                contact
-              })
-          )
-        ),
-      undoAction: (action: UpdateContactStart, error) =>
-        new UpdateContactFailure({ error })
-    }
-  );
-
-  @Effect({ dispatch: false })
-  updateContactCancel$: Observable<void> = this.actions$.pipe(
-    ofType<UpdateContactCancel>(
-      fromContactsActions.ContactsActionTypes.UpdateContactCancel
-    ),
-    tap(id => this.location.back()),
-    switchMap(() => EMPTY)
-  );
-
   constructor(
     private actions$: Actions,
     private contactsService: ContactsService,
     private router: Router,
     private location: Location,
     private dataPersistence: DataPersistence<ContactsPartialState>
-  ) {}
+  ) { }
 }
