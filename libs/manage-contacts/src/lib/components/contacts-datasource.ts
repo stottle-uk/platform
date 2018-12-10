@@ -11,7 +11,7 @@ export class ContactsDataSource extends DataSource<Contact> {
   }
 
   connect(): Observable<Contact[]> {
-    return this.store.select(contactsQuery.selectAllContacts);
+    return this.store.select(contactsQuery.getAllContacts);
   }
 
   disconnect() {}

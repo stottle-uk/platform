@@ -28,6 +28,9 @@ import { Contact } from '../+state/contacts.model';
     <form class="contact-form" [formGroup]="contactForm">
       <mat-form-field class="contact-full-width">
         <input matInput type="text" placeholder="Your name" formControlName="name">
+        <mat-error *ngIf="emailControl.hasError('name')">
+          Please enter a valid name
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field class="contact-full-width">
@@ -50,7 +53,7 @@ import { Contact } from '../+state/contacts.model';
       </mat-form-field>
 
       <div class="header-container">
-        <button mat-raised-button color="primary" (click)="submitForm()">Save</button>
+        <button mat-raised-button color="primary" [disabled]="this.contactForm.invalid" (click)="submitForm()">Save</button>
       </div>
     </form>
   `,
@@ -84,9 +87,9 @@ export class ContactFormComponent implements OnChanges {
   });
 
   get headerLabel(): string {
-    return !!this.contact
+    return !!this.contact && !!this.contact.name
       ? `Editing - ${this.contactName} (${this.contactId})`
-      : 'Create new contact';
+      : `Create new contact`;
   }
 
   get contactId(): number {
@@ -99,6 +102,10 @@ export class ContactFormComponent implements OnChanges {
 
   get idControl(): AbstractControl {
     return this.contactForm.controls.id;
+  }
+
+  get nameControl(): AbstractControl {
+    return this.contactForm.controls.name;
   }
 
   get emailControl(): AbstractControl {
@@ -127,10 +134,7 @@ export class ContactFormComponent implements OnChanges {
 
   submitForm(): void {
     if (this.contactForm.valid) {
-      this.contactSaved.emit({
-        ...this.contactForm.value,
-        id: !!this.contact ? this.contact.id : undefined
-      });
+      this.contactSaved.emit(this.contactForm.value);
     }
   }
 }

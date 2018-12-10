@@ -1,4 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { Contact } from './contacts.model';
 import {
   adapter,
   ContactsState,
@@ -12,13 +13,6 @@ const getContactsState = createFeatureSelector<ContactsState>(
 const getSelectedContactId = createSelector(
   getContactsState,
   (state: ContactsState) => state.selectedContactId
-);
-
-const getSelectedContact = createSelector(
-  getContactsState,
-  getSelectedContactId,
-  (state: ContactsState, selectedContactId: number) =>
-    state.entities[selectedContactId]
 );
 
 const getIsLoaded = createSelector(
@@ -36,13 +30,30 @@ const getError = createSelector(
   (state: ContactsState) => state.error
 );
 
-const { selectAll: selectAllContacts } = adapter.getSelectors(getContactsState);
+const { selectAll: getAllContacts } = adapter.getSelectors(getContactsState);
+
+const getSelectedContact = createSelector(
+  getContactsState,
+  getSelectedContactId,
+  getAllContacts,
+  (state: ContactsState, selectedContactId: number, contacts: Contact[]) =>
+    state.entities[selectedContactId]
+      ? state.entities[selectedContactId]
+      : {
+          id: Math.max(11, contacts.length + 1),
+          name: null,
+          street: null,
+          email: null,
+          phone: null,
+          age: null
+        }
+);
 
 export const contactsQuery = {
-  selectAllContacts,
-  getSelectedContactId,
+  getAllContacts,
   getSelectedContact,
   getIsLoaded,
   getIsLoading,
-  getError
+  getError,
+  getSelectedContactId
 };

@@ -72,6 +72,13 @@ export function contactsReducer(
       };
     }
 
+    case ContactsActionTypes.AddContact: {
+      return {
+        ...state,
+        selectedContactId: null
+      };
+    }
+
     case ContactsActionTypes.AddContactStart:
     case ContactsActionTypes.UpdateContactStart: {
       return adapter.upsertOne(action.payload.contact, {

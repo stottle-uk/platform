@@ -9,6 +9,7 @@ import { contactsQuery } from '../+state/contacts.selectors';
   selector: 'stottle-contact-add',
   template: `
     <stottle-platform-contact-form
+      [contact]="contact$ | async"
       [saving]="saving$ | async"
       (contactSaved)="onContactUpdated($event)"
       (cancel)="onCancel()"
@@ -17,6 +18,7 @@ import { contactsQuery } from '../+state/contacts.selectors';
   styles: []
 })
 export class ContactAddComponent {
+  contact$ = this.store.select(contactsQuery.getSelectedContact);
   saving$ = this.store.select(contactsQuery.getIsLoading);
 
   constructor(private store: Store<ContactsState>) {}
