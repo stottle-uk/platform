@@ -3,17 +3,9 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output
 } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  tap
-} from 'rxjs/operators';
 import { Contact } from '../+state/contacts.model';
 
 @Component({
@@ -92,7 +84,9 @@ export class ContactFormComponent implements OnChanges {
   });
 
   get headerLabel(): string {
-    return !!this.contact ? `Editing - ${this.contactName} (${this.contactId})` : 'Create new contact'
+    return !!this.contact
+      ? `Editing - ${this.contactName} (${this.contactId})`
+      : 'Create new contact';
   }
 
   get contactId(): number {
@@ -111,7 +105,7 @@ export class ContactFormComponent implements OnChanges {
     return this.contactForm.controls.email;
   }
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {}
 
   ngOnChanges() {
     if (this.contact && this.idControl.value !== this.contact.id) {
@@ -136,7 +130,7 @@ export class ContactFormComponent implements OnChanges {
       this.contactSaved.emit({
         ...this.contactForm.value,
         id: !!this.contact ? this.contact.id : undefined
-      })
+      });
     }
   }
 }

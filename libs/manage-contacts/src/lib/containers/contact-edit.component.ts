@@ -21,7 +21,7 @@ export class ContactEditComponent {
   contact$ = this.store.select(contactsQuery.getSelectedContact);
   saving$ = this.store.select(contactsQuery.getIsLoading);
 
-  constructor(private store: Store<ContactsState>) { }
+  constructor(private store: Store<ContactsState>) {}
 
   onContactUpdated(contact: Contact): void {
     this.store.dispatch(

@@ -18,7 +18,7 @@ import { ContactsDataSource } from '../components/contacts-datasource';
 export class ContactsListComponent implements OnInit {
   dataSource: ContactsDataSource;
 
-  constructor(private store: Store<ContactsState>) { }
+  constructor(private store: Store<ContactsState>) {}
 
   ngOnInit() {
     this.dataSource = new ContactsDataSource(this.store);

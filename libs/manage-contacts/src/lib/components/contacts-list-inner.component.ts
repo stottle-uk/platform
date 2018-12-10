@@ -1,17 +1,17 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
   Component,
   EventEmitter,
   Input,
-  Output,
-  ViewChild,
+  OnDestroy,
   OnInit,
-  OnDestroy
+  Output,
+  ViewChild
 } from '@angular/core';
 import { MatPaginator, MatSort } from '@angular/material';
-import { ContactsDataSource } from './contacts-datasource';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ContactsDataSource } from './contacts-datasource';
 
 @Component({
   selector: 'stottle-platform-contacts-list-inner',
@@ -101,22 +101,20 @@ export class ContactsListInnerComponent implements OnInit, OnDestroy {
   displayedColumns = [];
   subscription: Subscription;
 
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  constructor(private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
     this.setColumns(true);
 
     this.subscription = this.breakpointObserver
       .observe([Breakpoints.Handset])
-      .pipe(
-        map(result => this.setColumns(result.matches))
-      )
+      .pipe(map(result => this.setColumns(result.matches)))
       .subscribe();
   }
 
   ngOnDestroy(): void {
     if (this.subscription) {
-      this.subscription.unsubscribe()
+      this.subscription.unsubscribe();
     }
   }
 
@@ -124,7 +122,15 @@ export class ContactsListInnerComponent implements OnInit, OnDestroy {
     if (isSmallDevice) {
       this.displayedColumns = ['id', 'name', 'edit'];
     } else {
-      this.displayedColumns = ['id', 'name', 'street', 'email', 'phone', 'age', 'edit'];
+      this.displayedColumns = [
+        'id',
+        'name',
+        'street',
+        'email',
+        'phone',
+        'age',
+        'edit'
+      ];
     }
   }
 }

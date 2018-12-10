@@ -7,7 +7,7 @@ import { IContact } from '../models/contacts.http';
   providedIn: 'root'
 })
 export class ContactsService {
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   getContacts(
     skip: number,
