@@ -294,6 +294,41 @@
           }
         }
       }
+    },
+    "manage-contacts": {
+      "root": "libs/manage-contacts",
+      "sourceRoot": "libs/manage-contacts/src",
+      "projectType": "library",
+      "prefix": "stottle-platform",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/manage-contacts/tsconfig.lib.json",
+            "project": "libs/manage-contacts/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/manage-contacts/tsconfig.lib.json",
+              "libs/manage-contacts/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/manage-contacts/jest.config.js",
+            "tsConfig": "libs/manage-contacts/tsconfig.spec.json",
+            "setupFile": "libs/manage-contacts/src/test-setup.ts"
+          }
+        }
+      }
     }
   },
   "schematics": {

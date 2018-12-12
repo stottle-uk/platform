@@ -28,6 +28,9 @@
     },
     "ngx-signalr-wrapper-ngrx": {
       "tags": []
+    },
+    "manage-contacts": {
+      "tags": []
     }
   }
 }
