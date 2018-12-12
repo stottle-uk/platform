@@ -25,7 +25,8 @@ const angularModules = [
   BrowserAnimationsModule,
   HttpClientModule,
   HttpClientInMemoryWebApiModule.forRoot(InMemoryContactsService, {
-    delay: 500
+    delay: 500,
+    passThruUnknownUrl: true
   }),
   ServiceWorkerModule.register('ngsw-worker.js', {
     enabled: environment.production
