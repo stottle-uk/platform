@@ -28,7 +28,7 @@ import { Contact } from '../+state/contacts.model';
     <form class="contact-form" [formGroup]="contactForm">
       <mat-form-field class="contact-full-width">
         <input matInput type="text" placeholder="Your name" formControlName="name">
-        <mat-error *ngIf="emailControl.hasError('name')">
+        <mat-error *ngIf="emailControl.hasError('name') || emailControl.hasError('required')">
           Please enter a valid name
         </mat-error>
       </mat-form-field>
