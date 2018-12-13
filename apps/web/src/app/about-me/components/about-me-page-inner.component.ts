@@ -27,8 +27,8 @@ import { Component } from '@angular/core';
       <li>Angular 6</li>
       <li>RxJS</li>
       <li>NGRX</li>
-      <li>.Net Core 2</li>
-      <li>.Net Framework</li>
+      <li>.NET Core 2</li>
+      <li>.NET Framework</li>
     </ul>
     <h4>Storage</h4>
     <ul>

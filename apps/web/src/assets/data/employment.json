@@ -9,7 +9,7 @@
         "We work in two-week sprints and I spend time with the offshore team to ensure they understand requirements in current and future stories and the role they will play in those stories. I review all pull requests from the offshore team and provide constructive feedback and on how code could be improved and optimized to make better use of Typescript and Angular features.",
         "The site is built in Angular 6 and uses Auth0 for authentication, NGRX for state management, Signalr for Realtime events (optimistic updates), Azure blob storage for media uploads and feature toggles with split.io.",
         "I work with the backend team architect on new features to define the contacts for the API and write the application services to store application state in the NGRX store and present data to users using smart and presentation components. The offshore team then write the HTML and SCSS to match the designs which keeps the concerns of data and presentation nicely separated.",
-        "I also take great satisfaction in sharing knowledge and supported a developer to understand state management in a SPA as they showed a willingness to learn and had questions about decision I had made.",
+        "I also take great satisfaction in sharing knowledge and supported other developers to understand state management in a SPA as they showed a willingness to learn and had questions about decision I had made.",
         "I work closely with the UX/UI team to ensure there is a good balance between look and feel of the application and what they are asking for is supported by the most popular browsers and questioning what is a 'nice to have'"
       ]
     },
@@ -28,9 +28,9 @@
     "content": {
       "statements": [
         "Comparethemarket are the largest comparison site in the UK and I worked in the quoting team that mapped customer data to insurance providers data structures and return quotes to the clients.",
-        "Part if the work was migrating API’s into smaller microservices written in ASP.NET Core and NodeJs that ran in docker containers, uses RabbitMq for messaging and stores data in MongoDb.",
+        "Part if the work was migrating APIs into smaller microservices written in ASP.NET Core and NodeJs that ran in docker containers, uses RabbitMq for messaging and stores data in MongoDb.",
         "All code was tested and is written in a BDD style and we regularly paired and mobbed on stories for instant code reviews and sustained concentration. Performance was paramount, and we are always load testing with Locust.",
-        "One of the tasks I successfully completed was to port a .Net Framework diagnostics application over to .Net Core and re-wrote the front end in Angular. All the code is fully tested, runs in Docker and is deployed using GoCD Pipelines.",
+        "One of the tasks I successfully completed was to port a .NET Framework diagnostics application over to .NET Core and re-wrote the front end in Angular. All the code is fully tested, runs in Docker and is deployed using GoCD Pipelines.",
         "I also took a lead role in writing a NodeJs solution with Express which aggregates data from various sources.",
         "The work is managed in 2-week sprints and most development is done in pairs or mobs. I give input into the style of coding and pragmatically follow SOLID principles and all code is fully tested with Unit and Integration tests."
       ]
@@ -58,7 +58,7 @@
         "I also architected and created a demo retailer shop that our parent company Nielsen now uses for AB testing with major brands who wish to gauge consumer reaction for new products or changes existing products.",
         "The shop was originally created as a demo to provide integration code examples via NPM and Nuget and hosted on GitHub, but one of the product managers recognised it's potential and I developed a working MVP based on requirements set by our parent company. There is current discussion within Nielsen on how it will be developed further and which parts of the code can be made public for code examples.",
         "When I arrived in the team many tasks involved running SQL scripts directly in SSMS or using legacy WinForm apps. I therefore architected and developed the Integration Management Portal (IMP) around my usual tasks with the aim to enable staff outside of integration to perform tasks.",
-        "The IMP and Demo Shop are web based applications built with AngularJs 1.6, .Net Web API 2, document storage (MongoDb) and Identity Server 3 for authentication (OAuth and OpenId Connect).",
+        "The IMP and Demo Shop are web based applications built with AngularJs 1.6, .NET Web API 2, document storage (MongoDb) and Identity Server 3 for authentication (OAuth and OpenId Connect).",
         "In six months, our team developed the IMP into customer facing external site which provides API documentation with code examples, has an authenticated area to give customers details of their integration setup and credentials and allows internal staff to perform tasks with traceability and logging.",
         "I worked with my co-developers on code reviews to ensure that code that we write can still be understood in 6 months or by another developer. We try to write in a fluent style to hide the complexity behind small classes and functions that adhere to SOLID principles and self-document.",
         "I contributed to internal Nuget packages to maximise code re-use and abstract away complexity which colleagues use and maintain so custom integrations are well tested, have reliable logging and a consistent architecture."
@@ -79,7 +79,7 @@
     "content": {
       "statements": [
         "Wildpacks recruit counsellors and support staff for Summer Camps in USA. I maintain 3 separate applications whose purpose are to gather applicant details and allow camp directors to search place them at camps.",
-        "They are ASP.Net MVC apps hosted on Azure (Virtual Machines and Web Apps) with MySQL and T-SQL databases.",
+        "They are ASP.NET MVC apps hosted on Azure (Virtual Machines and Web Apps) with MySQL and T-SQL databases.",
         "The application has around 50 regular admin users plus approximately 1000 applicants each year from all around the world that apply to work at the summer camps.",
         "I inherited the code base and have learnt the systems through speaking to users of the application and reading the code. The previous programmer was no longer available so I had to learn the systems from brief documentation and the understanding of the users.",
         "I am the only developer working on this project and my role is to understand and analyse requirements from the users and build them into the existing system and fix bugs.",
@@ -125,7 +125,7 @@
     "body": "",
     "content": {
       "statements": [
-        "I worked for an independent stockbrokers and I lead projects in planning, designing, writing and supporting useful applications with SQL database back-ends using Excel VBA, VB.net, ASP.net, PHP and MySQL.",
+        "I worked for an independent stockbrokers and I lead projects in planning, designing, writing and supporting useful applications with SQL database back-ends using Excel VBA, VB.NET, ASP.NET, PHP and MySQL.",
         "The role included documenting working practises and providing day to day support and training to ensure end-users get the most out of the technology and applications they were using. I maintained the network infrastructure and help devise cost-effective and imaginative solutions and supported several Stockbroker specific applications (Bloomberg, Proquote and Investmaster Suite).",
         "I took an active role in procurement and I looked to gain the most out Active Directory and the products supplied with Windows Server. I wrote log-on scripts, web pages and intranets and made use of Group Policy to ensure the security, resilience and the standardisation of customer correspondence.",
         "I completed data mining exercises to retrieve specific customer related information set by the management from SQL Databases. Using the data, I presented the information to the advisory team in easy to understand layout in Excel and wrote mass Mail Merge documents to display the advice given to the client."
