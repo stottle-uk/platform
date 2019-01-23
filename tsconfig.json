@@ -15,9 +15,9 @@
       "@stottle-platform/ngx-auth0-wrapper-ngrx": [
         "libs/ngx-auth0-wrapper-ngrx/src/index.ts"
       ],
-      // "@stottle-platform/ngx-auth0-wrapper": [
-      //   "libs/ngx-auth0-wrapper/src/index.ts"
-      // ],
+      "@stottle-platform/ngx-auth0-wrapper": [
+        "libs/ngx-auth0-wrapper/src/index.ts"
+      ],
       "@stottle-platform/ngx-signalr-wrapper": [
         "libs/ngx-signalr-wrapper/src/index.ts"
       ],
