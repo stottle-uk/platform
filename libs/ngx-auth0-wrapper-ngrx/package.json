@@ -21,10 +21,10 @@
     "angular"
   ],
   "peerDependencies": {
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-    "@ngrx/effects": "^6.1.0",
-    "@ngrx/store": "^6.1.0",
-    "@stottle-platform/ngx-auth0-wrapper": "^0.0.4"
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
+    "@ngrx/effects": "^7.1.0",
+    "@ngrx/store": "^7.1.0",
+    "@stottle-platform/ngx-auth0-wrapper": "^0.0.5"
   }
 }
