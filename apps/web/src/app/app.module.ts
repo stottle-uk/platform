@@ -12,13 +12,18 @@ import { NgxAuth0WrapperNgrxModule } from '@stottle-platform/ngx-auth0-wrapper-n
 import { NgxSignalrWrapperNgrxModule } from '@stottle-platform/ngx-signalr-wrapper-ngrx';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryContactsService } from 'libs/manage-contacts/src/lib/services/in-memerory-contacts.service'; // TODO: SORT OUT THIS
+import * as SendBird from 'sendbird';
 import { authOptions, environment } from '../environments/environment';
 import { AppRoutesModule } from './app-routes.module';
-import { AppComponent } from './app.component';
+import { AppComponent, SEND_BIRD } from './app.component';
 import { LayoutModule } from './layout/layout.module';
 import { RouterClientModule } from './router-client/router-client.module';
 import { SharedModule } from './shared/shared.module';
 import { UsersModule } from './users/users.module';
+
+export function sendBirdFactory() {
+  return new SendBird({ appId: 'DE368CF8-F364-498C-A481-554B90C33D4A' });
+}
 
 const angularModules = [
   BrowserModule,
@@ -62,7 +67,12 @@ const thirdPatyModules = [
     ...thirdPatyModules,
     AppRoutesModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: SEND_BIRD,
+      useFactory: sendBirdFactory
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
