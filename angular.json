@@ -93,9 +93,7 @@
               "apps/web/tsconfig.app.json",
               "apps/web/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -120,9 +118,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/web-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -148,9 +144,7 @@
               "libs/bowling-game/tsconfig.lib.json",
               "libs/bowling-game/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -175,9 +169,7 @@
               "libs/ngx-auth0-wrapper-ngrx/tsconfig.lib.json",
               "libs/ngx-auth0-wrapper-ngrx/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -210,9 +202,7 @@
               "libs/ngx-auth0-wrapper/tsconfig.lib.json",
               "libs/ngx-auth0-wrapper/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -253,9 +243,7 @@
               "libs/ngx-signalr-wrapper/tsconfig.lib.json",
               "libs/ngx-signalr-wrapper/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -288,9 +276,7 @@
               "libs/ngx-signalr-wrapper-ngrx/tsconfig.lib.json",
               "libs/ngx-signalr-wrapper-ngrx/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -315,9 +301,7 @@
               "libs/manage-contacts/tsconfig.lib.json",
               "libs/manage-contacts/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -327,6 +311,44 @@
             "tsConfig": "libs/manage-contacts/tsconfig.spec.json",
             "setupFile": "libs/manage-contacts/src/test-setup.ts"
           }
+        }
+      }
+    },
+    "ngx-sendbird-wrapper": {
+      "root": "libs/ngx-sendbird-wrapper",
+      "sourceRoot": "libs/ngx-sendbird-wrapper/src",
+      "projectType": "library",
+      "prefix": "stottle-platform",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/ngx-sendbird-wrapper/tsconfig.lib.json",
+            "project": "libs/ngx-sendbird-wrapper/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ngx-sendbird-wrapper/tsconfig.lib.json",
+              "libs/ngx-sendbird-wrapper/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/ngx-sendbird-wrapper/jest.config.js",
+            "tsConfig": "libs/ngx-sendbird-wrapper/tsconfig.spec.json",
+            "setupFile": "libs/ngx-sendbird-wrapper/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "styleext": "scss"
         }
       }
     }

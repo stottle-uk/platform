@@ -31,6 +31,9 @@
     },
     "manage-contacts": {
       "tags": []
+    },
+    "ngx-sendbird-wrapper": {
+      "tags": []
     }
   }
 }

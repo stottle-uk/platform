@@ -24,7 +24,12 @@
       "@stottle-platform/ngx-signalr-wrapper-ngrx": [
         "libs/ngx-signalr-wrapper-ngrx/src/index.ts"
       ],
-      "@stottle-platform/manage-contacts": ["libs/manage-contacts/src/index.ts"]
+      "@stottle-platform/manage-contacts": [
+        "libs/manage-contacts/src/index.ts"
+      ],
+      "@stottle-platform/ngx-sendbird-wrapper": [
+        "libs/ngx-sendbird-wrapper/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
