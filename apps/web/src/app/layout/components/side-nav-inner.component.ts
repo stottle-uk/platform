@@ -3,19 +3,23 @@ import { Component, EventEmitter, Output } from '@angular/core';
 @Component({
   selector: 'stottle-side-nav-inner',
   template: `
-  <mat-toolbar color="primary">Menu</mat-toolbar>
-  <mat-nav-list>
-    <a *ngFor="let item of menuItems"
-      mat-list-item
-      [routerLink]="item.link"
-      (click)="itemSelected.emit()">
-      {{item.name}}
-    </a>
+    <mat-toolbar color="primary">Menu</mat-toolbar>
+    <mat-nav-list>
+      <a
+        *ngFor="let item of menuItems"
+        mat-list-item
+        [routerLink]="item.link"
+        (click)="itemSelected.emit()"
+      >
+        {{ item.name }}
+      </a>
 
-    <mat-divider></mat-divider>
+      <mat-divider></mat-divider>
 
-    <a mat-list-item routerLink="/admin" (click)="itemSelected.emit()">Admin</a>
-  </mat-nav-list>
+      <a mat-list-item routerLink="/admin" (click)="itemSelected.emit()"
+        >Admin</a
+      >
+    </mat-nav-list>
   `
 })
 export class SideNavInnerComponent {
@@ -37,6 +41,10 @@ export class SideNavInnerComponent {
     {
       link: '/coding-katas',
       name: 'Coding Katas'
+    },
+    {
+      link: '/chat',
+      name: 'Chat'
     }
   ];
 }

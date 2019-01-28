@@ -25,6 +25,10 @@ export const routes: Routes = [
     loadChildren: './coding-katas/coding-katas.module#CodingKatasModule'
   },
   {
+    path: 'chat',
+    loadChildren: './chat/chat.module#ChatModule'
+  },
+  {
     path: 'admin',
     loadChildren: './admin/admin.module#AdminModule',
     canActivate: [AuthGuardService]
