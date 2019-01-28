@@ -14,24 +14,18 @@ export class SendBirdService {
   constructor(@Inject(SEND_BIRD) private sb: SendBird.SendBirdInstance) {}
 
   connect(userId: string): Observable<SendBird.User> {
-    return this.createObservable(this.sb.connect.bind(this.sb), userId);
+    return this.co(this.sb.connect.bind(this.sb), userId);
   }
 
   getOpenChannels(): Observable<SendBird.OpenChannel[]> {
     var openChannelListQuery = this.sb.OpenChannel.createOpenChannelListQuery();
-
-    return this.createObservable(
-      openChannelListQuery.next.bind(openChannelListQuery)
-    );
-    // return new Observable(observer => {
-    //   openChannelListQuery.next(this.callback(observer));
-    // });
+    return this.co(openChannelListQuery.next.bind(openChannelListQuery));
   }
 
   enterChannel(
     channel: SendBird.OpenChannel
   ): Observable<SendBird.OpenChannel> {
-    return new Observable(observer => channel.enter(this.callback(observer)));
+    return this.co(channel.enter.bind(channel));
   }
 
   getPreviousMessages(
@@ -65,7 +59,7 @@ export class SendBirdService {
     );
   }
 
-  private getAndEnterChannel(): (
+  getAndEnterChannel(): (
     source: Observable<SendBird.OpenChannel>
   ) => Observable<SendBird.OpenChannel> {
     return source =>
@@ -79,10 +73,7 @@ export class SendBirdService {
       );
   }
 
-  private createObservable<T>(
-    fn: (...args: any[]) => void,
-    ...args: any[]
-  ): Observable<T> {
+  private co<T>(fn: (...args: any[]) => void, ...args: any[]): Observable<T> {
     return new Observable(observer => fn(...args, this.callback(observer)));
   }
 
