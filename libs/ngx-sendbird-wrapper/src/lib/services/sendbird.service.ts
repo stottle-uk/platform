@@ -4,7 +4,7 @@ import { map, switchMap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 
 export const SEND_BIRD = new InjectionToken<SendBird.SendBirdInstance>(
-  'sendbird'
+  'SEND_BIRD'
 );
 
 @Injectable({
@@ -18,10 +18,14 @@ export class SendBirdService {
   }
 
   getOpenChannels(): Observable<SendBird.OpenChannel[]> {
-    return new Observable(observer => {
-      var openChannelListQuery = this.sb.OpenChannel.createOpenChannelListQuery();
-      openChannelListQuery.next(this.callback(observer));
-    });
+    var openChannelListQuery = this.sb.OpenChannel.createOpenChannelListQuery();
+
+    return this.createObservable(
+      openChannelListQuery.next.bind(openChannelListQuery)
+    );
+    // return new Observable(observer => {
+    //   openChannelListQuery.next(this.callback(observer));
+    // });
   }
 
   enterChannel(

@@ -51,7 +51,7 @@ const ngrxModules = [
 const thirdPatyModules = [
   NgxAuth0WrapperNgrxModule.forRoot(authOptions),
   NgxSignalrWrapperNgrxModule.forRoot(),
-  NgxSendbirdWrapperModule,
+  NgxSendbirdWrapperModule.forRoot(),
   NxModule.forRoot()
 ];
 
