@@ -13,6 +13,8 @@ import { SendBirdService } from 'libs/ngx-sendbird-wrapper/src/lib/services/send
     <hr />
 
     <stottle-messages-list></stottle-messages-list>
+
+    <stottle-send-message></stottle-send-message>
   `,
   styles: []
 })

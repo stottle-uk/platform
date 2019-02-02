@@ -38,7 +38,10 @@ export class SendBirdService {
     return this.co(messageListQuery.load.bind(messageListQuery));
   }
 
-  private sendMessage(message: string, channel: SendBird.OpenChannel): any {
+  sendMessage(
+    message: string,
+    channel: SendBird.OpenChannel
+  ): Observable<SendBird.UserMessage> {
     return this.co(channel.sendUserMessage.bind(channel), message);
   }
 
