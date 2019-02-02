@@ -9,6 +9,10 @@ import { SendBirdService } from 'libs/ngx-sendbird-wrapper/src/lib/services/send
     </p>
 
     <stottle-channel-list></stottle-channel-list>
+
+    <hr />
+
+    <stottle-messages-list></stottle-messages-list>
   `,
   styles: []
 })

@@ -30,15 +30,12 @@ export class SendBirdService {
 
   getPreviousMessages(
     channel: SendBird.OpenChannel
-  ): Observable<
-    SendBird.UserMessage[] | SendBird.FileMessage[] | SendBird.AdminMessage[]
-  > {
-    return new Observable(observer => {
-      var messageListQuery = channel.createPreviousMessageListQuery();
-      messageListQuery.limit = 30;
-      messageListQuery.reverse = true;
-      messageListQuery.load(this.callback(observer));
-    });
+  ): Observable<SendBird.UserMessage[]> {
+    var messageListQuery = channel.createPreviousMessageListQuery();
+    messageListQuery.limit = 30;
+    messageListQuery.reverse = true;
+
+    return this.co(messageListQuery.load.bind(messageListQuery));
   }
 
   private sendMessage(message: string, channel: SendBird.OpenChannel): any {
