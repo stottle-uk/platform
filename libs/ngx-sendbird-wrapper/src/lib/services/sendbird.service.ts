@@ -39,9 +39,7 @@ export class SendBirdService {
   }
 
   private sendMessage(message: string, channel: SendBird.OpenChannel): any {
-    return new Observable(observer => {
-      channel.sendUserMessage(message, this.callback(observer));
-    });
+    return this.co(channel.sendUserMessage.bind(channel), message);
   }
 
   private getChanenel(channelUrl: string): Observable<SendBird.OpenChannel> {
