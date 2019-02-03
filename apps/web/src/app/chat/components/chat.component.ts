@@ -4,17 +4,18 @@ import { SendBirdService } from 'libs/ngx-sendbird-wrapper/src/lib/services/send
 @Component({
   selector: 'stottle-chat',
   template: `
-    <p>
-      chat works!
-    </p>
+    <div class="content">
+      <div fxLayout="row">
+        <div style="width: 200px">
+          <stottle-channel-list></stottle-channel-list>
+        </div>
+        <div fxFlex>
+          <stottle-messages-list></stottle-messages-list>
 
-    <stottle-channel-list></stottle-channel-list>
-
-    <hr />
-
-    <stottle-messages-list></stottle-messages-list>
-
-    <stottle-send-message></stottle-send-message>
+          <stottle-send-message></stottle-send-message>
+        </div>
+      </div>
+    </div>
   `,
   styles: []
 })

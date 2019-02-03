@@ -33,7 +33,6 @@ export class SendBirdService {
   ): Observable<SendBird.UserMessage[]> {
     var messageListQuery = channel.createPreviousMessageListQuery();
     messageListQuery.limit = 30;
-    messageListQuery.reverse = true;
 
     return this.co(messageListQuery.load.bind(messageListQuery));
   }

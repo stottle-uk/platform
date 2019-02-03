@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
+import { MatListModule } from '@angular/material';
 import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
 import { MessageFormComponent } from './components/message-form.component';
@@ -20,7 +21,7 @@ const declarations = [
 ];
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, MatListModule],
   declarations: [
     declarations,
     ChannelListInnerComponent,

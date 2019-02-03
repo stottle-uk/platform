@@ -4,14 +4,17 @@ import * as SendBird from 'sendbird';
 @Component({
   selector: 'stottle-channel-list-inner',
   template: `
-    <ul>
-      <li
+    <mat-list>
+      <mat-list-item
         *ngFor="let channel of channels"
         (click)="channelSelected.emit(channel)"
       >
-        {{ channel | json }}
-      </li>
-    </ul>
+        <img matListAvatar [src]="channel.coverUrl" [alt]="channel.name" />
+        <p matLine>
+          <span> {{ channel.name }} </span>
+        </p>
+      </mat-list-item>
+    </mat-list>
   `,
   styles: []
 })
