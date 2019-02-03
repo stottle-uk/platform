@@ -8,6 +8,8 @@ import { SendBirdService } from './sendbird.service';
   providedIn: 'root'
 })
 export class SendbirdViewStateService {
+  private internalIsConnected$ = new BehaviorSubject<boolean>(false);
+  private internalCurrentUser$ = new BehaviorSubject<SendBird.User>(null);
   private interalCurrentChannel$ = new BehaviorSubject<SendBird.OpenChannel>(
     null
   );
@@ -15,6 +17,16 @@ export class SendbirdViewStateService {
   private internalMessagesForCurrentChannel$ = new BehaviorSubject<
     SendBird.UserMessage[]
   >([]);
+
+  get isConnected$(): Observable<boolean> {
+    return this.internalIsConnected$.asObservable();
+  }
+
+  get currentUser$(): Observable<SendBird.User> {
+    return this.internalCurrentUser$
+      .asObservable()
+      .pipe(filter(user => !!user));
+  }
 
   get currentChannel$(): Observable<SendBird.OpenChannel> {
     return this.interalCurrentChannel$
@@ -31,6 +43,13 @@ export class SendbirdViewStateService {
   }
 
   constructor(private sb: SendBirdService) {}
+
+  connect(userId: string): Observable<SendBird.User> {
+    return this.sb.connect(userId).pipe(
+      tap(user => this.internalCurrentUser$.next(user)),
+      tap(() => this.internalIsConnected$.next(true))
+    );
+  }
 
   enterChannel(
     channel: SendBird.OpenChannel

@@ -44,16 +44,12 @@ export class SendBirdService {
     return this.co(channel.sendUserMessage.bind(channel), message);
   }
 
-  private getChanenel(channelUrl: string): Observable<SendBird.OpenChannel> {
-    return new Observable(observer =>
-      this.sb.OpenChannel.getChannel(channelUrl, this.callback(observer))
-    );
+  getChanenel(channelUrl: string): Observable<SendBird.OpenChannel> {
+    return this.co(this.sb.OpenChannel.getChannel.bind(this.sb), channelUrl);
   }
 
-  private createOpenChannel(): Observable<SendBird.OpenChannel> {
-    return new Observable(observer =>
-      this.sb.OpenChannel.createChannel(this.callback(observer))
-    );
+  createOpenChannel(): Observable<SendBird.OpenChannel> {
+    return this.co(this.sb.OpenChannel.createChannel.bind(this.sb));
   }
 
   getAndEnterChannel(): (

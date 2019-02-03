@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SendBirdService } from 'libs/ngx-sendbird-wrapper/src/lib/services/sendbird.service';
+import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/services/sendbird-view-state.service';
 
 @Component({
   selector: 'stottle-chat',
@@ -20,17 +20,9 @@ import { SendBirdService } from 'libs/ngx-sendbird-wrapper/src/lib/services/send
   styles: []
 })
 export class ChatComponent implements OnInit {
-  constructor(private sb: SendBirdService) {}
+  constructor(private sb: SendbirdViewStateService) {}
 
   ngOnInit(): void {
-    this.sb
-      .connect('first_user')
-      // .pipe(switchMap(user => this.sb.getOpenChannels()))
-      // tap(console.log),
-      // map(channels => channels[0]),
-      // this.getAndEnterChannel(),
-      // switchMap(channel => this.getPreviousMessages(channel))
-      // switchMap(channel => this.sendMessage('another message', channel))
-      .subscribe(console.log, console.error);
+    this.sb.connect('first_user').subscribe(console.log, console.error);
   }
 }
