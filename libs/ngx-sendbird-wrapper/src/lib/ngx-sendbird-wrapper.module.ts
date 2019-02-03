@@ -5,6 +5,7 @@ import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
 import { MessageFormComponent } from './components/message-form.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
+import { AddOpenChannelComponent } from './containers/add-open-channel.component';
 import { ChannelListComponent } from './containers/channel-list.component';
 import { MessagesListComponent } from './containers/messages-list.component';
 import { SendMessageComponent } from './containers/send-message.component';
@@ -17,7 +18,8 @@ export function sendBirdFactory(): SendBird.SendBirdInstance {
 const declarations = [
   ChannelListComponent,
   MessagesListComponent,
-  SendMessageComponent
+  SendMessageComponent,
+  AddOpenChannelComponent
 ];
 
 @NgModule({

@@ -17,7 +17,9 @@ export class ChannelListComponent implements OnInit {
 
   constructor(private vs: SendbirdViewStateService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.vs.getOpenChannels().subscribe();
+  }
 
   onChannelSelected(channel: SendBird.OpenChannel): void {
     this.vs.enterChannel(channel).subscribe(); // TODO: this should be in an attribute component

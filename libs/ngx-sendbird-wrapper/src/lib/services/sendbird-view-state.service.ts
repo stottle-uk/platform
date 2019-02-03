@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, switchMap, tap } from 'rxjs/operators';
+import { filter, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { SendBirdService } from './sendbird.service';
 
@@ -14,6 +14,9 @@ export class SendbirdViewStateService {
     null
   );
 
+  private internalOpenChannels$ = new BehaviorSubject<SendBird.OpenChannel[]>(
+    []
+  );
   private internalMessagesForCurrentChannel$ = new BehaviorSubject<
     SendBird.UserMessage[]
   >([]);
@@ -39,7 +42,7 @@ export class SendbirdViewStateService {
   }
 
   get openChannels$(): Observable<SendBird.OpenChannel[]> {
-    return this.sb.getOpenChannels();
+    return this.internalOpenChannels$.asObservable();
   }
 
   constructor(private sb: SendBirdService) {}
@@ -49,6 +52,16 @@ export class SendbirdViewStateService {
       tap(user => this.internalCurrentUser$.next(user)),
       tap(() => this.internalIsConnected$.next(true))
     );
+  }
+
+  createOpenChannel(): Observable<SendBird.OpenChannel> {
+    const channels = this.internalOpenChannels$.value;
+
+    return this.sb
+      .createOpenChannel()
+      .pipe(
+        tap(channel => this.internalOpenChannels$.next([channel, ...channels]))
+      );
   }
 
   enterChannel(
@@ -61,6 +74,12 @@ export class SendbirdViewStateService {
 
   setCurrentChannel(channel: SendBird.OpenChannel): void {
     this.interalCurrentChannel$.next(channel);
+  }
+
+  getOpenChannels(): Observable<SendBird.OpenChannel[]> {
+    return this.sb
+      .getOpenChannels()
+      .pipe(tap(channels => this.internalOpenChannels$.next(channels)));
   }
 
   getMessagesForCurrentChannel(): Observable<SendBird.UserMessage[]> {
@@ -81,6 +100,7 @@ export class SendbirdViewStateService {
     const messages = this.internalMessagesForCurrentChannel$.value;
 
     return this.currentChannel$.pipe(
+      take(1),
       switchMap(channel =>
         this.sb
           .sendMessage(message, channel)
