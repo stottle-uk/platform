@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'stottle-messages-list-inner',
@@ -13,7 +13,8 @@ import { Component, Input } from '@angular/core';
         </p>
       </mat-list-item>
     </mat-list>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessagesListInnerComponent {
   @Input() messages: SendBird.UserMessage[];

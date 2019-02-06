@@ -12,14 +12,22 @@ import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/serv
           <stottle-channel-list></stottle-channel-list>
         </div>
         <div fxFlex>
-          <stottle-messages-list></stottle-messages-list>
-
+          <div class="messages-container">
+            <stottle-messages-list></stottle-messages-list>
+          </div>
           <stottle-send-message></stottle-send-message>
         </div>
       </div>
     </div>
   `,
-  styles: []
+  styles: [
+    `
+      .messages-container {
+        height: calc(100vh - 300px);
+        overflow: auto;
+      }
+    `
+  ]
 })
 export class ChatComponent implements OnInit {
   constructor(private sb: SendbirdViewStateService) {}
