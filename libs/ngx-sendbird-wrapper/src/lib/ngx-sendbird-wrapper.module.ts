@@ -19,6 +19,7 @@ import { MessagesListComponent } from './containers/messages-list.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
 import { SEND_BIRD } from './services/sendbird.service';
+import { MessageListItemComponent } from './components/message-list-item.component';
 
 export function sendBirdFactory(): SendBird.SendBirdInstance {
   return new SendBird({ appId: 'DE368CF8-F364-498C-A481-554B90C33D4A' });
@@ -47,7 +48,8 @@ const declarations = [
     ChannelListInnerComponent,
     MessagesListInnerComponent,
     MessageFormComponent,
-    MessageFileFormComponent
+    MessageFileFormComponent,
+    MessageListItemComponent
   ],
   exports: [declarations]
 })

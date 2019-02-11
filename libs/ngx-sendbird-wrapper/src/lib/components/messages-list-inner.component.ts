@@ -28,7 +28,8 @@ export class MessagesListInnerComponent {
       sender: m.sender.friendName,
       senderImg: m.sender.profileUrl,
       date: m.createdAt,
-      id: m.messageId
+      id: m.messageId,
+      type: m.isUserMessage()
     }));
   }
 

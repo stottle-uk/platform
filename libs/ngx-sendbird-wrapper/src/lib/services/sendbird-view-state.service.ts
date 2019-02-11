@@ -2,7 +2,14 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
+import { SendbirdEventHandlersService } from './sendbird-event-handlers.service';
 import { SendBirdService } from './sendbird.service';
+
+export type Connection =
+  | SendBird.User
+  | string
+  | SendBird.UserMessage
+  | SendBird.FileMessage;
 
 @Injectable({
   providedIn: 'root'
@@ -58,15 +65,18 @@ export class SendbirdViewStateService {
     return this.internalOpenChannels$.asObservable();
   }
 
-  constructor(private sb: SendBirdService) {}
+  constructor(
+    private sb: SendBirdService,
+    private sbh: SendbirdEventHandlersService
+  ) {}
 
-  connect(userId: string): Observable<SendBird.User | string> {
+  connect(userId: string): Observable<Connection> {
     const connect = this.sb.connect(userId).pipe(
       tap(user => this.internalCurrentUser$.next(user)),
       tap(() => this.internalIsConnected$.next(true))
     );
 
-    return merge(connect, this.onMessageDeleted());
+    return merge(connect, this.onMessageDeleted(), this.onMessageReceived());
   }
 
   createOpenChannel(): Observable<SendBird.OpenChannel> {
@@ -191,13 +201,26 @@ export class SendbirdViewStateService {
   }
 
   private onMessageDeleted(): Observable<string> {
-    return this.sb.deletedMessage$.pipe(
+    return this.sbh.deletedMessage$.pipe(
       tap(messageId =>
         this.internalMessagesForCurrentChannel$.next(
           this.internalMessagesForCurrentChannel$.value.filter(
             m => m.messageId !== +messageId
           )
         )
+      )
+    );
+  }
+
+  private onMessageReceived(): Observable<
+    SendBird.UserMessage | SendBird.FileMessage
+  > {
+    return this.sbh.recievedMessage$.pipe(
+      tap(newMessage =>
+        this.internalMessagesForCurrentChannel$.next([
+          ...this.internalMessagesForCurrentChannel$.value,
+          newMessage
+        ])
       )
     );
   }
