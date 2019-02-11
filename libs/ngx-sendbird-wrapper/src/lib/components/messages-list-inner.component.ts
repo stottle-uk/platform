@@ -3,13 +3,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 @Component({
   selector: 'stottle-messages-list-inner',
   template: `
-    <mat-list>
-      <ng-container *ngFor="let message of messages">
-        <stottle-message-list-item
-          [message]="message"
-        ></stottle-message-list-item>
-      </ng-container>
-    </mat-list>
+    <ng-container *ngFor="let message of messages">
+      <stottle-message-list-item
+        [message]="message"
+      ></stottle-message-list-item>
+    </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

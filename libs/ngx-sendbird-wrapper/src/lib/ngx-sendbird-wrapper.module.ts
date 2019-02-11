@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   MatButtonModule,
@@ -10,6 +11,7 @@ import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
 import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessageFormComponent } from './components/message-form.component';
+import { MessageListItemComponent } from './components/message-list-item.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { AddOpenChannelComponent } from './containers/add-open-channel.component';
 import { ChannelListComponent } from './containers/channel-list.component';
@@ -19,7 +21,6 @@ import { MessagesListComponent } from './containers/messages-list.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
 import { SEND_BIRD } from './services/sendbird.service';
-import { MessageListItemComponent } from './components/message-list-item.component';
 
 export function sendBirdFactory(): SendBird.SendBirdInstance {
   return new SendBird({ appId: 'DE368CF8-F364-498C-A481-554B90C33D4A' });
@@ -39,6 +40,7 @@ const declarations = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
     MatListModule,
     MatInputModule,
     MatButtonModule
