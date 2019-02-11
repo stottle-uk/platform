@@ -24,8 +24,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
           </small>
         </div>
         <div>
-          <ng-container *ngIf="isUserMessage">{{ content }}</ng-container>
-          <ng-container *ngIf="isFileMessage">
+          <ng-container *ngIf="userMessage">{{ content }}</ng-container>
+          <ng-container *ngIf="fileMessage">
             <img [src]="file" />
           </ng-container>
         </div>
@@ -70,23 +70,28 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 export class MessageListItemComponent implements OnInit {
   @Input() message: SendBird.UserMessage | SendBird.FileMessage;
 
-  get isUserMessage(): boolean {
-    return this.message && this.message.isUserMessage();
+  get userMessage(): SendBird.UserMessage {
+    return (
+      this.message &&
+      this.message.isUserMessage() &&
+      (this.message as SendBird.UserMessage)
+    );
   }
 
-  get isFileMessage(): boolean {
-    return this.message && this.message.isFileMessage();
+  get fileMessage(): SendBird.FileMessage {
+    return (
+      this.message &&
+      this.message.isFileMessage() &&
+      (this.message as SendBird.FileMessage)
+    );
   }
 
   get content(): string {
-    return (<SendBird.UserMessage>this.message).message;
+    return this.userMessage.message;
   }
 
   get file(): SafeUrl {
-    console.log(this.message);
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      (<SendBird.FileMessage>this.message).url
-    );
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.fileMessage.url);
   }
 
   get mappedMessage(): any {
