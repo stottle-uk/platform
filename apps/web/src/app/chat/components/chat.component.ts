@@ -14,9 +14,6 @@ import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/serv
           <stottle-channel-list></stottle-channel-list>
         </div>
         <div fxFlex="grow">
-          <button type="button" mat-button>
-            <span stottle-fetch-more-messages>Load More</span>
-          </button>
           <stottle-messages-list></stottle-messages-list>
           <stottle-send-message></stottle-send-message>
           <stottle-send-file-message></stottle-send-file-message>

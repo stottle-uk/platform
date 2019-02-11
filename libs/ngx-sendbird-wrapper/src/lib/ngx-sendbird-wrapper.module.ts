@@ -7,6 +7,7 @@ import {
   MatInputModule,
   MatListModule
 } from '@angular/material';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
@@ -44,6 +45,7 @@ const declarations = [
     CommonModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    InfiniteScrollModule,
     MatListModule,
     MatInputModule,
     MatButtonModule

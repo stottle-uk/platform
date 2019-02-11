@@ -11,7 +11,7 @@ export class FetchMoreMessagesComponent {
   constructor(private vs: SendbirdViewStateService) {}
 
   @HostListener('click')
-  onClick(): void {
+  getMore(): void {
     this.vs.getMoreMessagesForCurrentChannel().subscribe();
   }
 }
