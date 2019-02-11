@@ -17,7 +17,7 @@ export class SendBirdService {
   }
 
   getOpenChannels(): Observable<SendBird.OpenChannel[]> {
-    var openChannelListQuery = this.sb.OpenChannel.createOpenChannelListQuery();
+    const openChannelListQuery = this.sb.OpenChannel.createOpenChannelListQuery();
     return this.co(openChannelListQuery.next.bind(openChannelListQuery));
   }
 
@@ -60,6 +60,13 @@ export class SendBirdService {
 
   createOpenChannel(): Observable<SendBird.OpenChannel> {
     return this.co(this.sb.OpenChannel.createChannel.bind(this.sb));
+  }
+
+  getChannelParticipants(
+    channel: SendBird.OpenChannel
+  ): Observable<SendBird.User[]> {
+    const participantListQuery = channel.createParticipantListQuery();
+    return this.co(participantListQuery.next.bind(participantListQuery));
   }
 
   // getAndEnterChannel(): (

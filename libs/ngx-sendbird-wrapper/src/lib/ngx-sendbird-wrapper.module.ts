@@ -9,12 +9,14 @@ import {
 } from '@angular/material';
 import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
+import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
 import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessageFormComponent } from './components/message-form.component';
 import { MessageListItemComponent } from './components/message-list-item.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { AddOpenChannelComponent } from './containers/add-open-channel.component';
 import { ChannelListComponent } from './containers/channel-list.component';
+import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
 import { DeleteMessageComponent } from './containers/delete-message.component';
 import { FetchMoreMessagesComponent } from './containers/fetch-more-messages.component';
 import { MessagesListComponent } from './containers/messages-list.component';
@@ -33,7 +35,8 @@ const declarations = [
   SendFileMessageComponent,
   AddOpenChannelComponent,
   FetchMoreMessagesComponent,
-  DeleteMessageComponent
+  DeleteMessageComponent,
+  ChannelParticipantsListComponent
 ];
 
 @NgModule({
@@ -51,7 +54,8 @@ const declarations = [
     MessagesListInnerComponent,
     MessageFormComponent,
     MessageFileFormComponent,
-    MessageListItemComponent
+    MessageListItemComponent,
+    ChannelParticipantsListInnerComponent
   ],
   exports: [declarations]
 })

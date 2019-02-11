@@ -23,12 +23,14 @@ export class SendbirdViewStateService {
   private internalCurrentChannel$ = new BehaviorSubject<SendBird.OpenChannel>(
     null
   );
-
   private internalOpenChannels$ = new BehaviorSubject<SendBird.OpenChannel[]>(
     []
   );
   private internalMessagesForCurrentChannel$ = new BehaviorSubject<
     Array<SendBird.UserMessage | SendBird.FileMessage>
+  >([]);
+  private internalParticipantsForCurrentChannel$ = new BehaviorSubject<
+    SendBird.User[]
   >([]);
 
   get isConnected$(): Observable<boolean> {
@@ -59,6 +61,10 @@ export class SendbirdViewStateService {
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {
     return this.internalMessagesForCurrentChannel$.asObservable();
+  }
+
+  get participantsForCurrentChannel$(): Observable<SendBird.User[]> {
+    return this.internalParticipantsForCurrentChannel$.asObservable();
   }
 
   get openChannels$(): Observable<SendBird.OpenChannel[]> {
@@ -103,6 +109,20 @@ export class SendbirdViewStateService {
       .pipe(tap(channels => this.internalOpenChannels$.next(channels)));
   }
 
+  getChannelParticipants(): Observable<SendBird.User[]> {
+    return this.currentChannel$.pipe(
+      switchMap(channel =>
+        this.sb
+          .getChannelParticipants(channel)
+          .pipe(
+            tap(participants =>
+              this.internalParticipantsForCurrentChannel$.next(participants)
+            )
+          )
+      )
+    );
+  }
+
   getMessagesForCurrentChannel(): Observable<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {
@@ -110,9 +130,9 @@ export class SendbirdViewStateService {
       map(channel => channel.createPreviousMessageListQuery()),
       tap(query => (query.limit = 5)),
       tap(query => this.internalPreviousMessageListQuery$.next(query)),
-      switchMap(channel =>
+      switchMap(query =>
         this.sb
-          .getPreviousMessages(channel)
+          .getPreviousMessages(query)
           .pipe(
             tap(messages =>
               this.internalMessagesForCurrentChannel$.next(messages)
