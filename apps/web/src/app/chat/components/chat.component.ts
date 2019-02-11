@@ -17,9 +17,7 @@ import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/serv
           <button type="button" mat-button>
             <span stottle-fetch-more-messages>Load More</span>
           </button>
-          <div class="messages-container">
-            <stottle-messages-list></stottle-messages-list>
-          </div>
+          <stottle-messages-list></stottle-messages-list>
           <stottle-send-message></stottle-send-message>
           <stottle-send-file-message></stottle-send-file-message>
         </div>
@@ -28,15 +26,7 @@ import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/serv
         </div>
       </div>
     </div>
-  `,
-  styles: [
-    `
-      .messages-container {
-        height: calc(100vh - 300px);
-        overflow: auto;
-      }
-    `
-  ]
+  `
 })
 export class ChatComponent implements OnInit {
   constructor(private sb: SendbirdViewStateService) {}

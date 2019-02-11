@@ -3,13 +3,22 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 @Component({
   selector: 'stottle-messages-list-inner',
   template: `
-    <ng-container *ngFor="let message of messages">
+    <div class="messages-container">
       <stottle-message-list-item
+        *ngFor="let message of messages"
         [message]="message"
       ></stottle-message-list-item>
-    </ng-container>
+    </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      .messages-container {
+        height: calc(100vh - 300px);
+        overflow: auto;
+      }
+    `
+  ]
 })
 export class MessagesListInnerComponent {
   @Input() messages: Array<SendBird.UserMessage | SendBird.FileMessage>;
