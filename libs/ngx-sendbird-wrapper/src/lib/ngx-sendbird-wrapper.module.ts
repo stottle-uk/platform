@@ -12,6 +12,7 @@ import { MessageFormComponent } from './components/message-form.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { AddOpenChannelComponent } from './containers/add-open-channel.component';
 import { ChannelListComponent } from './containers/channel-list.component';
+import { FetchMoreMessagesComponent } from './containers/fetch-more-messages.component';
 import { MessagesListComponent } from './containers/messages-list.component';
 import { SendMessageComponent } from './containers/send-message.component';
 import { SEND_BIRD } from './services/sendbird.service';
@@ -24,7 +25,8 @@ const declarations = [
   ChannelListComponent,
   MessagesListComponent,
   SendMessageComponent,
-  AddOpenChannelComponent
+  AddOpenChannelComponent,
+  FetchMoreMessagesComponent
 ];
 
 @NgModule({

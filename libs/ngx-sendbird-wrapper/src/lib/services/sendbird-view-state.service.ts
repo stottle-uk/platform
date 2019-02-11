@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { SendBirdService } from './sendbird.service';
 
@@ -10,7 +10,10 @@ import { SendBirdService } from './sendbird.service';
 export class SendbirdViewStateService {
   private internalIsConnected$ = new BehaviorSubject<boolean>(false);
   private internalCurrentUser$ = new BehaviorSubject<SendBird.User>(null);
-  private interalCurrentChannel$ = new BehaviorSubject<SendBird.OpenChannel>(
+  private internalPreviousMessageListQuery$ = new BehaviorSubject<
+    SendBird.PreviousMessageListQuery
+  >(null);
+  private internalCurrentChannel$ = new BehaviorSubject<SendBird.OpenChannel>(
     null
   );
 
@@ -31,8 +34,16 @@ export class SendbirdViewStateService {
       .pipe(filter(user => !!user));
   }
 
+  get previousMessageListQuery$(): Observable<
+    SendBird.PreviousMessageListQuery
+  > {
+    return this.internalPreviousMessageListQuery$
+      .asObservable()
+      .pipe(filter(query => !!query));
+  }
+
   get currentChannel$(): Observable<SendBird.OpenChannel> {
-    return this.interalCurrentChannel$
+    return this.internalCurrentChannel$
       .asObservable()
       .pipe(filter(channel => !!channel));
   }
@@ -73,7 +84,7 @@ export class SendbirdViewStateService {
   }
 
   setCurrentChannel(channel: SendBird.OpenChannel): void {
-    this.interalCurrentChannel$.next(channel);
+    this.internalCurrentChannel$.next(channel);
   }
 
   getOpenChannels(): Observable<SendBird.OpenChannel[]> {
@@ -84,12 +95,36 @@ export class SendbirdViewStateService {
 
   getMessagesForCurrentChannel(): Observable<SendBird.UserMessage[]> {
     return this.currentChannel$.pipe(
+      map(channel => channel.createPreviousMessageListQuery()),
+      tap(query => (query.limit = 5)),
+      tap(query => this.internalPreviousMessageListQuery$.next(query)),
       switchMap(channel =>
         this.sb
           .getPreviousMessages(channel)
           .pipe(
             tap(messages =>
               this.internalMessagesForCurrentChannel$.next(messages)
+            )
+          )
+      )
+    );
+  }
+
+  getMoreMessagesForCurrentChannel(): Observable<SendBird.UserMessage[]> {
+    const messages = this.internalMessagesForCurrentChannel$.value;
+
+    return this.previousMessageListQuery$.pipe(
+      take(1),
+      filter(query => query.hasMore && !query.isLoading),
+      switchMap(query =>
+        this.sb
+          .getPreviousMessages(query)
+          .pipe(
+            tap(newMessages =>
+              this.internalMessagesForCurrentChannel$.next([
+                ...newMessages,
+                ...messages
+              ])
             )
           )
       )
