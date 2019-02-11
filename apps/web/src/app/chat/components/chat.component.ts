@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/services/sendbird-view-state.service';
 
 @Component({
   selector: 'stottle-chat',
   template: `
     <div class="content">
+      <div>
+        <input type="text" #input />
+        <button type="button" (click)="username()">Enter</button>
+      </div>
       <div fxLayout="row">
         <div style="width: 200px">
           <button type="button" mat-button>
@@ -26,9 +30,19 @@ import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/serv
   `
 })
 export class ChatComponent implements OnInit {
+  @ViewChild('input') userId: ElementRef<HTMLInputElement>;
+
   constructor(private sb: SendbirdViewStateService) {}
 
   ngOnInit(): void {
-    this.sb.connect('first_user').subscribe(console.log, console.error);
+    // this.sb.connect('first_user').subscribe(console.log, console.error);
+  }
+
+  username(): void {
+    console.log(this.userId.nativeElement.value);
+
+    this.sb
+      .connect(this.userId.nativeElement.value)
+      .subscribe(console.log, console.error);
   }
 }
