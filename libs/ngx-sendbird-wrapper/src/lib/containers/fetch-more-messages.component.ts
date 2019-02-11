@@ -5,8 +5,7 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
   selector: '[stottle-fetch-more-messages]',
   template: `
     <ng-content></ng-content>
-  `,
-  styles: []
+  `
 })
 export class FetchMoreMessagesComponent {
   constructor(private vs: SendbirdViewStateService) {}

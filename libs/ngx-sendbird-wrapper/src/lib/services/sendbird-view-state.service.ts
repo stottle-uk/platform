@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { SendBirdService } from './sendbird.service';
@@ -60,11 +60,13 @@ export class SendbirdViewStateService {
 
   constructor(private sb: SendBirdService) {}
 
-  connect(userId: string): Observable<SendBird.User> {
-    return this.sb.connect(userId).pipe(
+  connect(userId: string): Observable<SendBird.User | string> {
+    const connect = this.sb.connect(userId).pipe(
       tap(user => this.internalCurrentUser$.next(user)),
       tap(() => this.internalIsConnected$.next(true))
     );
+
+    return merge(connect, this.onMessageDeleted());
   }
 
   createOpenChannel(): Observable<SendBird.OpenChannel> {
@@ -173,7 +175,30 @@ export class SendbirdViewStateService {
     );
   }
 
+  deleteMessage(
+    message: SendBird.UserMessage | SendBird.FileMessage
+  ): Observable<SendBird.UserMessage | SendBird.FileMessage> {
+    const messages = this.internalMessagesForCurrentChannel$.value;
+
+    return this.currentChannel$.pipe(
+      take(1),
+      switchMap(channel => this.sb.deleteMessage(message, channel))
+    );
+  }
+
   private setCurrentChannel(channel: SendBird.OpenChannel): void {
     this.internalCurrentChannel$.next(channel);
+  }
+
+  private onMessageDeleted(): Observable<string> {
+    return this.sb.deletedMessage$.pipe(
+      tap(messageId =>
+        this.internalMessagesForCurrentChannel$.next(
+          this.internalMessagesForCurrentChannel$.value.filter(
+            m => m.messageId !== +messageId
+          )
+        )
+      )
+    );
   }
 }

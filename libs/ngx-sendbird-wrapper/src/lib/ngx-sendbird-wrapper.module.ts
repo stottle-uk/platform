@@ -13,6 +13,7 @@ import { MessageFormComponent } from './components/message-form.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { AddOpenChannelComponent } from './containers/add-open-channel.component';
 import { ChannelListComponent } from './containers/channel-list.component';
+import { DeleteMessageComponent } from './containers/delete-message.component';
 import { FetchMoreMessagesComponent } from './containers/fetch-more-messages.component';
 import { MessagesListComponent } from './containers/messages-list.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
@@ -29,7 +30,8 @@ const declarations = [
   SendMessageComponent,
   SendFileMessageComponent,
   AddOpenChannelComponent,
-  FetchMoreMessagesComponent
+  FetchMoreMessagesComponent,
+  DeleteMessageComponent
 ];
 
 @NgModule({
