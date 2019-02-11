@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SendMessage } from '../models/messages.model';
 
@@ -11,7 +11,7 @@ import { SendMessage } from '../models/messages.model';
           matInput
           type="text"
           placeholder="Type your message"
-          formControlName="message"
+          formControlName="caption"
         />
       </mat-form-field>
       <button mat-button type="submit" color="primary">Send</button>
@@ -19,16 +19,15 @@ import { SendMessage } from '../models/messages.model';
   `,
   styles: []
 })
-export class MessageFormComponent implements OnInit {
+export class MessageFormComponent {
   @Output()
   messageSubmit = new EventEmitter<SendMessage>();
 
   messageForm = this.fb.group({
-    message: [null, Validators.required]
+    caption: [null, Validators.required]
   });
-  constructor(private fb: FormBuilder) {}
 
-  ngOnInit() {}
+  constructor(private fb: FormBuilder) {}
 
   formSubmit(): void {
     if (this.messageForm.valid) {

@@ -8,12 +8,14 @@ import {
 } from '@angular/material';
 import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
+import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessageFormComponent } from './components/message-form.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { AddOpenChannelComponent } from './containers/add-open-channel.component';
 import { ChannelListComponent } from './containers/channel-list.component';
 import { FetchMoreMessagesComponent } from './containers/fetch-more-messages.component';
 import { MessagesListComponent } from './containers/messages-list.component';
+import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
 import { SEND_BIRD } from './services/sendbird.service';
 
@@ -25,6 +27,7 @@ const declarations = [
   ChannelListComponent,
   MessagesListComponent,
   SendMessageComponent,
+  SendFileMessageComponent,
   AddOpenChannelComponent,
   FetchMoreMessagesComponent
 ];
@@ -41,7 +44,8 @@ const declarations = [
     declarations,
     ChannelListInnerComponent,
     MessagesListInnerComponent,
-    MessageFormComponent
+    MessageFormComponent,
+    MessageFileFormComponent
   ],
   exports: [declarations]
 })

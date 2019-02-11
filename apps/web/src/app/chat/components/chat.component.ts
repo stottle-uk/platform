@@ -21,6 +21,7 @@ import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/serv
             <stottle-messages-list></stottle-messages-list>
           </div>
           <stottle-send-message></stottle-send-message>
+          <stottle-send-file-message></stottle-send-file-message>
         </div>
       </div>
     </div>

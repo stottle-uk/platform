@@ -1,3 +1,7 @@
 export interface SendMessage {
-  message: string;
+  caption: string;
+}
+
+export interface SendFileMessage {
+  file: File;
 }

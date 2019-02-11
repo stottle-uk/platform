@@ -36,7 +36,7 @@ export class SendBirdService {
 
   getPreviousMessages(
     query: SendBird.PreviousMessageListQuery
-  ): Observable<SendBird.UserMessage[]> {
+  ): Observable<Array<SendBird.UserMessage | SendBird.FileMessage>> {
     return this.co(query.load.bind(query));
   }
 
@@ -45,6 +45,13 @@ export class SendBirdService {
     channel: SendBird.OpenChannel
   ): Observable<SendBird.UserMessage> {
     return this.co(channel.sendUserMessage.bind(channel), message);
+  }
+
+  sendFileMessage(
+    file: File,
+    channel: SendBird.OpenChannel
+  ): Observable<SendBird.FileMessage> {
+    return this.co(channel.sendFileMessage.bind(channel), file);
   }
 
   getChanenel(channelUrl: string): Observable<SendBird.OpenChannel> {

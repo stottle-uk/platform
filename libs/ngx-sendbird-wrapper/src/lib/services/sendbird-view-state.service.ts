@@ -21,7 +21,7 @@ export class SendbirdViewStateService {
     []
   );
   private internalMessagesForCurrentChannel$ = new BehaviorSubject<
-    SendBird.UserMessage[]
+    Array<SendBird.UserMessage | SendBird.FileMessage>
   >([]);
 
   get isConnected$(): Observable<boolean> {
@@ -48,7 +48,9 @@ export class SendbirdViewStateService {
       .pipe(filter(channel => !!channel));
   }
 
-  get messagesForCurrentChannel$(): Observable<SendBird.UserMessage[]> {
+  get messagesForCurrentChannel$(): Observable<
+    Array<SendBird.UserMessage | SendBird.FileMessage>
+  > {
     return this.internalMessagesForCurrentChannel$.asObservable();
   }
 
@@ -89,7 +91,9 @@ export class SendbirdViewStateService {
       .pipe(tap(channels => this.internalOpenChannels$.next(channels)));
   }
 
-  getMessagesForCurrentChannel(): Observable<SendBird.UserMessage[]> {
+  getMessagesForCurrentChannel(): Observable<
+    Array<SendBird.UserMessage | SendBird.FileMessage>
+  > {
     return this.currentChannel$.pipe(
       map(channel => channel.createPreviousMessageListQuery()),
       tap(query => (query.limit = 5)),
@@ -106,7 +110,9 @@ export class SendbirdViewStateService {
     );
   }
 
-  getMoreMessagesForCurrentChannel(): Observable<SendBird.UserMessage[]> {
+  getMoreMessagesForCurrentChannel(): Observable<
+    Array<SendBird.UserMessage | SendBird.FileMessage>
+  > {
     const messages = this.internalMessagesForCurrentChannel$.value;
 
     return this.previousMessageListQuery$.pipe(
@@ -135,6 +141,26 @@ export class SendbirdViewStateService {
       switchMap(channel =>
         this.sb
           .sendMessage(message, channel)
+          .pipe(
+            tap(newMessage =>
+              this.internalMessagesForCurrentChannel$.next([
+                ...messages,
+                newMessage
+              ])
+            )
+          )
+      )
+    );
+  }
+
+  sendFileMessage(file: File): Observable<SendBird.FileMessage> {
+    const messages = this.internalMessagesForCurrentChannel$.value;
+
+    return this.currentChannel$.pipe(
+      take(1),
+      switchMap(channel =>
+        this.sb
+          .sendFileMessage(file, channel)
           .pipe(
             tap(newMessage =>
               this.internalMessagesForCurrentChannel$.next([
