@@ -31,7 +31,7 @@ import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/serv
           <stottle-send-message></stottle-send-message>
           <stottle-send-file-message></stottle-send-file-message>
         </div>
-        <div>
+        <div style="width: 200px">
           <stottle-channel-participants-list></stottle-channel-participants-list>
         </div>
       </div>
