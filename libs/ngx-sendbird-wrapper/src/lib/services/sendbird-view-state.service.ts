@@ -83,10 +83,6 @@ export class SendbirdViewStateService {
       .pipe(tap(() => this.setCurrentChannel(channel)));
   }
 
-  setCurrentChannel(channel: SendBird.OpenChannel): void {
-    this.internalCurrentChannel$.next(channel);
-  }
-
   getOpenChannels(): Observable<SendBird.OpenChannel[]> {
     return this.sb
       .getOpenChannels()
@@ -149,5 +145,9 @@ export class SendbirdViewStateService {
           )
       )
     );
+  }
+
+  private setCurrentChannel(channel: SendBird.OpenChannel): void {
+    this.internalCurrentChannel$.next(channel);
   }
 }
