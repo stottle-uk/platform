@@ -90,6 +90,18 @@ export class SendbirdViewStateService {
     return merge(connect, this.onMessageDeleted(), this.onMessageReceived());
   }
 
+  disconnect(): Observable<Object> {
+    return this.sb.disconnect().pipe(
+      tap(() => this.internalCurrentUser$.next(null)),
+      tap(() => this.internalCurrentChannel$.next(null)),
+      tap(() => this.internalIsConnected$.next(false)),
+      tap(() => this.internalParticipantsForCurrentChannel$.next([])),
+      tap(() => this.internalMessagesForCurrentChannel$.next([])),
+      tap(() => this.internalOpenChannels$.next([])),
+      tap(() => this.internalPreviousMessageListQuery$.next(null))
+    );
+  }
+
   createOpenChannel(): Observable<SendBird.OpenChannel> {
     const channels = this.internalOpenChannels$.value;
 

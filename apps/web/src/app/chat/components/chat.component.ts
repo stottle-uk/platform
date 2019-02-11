@@ -1,15 +1,24 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/services/sendbird-view-state.service';
 
 @Component({
   selector: 'stottle-chat',
   template: `
     <div class="content">
-      <div>
+      <div *ngIf="!(isConnected$ | async)">
         <input type="text" #input />
         <button type="button" (click)="username()">Enter</button>
       </div>
-      <div fxLayout="row">
+      <div *ngIf="(isConnected$ | async)">
+        <button type="button" (click)="disconnect()">Stop</button>
+      </div>
+      <div fxLayout="row" *ngIf="(isConnected$ | async)">
         <div style="width: 200px">
           <button type="button" mat-button>
             <span stottle-add-open-channel>Add</span>
@@ -29,20 +38,28 @@ import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/serv
     </div>
   `
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('input') userId: ElementRef<HTMLInputElement>;
+
+  isConnected$ = this.sb.isConnected$;
 
   constructor(private sb: SendbirdViewStateService) {}
 
-  ngOnInit(): void {
-    // this.sb.connect('first_user').subscribe(console.log, console.error);
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.disconnect();
   }
 
   username(): void {
-    console.log(this.userId.nativeElement.value);
+    const userId = !!this.userId.nativeElement.value
+      ? this.userId.nativeElement.value
+      : 'first_user';
 
-    this.sb
-      .connect(this.userId.nativeElement.value)
-      .subscribe(console.log, console.error);
+    this.sb.connect(userId).subscribe(console.log, console.error);
+  }
+
+  disconnect(): void {
+    this.sb.disconnect().subscribe(console.log, console.error);
   }
 }

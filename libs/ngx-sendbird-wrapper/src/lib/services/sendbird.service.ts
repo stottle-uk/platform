@@ -16,6 +16,10 @@ export class SendBirdService {
     return this.co(this.sb.connect.bind(this.sb), userId);
   }
 
+  disconnect(): Observable<Object> {
+    return this.co(this.sb.disconnect.bind(this.sb));
+  }
+
   getOpenChannels(): Observable<SendBird.OpenChannel[]> {
     const openChannelListQuery = this.sb.OpenChannel.createOpenChannelListQuery();
     return this.co(openChannelListQuery.next.bind(openChannelListQuery));
