@@ -7,6 +7,7 @@ import {
   MatInputModule,
   MatListModule
 } from '@angular/material';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
@@ -46,6 +47,7 @@ const declarations = [
     ReactiveFormsModule,
     FlexLayoutModule,
     InfiniteScrollModule,
+    ScrollToModule.forRoot(),
     MatListModule,
     MatInputModule,
     MatButtonModule

@@ -46,6 +46,7 @@
     "@ngrx/entity": "7.1.0",
     "@ngrx/router-store": "7.1.0",
     "@ngrx/store": "7.1.0",
+    "@nicky-lenaers/ngx-scroll-to": "^2.0.0",
     "@nrwl/nx": "7.5.0",
     "@stottle-platform/ngx-auth0-wrapper": "0.0.5",
     "@stottle-platform/ngx-auth0-wrapper-ngrx": "0.0.5",

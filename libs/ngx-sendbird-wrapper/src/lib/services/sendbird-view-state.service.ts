@@ -15,6 +15,7 @@ export type Connection =
   providedIn: 'root'
 })
 export class SendbirdViewStateService {
+  private internalLastCallType$ = new BehaviorSubject<string>('');
   private internalIsConnected$ = new BehaviorSubject<boolean>(false);
   private internalCurrentUser$ = new BehaviorSubject<SendBird.User>(null);
   private internalPreviousMessageListQuery$ = new BehaviorSubject<
@@ -32,6 +33,10 @@ export class SendbirdViewStateService {
   private internalParticipantsForCurrentChannel$ = new BehaviorSubject<
     SendBird.User[]
   >([]);
+
+  get lastCallType$(): Observable<string> {
+    return this.internalLastCallType$.asObservable();
+  }
 
   get isConnected$(): Observable<boolean> {
     return this.internalIsConnected$.asObservable();
@@ -127,6 +132,7 @@ export class SendbirdViewStateService {
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {
     return this.currentChannel$.pipe(
+      tap(() => this.internalLastCallType$.next('get')),
       map(channel => channel.createPreviousMessageListQuery()),
       tap(query => (query.limit = 5)),
       tap(query => this.internalPreviousMessageListQuery$.next(query)),
@@ -149,6 +155,7 @@ export class SendbirdViewStateService {
 
     return this.previousMessageListQuery$.pipe(
       take(1),
+      tap(() => this.internalLastCallType$.next('getMore')),
       filter(query => query.hasMore && !query.isLoading),
       switchMap(query =>
         this.sb
@@ -170,6 +177,7 @@ export class SendbirdViewStateService {
 
     return this.currentChannel$.pipe(
       take(1),
+      tap(() => this.internalLastCallType$.next('add')),
       switchMap(channel =>
         this.sb
           .sendMessage(message, channel)
@@ -190,6 +198,7 @@ export class SendbirdViewStateService {
 
     return this.currentChannel$.pipe(
       take(1),
+      tap(() => this.internalLastCallType$.next('add')),
       switchMap(channel =>
         this.sb
           .sendFileMessage(file, channel)
@@ -212,6 +221,7 @@ export class SendbirdViewStateService {
 
     return this.currentChannel$.pipe(
       take(1),
+      tap(() => this.internalLastCallType$.next('delete')),
       switchMap(channel => this.sb.deleteMessage(message, channel))
     );
   }
