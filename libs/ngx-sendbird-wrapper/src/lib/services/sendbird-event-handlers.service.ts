@@ -1,49 +1,46 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { SEND_BIRD } from './sendbird.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SendbirdEventHandlersService {
-  private internalDeletedMessage$ = new BehaviorSubject<string>(null);
-  private internalReceivedMessage$ = new BehaviorSubject<
+  private internalDeletedMessage$ = new Subject<string>();
+  private internalReceivedMessage$ = new Subject<
     SendBird.UserMessage | SendBird.FileMessage
-  >(null);
-
+  >();
+  private internalChannelChanged$ = new Subject<SendBird.OpenChannel>();
   private channelHandler = new this.sb.ChannelHandler();
 
   get deletedMessage$(): Observable<string> {
-    return this.internalDeletedMessage$.asObservable().pipe(filter(id => !!id));
+    return this.internalDeletedMessage$.asObservable();
   }
 
   get recievedMessage$(): Observable<
     SendBird.UserMessage | SendBird.FileMessage
   > {
-    return this.internalReceivedMessage$
-      .asObservable()
-      .pipe(filter(message => !!message));
+    return this.internalReceivedMessage$.asObservable();
   }
 
-  constructor(@Inject(SEND_BIRD) private sb: SendBird.SendBirdInstance) {
-    this.setupHandlers(sb);
+  get channelChanged$(): Observable<SendBird.OpenChannel> {
+    return this.internalChannelChanged$.asObservable();
   }
 
-  private setupHandlers(sb: SendBird.SendBirdInstance) {
-    this.channelHandler.onChannelChanged = this.onChannelChanged();
+  constructor(@Inject(SEND_BIRD) private sb: SendBird.SendBirdInstance) {}
+
+  setupHandlers() {
+    this.channelHandler.onChannelChanged = this.onChannelChanged.bind(this);
     this.channelHandler.onMessageReceived = this.onMessageReceived.bind(this);
     this.channelHandler.onMessageDeleted = this.onMessageDelete.bind(this);
+    this.channelHandler.onUserEntered = this.onChannelChanged.bind(this);
+    this.channelHandler.onUserExited = this.onChannelChanged.bind(this);
 
-    sb.addChannelHandler('channelHandler', this.channelHandler);
+    this.sb.addChannelHandler('channelHandler', this.channelHandler);
   }
 
-  private onChannelChanged(): (
-    channel: SendBird.OpenChannel | SendBird.GroupChannel
-  ) => void {
-    return channel => {
-      console.log(channel);
-    };
+  removeHandlers() {
+    this.sb.removeChannelHandler('channelHandler');
   }
 
   private onMessageReceived(
@@ -58,5 +55,9 @@ export class SendbirdEventHandlersService {
     messageId: string // TODO, this should be a number
   ): void {
     this.internalDeletedMessage$.next(messageId);
+  }
+
+  private onChannelChanged(channel: SendBird.OpenChannel): void {
+    this.internalChannelChanged$.next(channel);
   }
 }

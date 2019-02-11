@@ -84,7 +84,8 @@ export class SendbirdViewStateService {
   connect(userId: string): Observable<Connection> {
     const connect = this.sb.connect(userId).pipe(
       tap(user => this.internalCurrentUser$.next(user)),
-      tap(() => this.internalIsConnected$.next(true))
+      tap(() => this.internalIsConnected$.next(true)),
+      tap(() => this.sbh.setupHandlers())
     );
 
     return merge(connect, this.onMessageDeleted(), this.onMessageReceived());
@@ -98,7 +99,8 @@ export class SendbirdViewStateService {
       tap(() => this.internalParticipantsForCurrentChannel$.next([])),
       tap(() => this.internalMessagesForCurrentChannel$.next([])),
       tap(() => this.internalOpenChannels$.next([])),
-      tap(() => this.internalPreviousMessageListQuery$.next(null))
+      tap(() => this.internalPreviousMessageListQuery$.next(null)),
+      tap(() => this.sbh.removeHandlers())
     );
   }
 
@@ -127,7 +129,7 @@ export class SendbirdViewStateService {
   }
 
   getChannelParticipants(): Observable<SendBird.User[]> {
-    return this.currentChannel$.pipe(
+    return merge(this.currentChannel$, this.sbh.channelChanged$).pipe(
       switchMap(channel =>
         this.sb
           .getChannelParticipants(channel)
@@ -229,8 +231,6 @@ export class SendbirdViewStateService {
   deleteMessage(
     message: SendBird.UserMessage | SendBird.FileMessage
   ): Observable<SendBird.UserMessage | SendBird.FileMessage> {
-    const messages = this.internalMessagesForCurrentChannel$.value;
-
     return this.currentChannel$.pipe(
       take(1),
       tap(() => this.internalLastCallType$.next('delete')),
