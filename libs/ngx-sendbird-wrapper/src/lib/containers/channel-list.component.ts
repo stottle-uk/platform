@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as SendBird from 'sendbird';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
 @Component({
@@ -7,10 +6,8 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
   template: `
     <stottle-channel-list-inner
       [channels]="openChannels$ | async"
-      (channelSelected)="onChannelSelected($event)"
     ></stottle-channel-list-inner>
-  `,
-  styles: []
+  `
 })
 export class ChannelListComponent implements OnInit {
   openChannels$ = this.vs.openChannels$;
@@ -19,9 +16,5 @@ export class ChannelListComponent implements OnInit {
 
   ngOnInit(): void {
     this.vs.getOpenChannels().subscribe();
-  }
-
-  onChannelSelected(channel: SendBird.OpenChannel): void {
-    this.vs.enterChannel(channel).subscribe(); // TODO: this should be in an attribute component
   }
 }

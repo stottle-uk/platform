@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, merge, Observable } from 'rxjs';
+import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { SendbirdEventHandlersService } from './sendbird-event-handlers.service';
@@ -117,9 +117,25 @@ export class SendbirdViewStateService {
   enterChannel(
     channel: SendBird.OpenChannel
   ): Observable<SendBird.OpenChannel> {
-    return this.sb
-      .enterChannel(channel)
-      .pipe(tap(() => this.setCurrentChannel(channel)));
+    return this.sb.enterChannel(channel).pipe(
+      switchMap(() =>
+        this.exitCurrentChannel().pipe(
+          tap(() => this.setCurrentChannel(channel)),
+          map(() => channel)
+        )
+      )
+    );
+  }
+
+  exitCurrentChannel(): Observable<SendBird.OpenChannel> {
+    const channel = this.internalCurrentChannel$.value;
+
+    return !!channel
+      ? this.currentChannel$.pipe(
+          take(1),
+          switchMap(channel => this.sb.exitChannel(channel))
+        )
+      : of(null);
   }
 
   getOpenChannels(): Observable<SendBird.OpenChannel[]> {

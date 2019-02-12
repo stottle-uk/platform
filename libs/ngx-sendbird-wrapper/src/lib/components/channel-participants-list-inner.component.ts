@@ -9,7 +9,11 @@ import { Component, Input } from '@angular/core';
       class="participant-container"
     >
       <div class="avatar-container">
-        <img class="img-avatar" [src]="participant.profileUrl" />
+        <img
+          class="img-avatar"
+          [src]="participant.profileUrl"
+          [alt]="participant.userId"
+        />
       </div>
       <h3 fxFlex="grow">{{ participant.userId }}</h3>
     </div>

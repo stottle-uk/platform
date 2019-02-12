@@ -2,11 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-  MatButtonModule,
-  MatInputModule,
-  MatListModule
-} from '@angular/material';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import * as SendBird from 'sendbird';
@@ -20,6 +15,7 @@ import { AddOpenChannelComponent } from './containers/add-open-channel.component
 import { ChannelListComponent } from './containers/channel-list.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
 import { DeleteMessageComponent } from './containers/delete-message.component';
+import { EnterChannelComponent } from './containers/enter-channel.component';
 import { FetchMoreMessagesComponent } from './containers/fetch-more-messages.component';
 import { MessagesListComponent } from './containers/messages-list.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
@@ -47,10 +43,7 @@ const declarations = [
     ReactiveFormsModule,
     FlexLayoutModule,
     InfiniteScrollModule,
-    ScrollToModule.forRoot(),
-    MatListModule,
-    MatInputModule,
-    MatButtonModule
+    ScrollToModule.forRoot()
   ],
   declarations: [
     declarations,
@@ -59,7 +52,8 @@ const declarations = [
     MessageFormComponent,
     MessageFileFormComponent,
     MessageListItemComponent,
-    ChannelParticipantsListInnerComponent
+    ChannelParticipantsListInnerComponent,
+    EnterChannelComponent
   ],
   exports: [declarations]
 })

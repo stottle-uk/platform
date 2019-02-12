@@ -1,17 +1,14 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
 @Component({
   selector: '[stottle-add-open-channel]',
   template: `
     <ng-content></ng-content>
-  `,
-  styles: []
+  `
 })
-export class AddOpenChannelComponent implements OnInit {
+export class AddOpenChannelComponent {
   constructor(private vs: SendbirdViewStateService) {}
-
-  ngOnInit() {}
 
   @HostListener('click')
   addChennel(): void {

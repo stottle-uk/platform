@@ -6,18 +6,14 @@ import { SendMessage } from '../models/messages.model';
   selector: 'stottle-message-form',
   template: `
     <form [formGroup]="messageForm" (ngSubmit)="formSubmit()">
-      <mat-form-field>
-        <input
-          matInput
-          type="text"
-          placeholder="Type your message"
-          formControlName="caption"
-        />
-      </mat-form-field>
-      <button mat-button type="submit" color="primary">Send</button>
+      <input
+        type="text"
+        placeholder="Type your message"
+        formControlName="caption"
+      />
+      <button type="submit" color="primary">Send</button>
     </form>
-  `,
-  styles: []
+  `
 })
 export class MessageFormComponent {
   @Output()
