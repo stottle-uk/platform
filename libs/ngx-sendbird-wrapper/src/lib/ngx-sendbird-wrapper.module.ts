@@ -55,7 +55,8 @@ const declarations = [
     ChannelParticipantsListInnerComponent,
     EnterChannelComponent
   ],
-  exports: [declarations]
+  exports: [declarations],
+  entryComponents: [MessageListItemComponent]
 })
 export class NgxSendbirdWrapperModule {
   static forRoot(): ModuleWithProviders {

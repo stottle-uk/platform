@@ -9,7 +9,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 @Component({
   selector: 'stottle-message-list-item',
   template: `
-    <div fxLayout class="message-container">
+    <div fxLayout class="message-container" *ngIf="message">
       <div class="avatar-container">
         <img class="img-avatar" [src]="mappedMessage.senderImg" />
       </div>
@@ -95,12 +95,14 @@ export class MessageListItemComponent implements OnInit {
   }
 
   get mappedMessage(): any {
-    return {
-      sender: this.message.sender.userId,
-      senderImg: this.message.sender.profileUrl,
-      date: this.message.createdAt,
-      id: this.message.messageId
-    };
+    return (
+      this.message && {
+        sender: this.message.sender.userId,
+        senderImg: this.message.sender.profileUrl,
+        date: this.message.createdAt,
+        id: this.message.messageId
+      }
+    );
   }
 
   constructor(private sanitizer: DomSanitizer) {}

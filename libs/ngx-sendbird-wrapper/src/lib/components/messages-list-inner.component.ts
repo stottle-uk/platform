@@ -1,13 +1,17 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ComponentFactoryResolver,
+  ComponentRef,
   ElementRef,
   Input,
   OnDestroy,
   QueryList,
   ViewChild,
-  ViewChildren
+  ViewChildren,
+  ViewContainerRef
 } from '@angular/core';
 import {
   ScrollToConfigOptions,
@@ -16,6 +20,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { FetchMoreMessagesComponent } from '../containers/fetch-more-messages.component';
+import { MessageListItemComponent } from './message-list-item.component';
 
 @Component({
   selector: 'stottle-messages-list-inner',
@@ -32,11 +37,9 @@ import { FetchMoreMessagesComponent } from '../containers/fetch-more-messages.co
       <button type="button" mat-button>
         <span stottle-fetch-more-messages>Load More</span>
       </button>
-      <stottle-message-list-item
-        #messages
-        *ngFor="let message of messages"
-        [message]="message"
-      ></stottle-message-list-item>
+      <ng-container #messagesList *ngFor="let message of messages">
+        <template #alertContainer></template>
+      </ng-container>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -61,18 +64,43 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   fetchMoreMessages: FetchMoreMessagesComponent;
   @ViewChild('messagesContainer')
   messagesContainer: ElementRef<HTMLDivElement>;
-  @ViewChildren('messages')
-  messagesList: QueryList<HTMLTableRowElement>;
+  @ViewChildren('alertContainer', { read: ViewContainerRef })
+  containers: QueryList<ViewContainerRef>;
+  @ViewChildren('messagesList', { read: ViewContainerRef })
+  messagesList: QueryList<ViewContainerRef>;
 
+  componentRef: ComponentRef<MessageListItemComponent>;
   lastScrollHeight = 0;
   destroy$ = new Subject();
 
-  constructor(private scrollToService: ScrollToService) {}
+  constructor(
+    private scrollToService: ScrollToService,
+    private resolver: ComponentFactoryResolver,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngAfterViewInit(): void {
     this.messagesList.changes
       .pipe(
         takeUntil(this.destroy$),
+        tap(console.log),
+        tap(change => {
+          change.forEach((ref: ViewContainerRef, index: number) => {
+            let target = this.containers.toArray()[index];
+
+            target.clear();
+
+            let widgetComponent = this.resolver.resolveComponentFactory(
+              MessageListItemComponent
+            );
+            let cmpRef = target.createComponent(widgetComponent);
+
+            cmpRef.instance.message = this.messages[index];
+
+            this.cdr.detectChanges();
+          });
+        }),
+
         tap(
           () =>
             this.scrollToBottomEnabled && this.scrollToBottomOfMessagesList()

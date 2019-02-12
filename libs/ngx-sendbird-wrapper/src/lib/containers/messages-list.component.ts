@@ -11,8 +11,7 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
       [scrollToBottomEnabled]="scrollToBottomEnabled$ | async"
       [scrollPositionMaintainEnabled]="scrollPositionMaintainEnabled$ | async"
     ></stottle-messages-list-inner>
-  `,
-  styles: []
+  `
 })
 export class MessagesListComponent implements OnInit {
   messages$ = this.vs.messagesForCurrentChannel$;
