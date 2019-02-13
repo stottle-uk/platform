@@ -26,6 +26,12 @@ export function sendBirdFactory(): SendBird.SendBirdInstance {
   return new SendBird({ appId: 'DE368CF8-F364-498C-A481-554B90C33D4A' });
 }
 
+const entryComponents = [
+  MessageListItemComponent,
+  MessageFormComponent,
+  MessageFileFormComponent
+];
+
 const declarations = [
   ChannelListComponent,
   MessagesListComponent,
@@ -47,16 +53,14 @@ const declarations = [
   ],
   declarations: [
     declarations,
+    entryComponents,
     ChannelListInnerComponent,
     MessagesListInnerComponent,
-    MessageFormComponent,
-    MessageFileFormComponent,
-    MessageListItemComponent,
     ChannelParticipantsListInnerComponent,
     EnterChannelComponent
   ],
   exports: [declarations],
-  entryComponents: [MessageListItemComponent, MessageFormComponent]
+  entryComponents: [entryComponents]
 })
 export class NgxSendbirdWrapperModule {
   static forRoot(): ModuleWithProviders {

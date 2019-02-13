@@ -1,22 +1,69 @@
-import { Component, OnInit } from '@angular/core';
-import { SendFileMessage } from '../models/messages.model';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  ComponentRef,
+  OnDestroy,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
+import { MessageFileFormComponent } from '../components/message-file-form.component';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
 @Component({
   selector: 'stottle-send-file-message',
   template: `
-    <stottle-message-file-form
-      (messageSubmit)="sendMessage($event)"
-    ></stottle-message-file-form>
+    <template #messageFileForm></template>
   `,
   styles: []
 })
-export class SendFileMessageComponent implements OnInit {
-  constructor(private vs: SendbirdViewStateService) {}
+export class SendFileMessageComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('messageFileForm', { read: ViewContainerRef })
+  messageFileForm: ViewContainerRef;
 
-  ngOnInit() {}
+  private componentRef: ComponentRef<MessageFileFormComponent>;
+  private destroy$ = new Subject();
 
-  sendMessage(message: SendFileMessage): void {
-    this.vs.sendFileMessage(message.file).subscribe();
+  constructor(
+    private vs: SendbirdViewStateService,
+    private resolver: ComponentFactoryResolver,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngAfterViewInit(): void {
+    this.messageFileForm.clear();
+
+    const messageFileFormCmp = this.resolver.resolveComponentFactory(
+      MessageFileFormComponent
+    );
+    const cmpRef = this.messageFileForm.createComponent(messageFileFormCmp);
+
+    cmpRef.instance.messageSubmit
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap(message => this.vs.sendFileMessage(message.file))
+      )
+      .subscribe();
+
+    this.componentRef = cmpRef;
+
+    this.cdr.detectChanges();
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.componentRef.destroy();
+  }
+
+  // constructor(private vs: SendbirdViewStateService) {}
+
+  // ngOnInit() {}
+
+  // sendMessage(message: SendFileMessage): void {
+  //   this.vs.sendFileMessage(message.file).subscribe();
+  // }
 }
