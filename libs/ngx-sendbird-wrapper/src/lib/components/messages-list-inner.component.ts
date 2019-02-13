@@ -121,6 +121,7 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.fetchMoreMessagesBtnRef.destroy();
     this.componentRefs.forEach(ref => ref.destroy());
   }
 
