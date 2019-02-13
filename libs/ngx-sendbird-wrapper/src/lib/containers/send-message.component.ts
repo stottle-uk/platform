@@ -33,9 +33,8 @@ export class SendMessageComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
-    this.componentRef = this.resolver.createComponent(
-      this.messageForm,
-      MessageFormComponent
+    this.componentRef = this.resolver.createMessageFormComponent(
+      this.messageForm
     );
 
     this.componentRef.instance.messageSubmit

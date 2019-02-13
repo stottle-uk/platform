@@ -24,10 +24,13 @@ import { FetchMoreMessagesComponent } from './containers/fetch-more-messages.com
 import { MessagesListComponent } from './containers/messages-list.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
+import { SendbirdOptions, SEND_BIRD_OPTIONS } from './models/messages.model';
 import { SEND_BIRD } from './services/sendbird.service';
 
-export function sendBirdFactory(): SendBird.SendBirdInstance {
-  return new SendBird({ appId: 'DE368CF8-F364-498C-A481-554B90C33D4A' });
+export function sendBirdFactory(
+  options: SendbirdOptions
+): SendBird.SendBirdInstance {
+  return new SendBird({ appId: options.appId });
 }
 
 const entryComponents = [
@@ -71,13 +74,18 @@ const declarations = [
   entryComponents: [entryComponents]
 })
 export class NgxSendbirdWrapperModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(sendbirdOptions: SendbirdOptions): ModuleWithProviders {
     return {
       ngModule: NgxSendbirdWrapperModule,
       providers: [
         {
           provide: SEND_BIRD,
-          useFactory: sendBirdFactory
+          useFactory: sendBirdFactory,
+          deps: [SEND_BIRD_OPTIONS]
+        },
+        {
+          provide: SEND_BIRD_OPTIONS,
+          useValue: sendbirdOptions
         }
       ]
     };
