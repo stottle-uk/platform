@@ -1,6 +1,12 @@
 import { InjectionToken, Type } from '@angular/core';
+import { ChannelListItemComponent } from '../components/channel-list-item.component';
 import { MessageFileFormComponent } from '../components/message-file-form.component';
 import { MessageFormComponent } from '../components/message-form.component';
+
+export type SendbirdOptionsDeclaration =
+  | MessageFormComponent
+  | MessageFileFormComponent
+  | ChannelListItemComponent;
 
 export interface SendMessage {
   caption: string;
@@ -16,8 +22,7 @@ export interface SendFileMessage {
 
 export interface SendbirdOptions {
   appId: string;
-  messageFormComponent?: Type<MessageFormComponent>;
-  messageFileFormComponent?: Type<MessageFileFormComponent>;
+  declarations: Type<SendbirdOptionsDeclaration>[];
 }
 
 export const SEND_BIRD_OPTIONS = new InjectionToken<SendbirdOptions>(

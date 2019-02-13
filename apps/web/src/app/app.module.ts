@@ -13,6 +13,8 @@ import { NgxSendbirdWrapperModule } from '@stottle-platform/ngx-sendbird-wrapper
 import { NgxSignalrWrapperNgrxModule } from '@stottle-platform/ngx-signalr-wrapper-ngrx';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryContactsService } from 'libs/manage-contacts/src/lib/services/in-memerory-contacts.service'; // TODO: SORT OUT THIS
+import { ChannelListItemComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/channel-list-item.component';
+import { MessageFileFormComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/message-file-form.component';
 import { MessageFormComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/message-form.component';
 import { authOptions, environment } from '../environments/environment';
 import { AppRoutesModule } from './app-routes.module';
@@ -54,7 +56,11 @@ const thirdPatyModules = [
   NgxSignalrWrapperNgrxModule.forRoot(),
   NgxSendbirdWrapperModule.forRoot({
     appId: 'DE368CF8-F364-498C-A481-554B90C33D4A',
-    messageFormComponent: MessageFormComponent
+    declarations: [
+      MessageFormComponent,
+      MessageFileFormComponent,
+      ChannelListItemComponent
+    ]
   }),
   NxModule.forRoot()
 ];

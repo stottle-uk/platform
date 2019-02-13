@@ -6,6 +6,7 @@ import {
   Type,
   ViewContainerRef
 } from '@angular/core';
+import { ChannelListItemComponent } from '../components/channel-list-item.component';
 import { MessageFileFormComponent } from '../components/message-file-form.component';
 import { MessageFormComponent } from '../components/message-form.component';
 import { SendbirdOptions, SEND_BIRD_OPTIONS } from '../models/messages.model';
@@ -24,16 +25,22 @@ export class SendbirdComponentResolverService {
   ): ComponentRef<MessageFileFormComponent> {
     return this.createComponent(
       ref,
-      this.options.messageFileFormComponent || MessageFileFormComponent
+      this.findComponent(MessageFileFormComponent)
     );
   }
 
   createMessageFormComponent(
     ref: ViewContainerRef
   ): ComponentRef<MessageFormComponent> {
+    return this.createComponent(ref, this.findComponent(MessageFormComponent));
+  }
+
+  createChannelListItemComponent(
+    ref: ViewContainerRef
+  ): ComponentRef<ChannelListItemComponent> {
     return this.createComponent(
       ref,
-      this.options.messageFormComponent || MessageFormComponent
+      this.findComponent(ChannelListItemComponent)
     );
   }
 
@@ -44,5 +51,10 @@ export class SendbirdComponentResolverService {
     const factory = this.resolver.resolveComponentFactory(component);
     ref.clear();
     return ref.createComponent(factory);
+  }
+
+  private findComponent<T>(type: Type<T>): Type<T> {
+    return (this.options.declarations.find(d => d.name === type.name) ||
+      type) as Type<T>;
   }
 }

@@ -81,9 +81,8 @@ export class ChannelListInnerComponent implements AfterViewInit, OnDestroy {
 
   private updateChannelsList(changes: any[]): void {
     changes.forEach((ref: ViewContainerRef, index: number) => {
-      const cmpRef = this.resolver.createComponent(
-        this.channelsListItemsRefs[index],
-        ChannelListItemComponent
+      const cmpRef = this.resolver.createChannelListItemComponent(
+        this.channelsListItemsRefs[index]
       );
       cmpRef.instance.channel = this.channels[index];
       this.componentRefs.push(cmpRef);
