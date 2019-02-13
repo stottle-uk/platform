@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   OnDestroy,
   ViewChild,
@@ -11,6 +10,7 @@ import {
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { MessageFormComponent } from '../components/message-form.component';
+import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
 @Component({
@@ -28,26 +28,22 @@ export class SendMessageComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private vs: SendbirdViewStateService,
-    private resolver: ComponentFactoryResolver,
+    private resolver: SendbirdComponentResolverService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit(): void {
-    this.messageForm.clear();
-
-    const messageFormCmp = this.resolver.resolveComponentFactory(
+    this.componentRef = this.resolver.createComponent(
+      this.messageForm,
       MessageFormComponent
     );
-    const cmpRef = this.messageForm.createComponent(messageFormCmp);
 
-    cmpRef.instance.messageSubmit
+    this.componentRef.instance.messageSubmit
       .pipe(
         takeUntil(this.destroy$),
         switchMap(message => this.vs.sendMessage(message.caption))
       )
       .subscribe();
-
-    this.componentRef = cmpRef;
 
     this.cdr.detectChanges();
   }

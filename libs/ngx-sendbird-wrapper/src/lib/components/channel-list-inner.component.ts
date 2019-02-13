@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Input,
   OnDestroy,
@@ -14,6 +13,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
+import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 import { ChannelListItemComponent } from './channel-list-item.component';
 
 @Component({
@@ -54,7 +54,7 @@ export class ChannelListInnerComponent implements AfterViewInit, OnDestroy {
   private destroy$ = new Subject();
 
   constructor(
-    private resolver: ComponentFactoryResolver,
+    private resolver: SendbirdComponentResolverService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -63,22 +63,7 @@ export class ChannelListInnerComponent implements AfterViewInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         tap(() => (this.componentRefs = [])),
-        tap(change => {
-          change.forEach((ref: ViewContainerRef, index: number) => {
-            const target = this.channelsListItemsRefs[index];
-
-            target.clear();
-
-            const channelListItemCmp = this.resolver.resolveComponentFactory(
-              ChannelListItemComponent
-            );
-            const cmpRef = target.createComponent(channelListItemCmp);
-
-            cmpRef.instance.channel = this.channels[index];
-
-            this.componentRefs.push(cmpRef);
-          });
-        }),
+        tap(change => this.updateChannelsList(change)),
         tap(() => this.cdr.detectChanges())
       )
       .subscribe();
@@ -92,5 +77,16 @@ export class ChannelListInnerComponent implements AfterViewInit, OnDestroy {
 
   trackByFn(index: number, item: SendBird.OpenChannel): string {
     return item ? item.url : index.toString();
+  }
+
+  private updateChannelsList(changes: any[]): void {
+    changes.forEach((ref: ViewContainerRef, index: number) => {
+      const cmpRef = this.resolver.createComponent(
+        this.channelsListItemsRefs[index],
+        ChannelListItemComponent
+      );
+      cmpRef.instance.channel = this.channels[index];
+      this.componentRefs.push(cmpRef);
+    });
   }
 }

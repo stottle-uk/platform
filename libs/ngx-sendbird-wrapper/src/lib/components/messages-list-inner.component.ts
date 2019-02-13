@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   ElementRef,
   Input,
@@ -19,6 +18,7 @@ import {
 } from '@nicky-lenaers/ngx-scroll-to';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
+import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 import { FetchMoreMessagesBtnComponent } from './fetch-more-messages-btn.component';
 import { MessagesListItemComponent } from './messages-list-item.component';
 
@@ -81,18 +81,14 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private scrollToService: ScrollToService,
-    private resolver: ComponentFactoryResolver,
+    private resolver: SendbirdComponentResolverService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit(): void {
-    this.fetchMoreMessagesBtn.clear();
-
-    const messageFormCmp = this.resolver.resolveComponentFactory(
+    this.fetchMoreMessagesBtnRef = this.resolver.createComponent(
+      this.fetchMoreMessagesBtn,
       FetchMoreMessagesBtnComponent
-    );
-    this.fetchMoreMessagesBtnRef = this.fetchMoreMessagesBtn.createComponent(
-      messageFormCmp
     );
 
     this.cdr.detectChanges();
@@ -101,22 +97,7 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         tap(() => (this.componentRefs = [])),
-        tap(change => {
-          change.forEach((ref: ViewContainerRef, index: number) => {
-            const target = this.messageListItemsRefs[index];
-
-            target.clear();
-
-            const messageListItemCmp = this.resolver.resolveComponentFactory(
-              MessagesListItemComponent
-            );
-            const cmpRef = target.createComponent(messageListItemCmp);
-
-            cmpRef.instance.message = this.messages[index];
-
-            this.componentRefs.push(cmpRef);
-          });
-        }),
+        tap(change => this.updateMessagesList(change)),
         tap(() => this.cdr.detectChanges()),
         tap(
           () =>
@@ -150,6 +131,17 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
     item: SendBird.UserMessage | SendBird.FileMessage
   ): number {
     return item ? item.messageId : index;
+  }
+
+  private updateMessagesList(changes: any[]): void {
+    changes.forEach((ref: ViewContainerRef, index: number) => {
+      const cmpRef = this.resolver.createComponent(
+        this.messageListItemsRefs[index],
+        MessagesListItemComponent
+      );
+      cmpRef.instance.message = this.messages[index];
+      this.componentRefs.push(cmpRef);
+    });
   }
 
   private scrollToBottomOfMessagesList(): void {

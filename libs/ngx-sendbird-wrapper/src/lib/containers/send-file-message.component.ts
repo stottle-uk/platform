@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   OnDestroy,
   ViewChild,
@@ -11,6 +10,7 @@ import {
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { MessageFileFormComponent } from '../components/message-file-form.component';
+import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
 @Component({
@@ -28,26 +28,22 @@ export class SendFileMessageComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private vs: SendbirdViewStateService,
-    private resolver: ComponentFactoryResolver,
+    private resolver: SendbirdComponentResolverService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit(): void {
-    this.messageFileForm.clear();
-
-    const messageFileFormCmp = this.resolver.resolveComponentFactory(
+    this.componentRef = this.resolver.createComponent(
+      this.messageFileForm,
       MessageFileFormComponent
     );
-    const cmpRef = this.messageFileForm.createComponent(messageFileFormCmp);
 
-    cmpRef.instance.messageSubmit
+    this.componentRef.instance.messageSubmit
       .pipe(
         takeUntil(this.destroy$),
         switchMap(message => this.vs.sendFileMessage(message.file))
       )
       .subscribe();
-
-    this.componentRef = cmpRef;
 
     this.cdr.detectChanges();
   }

@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Input,
   QueryList,
@@ -11,6 +10,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
+import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 import { ChannelParticipantsListItemComponent } from './channel-participants-list-item.component';
 
 @Component({
@@ -51,7 +51,7 @@ export class ChannelParticipantsListInnerComponent {
   private destroy$ = new Subject();
 
   constructor(
-    private resolver: ComponentFactoryResolver,
+    private resolver: SendbirdComponentResolverService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -60,24 +60,7 @@ export class ChannelParticipantsListInnerComponent {
       .pipe(
         takeUntil(this.destroy$),
         tap(() => (this.componentRefs = [])),
-        tap(change => {
-          change.forEach((ref: ViewContainerRef, index: number) => {
-            const target = this.channelParticipantsListItemsRefs[index];
-
-            target.clear();
-
-            const channelparticipantsListItemCmp = this.resolver.resolveComponentFactory(
-              ChannelParticipantsListItemComponent
-            );
-            const cmpRef = target.createComponent(
-              channelparticipantsListItemCmp
-            );
-
-            cmpRef.instance.participant = this.participants[index];
-
-            this.componentRefs.push(cmpRef);
-          });
-        }),
+        tap(change => this.updateChannelParticipantsList(change)),
         tap(() => this.cdr.detectChanges())
       )
       .subscribe();
@@ -91,5 +74,16 @@ export class ChannelParticipantsListInnerComponent {
 
   trackByFn(index: number, item: SendBird.OpenChannel): string {
     return item ? item.url : index.toString();
+  }
+
+  private updateChannelParticipantsList(changes: any[]): void {
+    changes.forEach((ref: ViewContainerRef, index: number) => {
+      const cmpRef = this.resolver.createComponent(
+        this.channelParticipantsListItemsRefs[index],
+        ChannelParticipantsListItemComponent
+      );
+      cmpRef.instance.participant = this.participants[index];
+      this.componentRefs.push(cmpRef);
+    });
   }
 }
