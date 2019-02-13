@@ -9,6 +9,7 @@ import { ChannelListInnerComponent } from './components/channel-list-inner.compo
 import { ChannelListItemComponent } from './components/channel-list-item.component';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
 import { ChannelParticipantsListItemComponent } from './components/channel-participants-list-item.component';
+import { FetchMoreMessagesBtnComponent } from './components/fetch-more-messages-btn.component';
 import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessageFormComponent } from './components/message-form.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
@@ -33,7 +34,8 @@ const entryComponents = [
   MessageFormComponent,
   MessageFileFormComponent,
   ChannelListItemComponent,
-  ChannelParticipantsListItemComponent
+  ChannelParticipantsListItemComponent,
+  FetchMoreMessagesBtnComponent
 ];
 
 const declarations = [

@@ -19,7 +19,7 @@ import {
 } from '@nicky-lenaers/ngx-scroll-to';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { FetchMoreMessagesComponent } from '../containers/fetch-more-messages.component';
+import { FetchMoreMessagesBtnComponent } from './fetch-more-messages-btn.component';
 import { MessagesListItemComponent } from './messages-list-item.component';
 
 @Component({
@@ -34,9 +34,7 @@ import { MessagesListItemComponent } from './messages-list-item.component';
       (scrolledUp)="onScrollUp()"
       [scrollWindow]="false"
     >
-      <button type="button">
-        <span stottle-fetch-more-messages>Load More</span>
-      </button>
+      <template #fetchMoreMessagesBtn></template>
       <ng-container
         #messagesList
         *ngFor="let message of messages; trackBy: trackByFn"
@@ -63,10 +61,10 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   @Input()
   scrollPositionMaintainEnabled: boolean;
 
-  @ViewChild(FetchMoreMessagesComponent)
-  fetchMoreMessages: FetchMoreMessagesComponent;
   @ViewChild('messagesContainer')
-  messagesContainer: ElementRef<HTMLDivElement>;
+  messagesContainer: ElementRef<Element>;
+  @ViewChild('fetchMoreMessagesBtn', { read: ViewContainerRef })
+  fetchMoreMessagesBtn: ViewContainerRef;
   @ViewChildren('messageListItem', { read: ViewContainerRef })
   messageListItems: QueryList<ViewContainerRef>;
   @ViewChildren('messagesList', { read: ViewContainerRef })
@@ -77,6 +75,7 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   }
 
   private componentRefs: ComponentRef<MessagesListItemComponent>[];
+  private fetchMoreMessagesBtnRef: ComponentRef<FetchMoreMessagesBtnComponent>;
   private lastScrollHeight = 0;
   private destroy$ = new Subject();
 
@@ -87,6 +86,17 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
+    this.fetchMoreMessagesBtn.clear();
+
+    const messageFormCmp = this.resolver.resolveComponentFactory(
+      FetchMoreMessagesBtnComponent
+    );
+    this.fetchMoreMessagesBtnRef = this.fetchMoreMessagesBtn.createComponent(
+      messageFormCmp
+    );
+
+    this.cdr.detectChanges();
+
     this.messagesList.changes
       .pipe(
         takeUntil(this.destroy$),
@@ -126,7 +136,7 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   }
 
   onScrollUp(): void {
-    this.fetchMoreMessages.getMore();
+    this.fetchMoreMessagesBtnRef.instance.fetchMoreMessages.getMore();
   }
 
   ngOnDestroy(): void {
