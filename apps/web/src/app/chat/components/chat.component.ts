@@ -19,7 +19,7 @@ import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/serv
         <button type="button" (click)="disconnect()">Stop</button>
       </div>
       <div fxLayout="row" *ngIf="(isConnected$ | async)">
-        <div style="width: 200px">
+        <div>
           <button type="button" mat-button>
             <span stottle-add-open-channel>Add</span>
           </button>

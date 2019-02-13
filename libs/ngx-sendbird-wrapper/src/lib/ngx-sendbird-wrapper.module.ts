@@ -6,6 +6,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
+import { ChannelListItemComponent } from './components/channel-list-item.component';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
 import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessageFormComponent } from './components/message-form.component';
@@ -29,7 +30,8 @@ export function sendBirdFactory(): SendBird.SendBirdInstance {
 const entryComponents = [
   MessageListItemComponent,
   MessageFormComponent,
-  MessageFileFormComponent
+  MessageFileFormComponent,
+  ChannelListItemComponent
 ];
 
 const declarations = [

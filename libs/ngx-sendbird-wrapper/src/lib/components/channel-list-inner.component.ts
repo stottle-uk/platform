@@ -1,54 +1,96 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  ComponentRef,
+  Input,
+  OnDestroy,
+  QueryList,
+  ViewChildren,
+  ViewContainerRef
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
+import { ChannelListItemComponent } from './channel-list-item.component';
 
 @Component({
   selector: 'stottle-channel-list-inner',
   template: `
-    <div
-      *ngFor="let channel of channels"
-      fxLayout
-      stottle-enter-channel
-      [channel]="channel"
-      class="channel-container"
-    >
-      <div class="avatar-container">
-        <img class="img-avatar" [src]="channel.coverUrl" [alt]="channel.name" />
-      </div>
-      <h3 fxFlex="grow">
-        <span> {{ channel.name }} </span>
-      </h3>
+    <div class="channels-container">
+      <ng-container
+        #channelsList
+        *ngFor="let channel of channels; trackBy: trackByFn"
+      >
+        <template #channelsListItem></template>
+      </ng-container>
     </div>
   `,
   styles: [
     `
-      .channel-container {
-        border-bottom: 1px solid #ccc;
-      }
-
-      .avatar-container {
-        margin: 0 10px;
-      }
-
-      .img-avatar {
-        width: 32px;
-      }
-
-      h3 {
-        margin: 0;
-      }
-
-      img {
-        height: auto;
-        max-width: 100%;
-        display: block;
-        vertical-align: middle;
-        border-style: none;
+      .channels-container {
+        width: 250px;
       }
     `
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChannelListInnerComponent {
+export class ChannelListInnerComponent implements AfterViewInit, OnDestroy {
   @Input()
   channels: SendBird.OpenChannel[];
+
+  @ViewChildren('channelsListItem', { read: ViewContainerRef })
+  channelsListItems: QueryList<ViewContainerRef>;
+  @ViewChildren('channelsList', { read: ViewContainerRef })
+  channelsList: QueryList<ViewContainerRef>;
+
+  private get channelsListItemsRefs(): ViewContainerRef[] {
+    return this.channelsListItems.toArray();
+  }
+
+  private componentRefs: ComponentRef<ChannelListItemComponent>[];
+  private destroy$ = new Subject();
+
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngAfterViewInit(): void {
+    this.channelsList.changes
+      .pipe(
+        takeUntil(this.destroy$),
+        tap(() => (this.componentRefs = [])),
+        tap(change => {
+          change.forEach((ref: ViewContainerRef, index: number) => {
+            const target = this.channelsListItemsRefs[index];
+
+            target.clear();
+
+            const channelListItemCmp = this.resolver.resolveComponentFactory(
+              ChannelListItemComponent
+            );
+            const cmpRef = target.createComponent(channelListItemCmp);
+
+            cmpRef.instance.channel = this.channels[index];
+
+            this.componentRefs.push(cmpRef);
+          });
+        }),
+        tap(() => this.cdr.detectChanges())
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.componentRefs.forEach(ref => ref.destroy());
+  }
+
+  trackByFn(index: number, item: SendBird.OpenChannel): string {
+    return item ? item.url : index.toString();
+  }
 }
