@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -65,7 +64,6 @@ const declarations = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
     InfiniteScrollModule,
     ScrollToModule.forRoot()
   ],
