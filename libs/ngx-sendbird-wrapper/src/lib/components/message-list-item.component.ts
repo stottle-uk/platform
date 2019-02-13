@@ -1,24 +1,24 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'stottle-message-list-item',
   template: `
-    <div fxLayout class="message-container" *ngIf="message">
+    <div fxLayout class="message-container">
       <div class="avatar-container">
-        <img class="img-avatar" [src]="mappedMessage.senderImg" />
+        <img
+          class="img-avatar"
+          *ngIf="senderProfileUrl"
+          [src]="senderProfileUrl"
+          [alt]="senderName"
+        />
       </div>
       <div fxFlex="grow">
         <div fxLayout class="header-container">
-          <h3 fxFlex="grow">{{ mappedMessage.sender }}</h3>
+          <h3 fxFlex="grow">{{ senderName }}</h3>
           <small>
-            <span> {{ mappedMessage.date | date }} </span>
-            <span stottle-delete-message [message]="message">
+            <span> {{ createdAt | date }} </span>
+            <span *ngIf="message" stottle-delete-message [message]="message">
               delete
             </span>
           </small>
@@ -67,7 +67,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MessageListItemComponent implements OnInit {
+export class MessageListItemComponent {
   @Input() message: SendBird.UserMessage | SendBird.FileMessage;
 
   get userMessage(): SendBird.UserMessage {
@@ -94,18 +94,21 @@ export class MessageListItemComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.fileMessage.url);
   }
 
-  get mappedMessage(): any {
-    return (
-      this.message && {
-        sender: this.message.sender.userId,
-        senderImg: this.message.sender.profileUrl,
-        date: this.message.createdAt,
-        id: this.message.messageId
-      }
-    );
+  get sender(): SendBird.Sender {
+    return this.message && this.message.sender;
+  }
+
+  get senderName(): string {
+    return this.sender && this.sender.userId;
+  }
+
+  get senderProfileUrl(): string {
+    return this.sender && this.sender.profileUrl;
+  }
+
+  get createdAt(): number {
+    return this.sender && this.message.createdAt;
   }
 
   constructor(private sanitizer: DomSanitizer) {}
-
-  ngOnInit() {}
 }

@@ -37,8 +37,11 @@ import { MessageListItemComponent } from './message-list-item.component';
       <button type="button" mat-button>
         <span stottle-fetch-more-messages>Load More</span>
       </button>
-      <ng-container #messagesList *ngFor="let message of messages">
-        <template #alertContainer></template>
+      <ng-container
+        #messagesList
+        *ngFor="let message of messages; trackBy: trackByFn"
+      >
+        <template #messageListItem></template>
       </ng-container>
     </div>
   `,
@@ -64,12 +67,16 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   fetchMoreMessages: FetchMoreMessagesComponent;
   @ViewChild('messagesContainer')
   messagesContainer: ElementRef<HTMLDivElement>;
-  @ViewChildren('alertContainer', { read: ViewContainerRef })
-  containers: QueryList<ViewContainerRef>;
+  @ViewChildren('messageListItem', { read: ViewContainerRef })
+  messageListItems: QueryList<ViewContainerRef>;
   @ViewChildren('messagesList', { read: ViewContainerRef })
   messagesList: QueryList<ViewContainerRef>;
 
-  componentRef: ComponentRef<MessageListItemComponent>;
+  get messageListItemsRefs(): ViewContainerRef[] {
+    return this.messageListItems.toArray();
+  }
+
+  componentRefs: ComponentRef<MessageListItemComponent>[];
   lastScrollHeight = 0;
   destroy$ = new Subject();
 
@@ -83,24 +90,24 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
     this.messagesList.changes
       .pipe(
         takeUntil(this.destroy$),
-        tap(console.log),
+        tap(() => (this.componentRefs = [])),
         tap(change => {
           change.forEach((ref: ViewContainerRef, index: number) => {
-            let target = this.containers.toArray()[index];
+            const target = this.messageListItemsRefs[index];
 
             target.clear();
 
-            let widgetComponent = this.resolver.resolveComponentFactory(
+            const widgetComponent = this.resolver.resolveComponentFactory(
               MessageListItemComponent
             );
-            let cmpRef = target.createComponent(widgetComponent);
+            const cmpRef = target.createComponent(widgetComponent);
 
             cmpRef.instance.message = this.messages[index];
 
-            this.cdr.detectChanges();
+            this.componentRefs.push(cmpRef);
           });
         }),
-
+        tap(() => this.cdr.detectChanges()),
         tap(
           () =>
             this.scrollToBottomEnabled && this.scrollToBottomOfMessagesList()
@@ -125,6 +132,14 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.componentRefs.forEach(ref => ref.destroy());
+  }
+
+  trackByFn(
+    index: number,
+    item: SendBird.UserMessage | SendBird.FileMessage
+  ): number {
+    return item ? item.messageId : index;
   }
 
   private scrollToBottomOfMessagesList(): void {
