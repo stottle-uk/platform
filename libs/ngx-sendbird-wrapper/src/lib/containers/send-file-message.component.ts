@@ -17,8 +17,7 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
   selector: 'stottle-send-file-message',
   template: `
     <template #messageFileForm></template>
-  `,
-  styles: []
+  `
 })
 export class SendFileMessageComponent implements AfterViewInit, OnDestroy {
   @ViewChild('messageFileForm', { read: ViewContainerRef })
@@ -58,12 +57,4 @@ export class SendFileMessageComponent implements AfterViewInit, OnDestroy {
     this.destroy$.complete();
     this.componentRef.destroy();
   }
-
-  // constructor(private vs: SendbirdViewStateService) {}
-
-  // ngOnInit() {}
-
-  // sendMessage(message: SendFileMessage): void {
-  //   this.vs.sendFileMessage(message.file).subscribe();
-  // }
 }

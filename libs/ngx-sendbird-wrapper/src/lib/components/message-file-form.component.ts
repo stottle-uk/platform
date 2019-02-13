@@ -17,8 +17,7 @@ import { SendFileMessage } from '../models/messages.model';
 
       <button type="submit" color="primary">Send</button>
     </form>
-  `,
-  styles: []
+  `
 })
 export class MessageFileFormComponent {
   @Output()

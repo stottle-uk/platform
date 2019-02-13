@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import * as SendBird from 'sendbird';
 
 @Component({
@@ -45,7 +45,8 @@ import * as SendBird from 'sendbird';
         border-style: none;
       }
     `
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChannelListInnerComponent {
   @Input()

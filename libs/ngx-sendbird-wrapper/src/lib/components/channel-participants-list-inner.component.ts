@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'stottle-channel-participants-list-inner',
@@ -44,7 +44,8 @@ import { Component, Input } from '@angular/core';
         border-style: none;
       }
     `
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChannelParticipantsListInnerComponent {
   @Input()

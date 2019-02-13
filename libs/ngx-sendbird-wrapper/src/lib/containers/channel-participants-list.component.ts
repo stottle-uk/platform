@@ -7,8 +7,7 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
     <stottle-channel-participants-list-inner
       [participants]="participants$ | async"
     ></stottle-channel-participants-list-inner>
-  `,
-  styles: []
+  `
 })
 export class ChannelParticipantsListComponent implements OnInit {
   participants$ = this.vs.participantsForCurrentChannel$;
