@@ -1,47 +1,34 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  ComponentRef,
+  Input,
+  QueryList,
+  ViewChildren,
+  ViewContainerRef
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { ChannelParticipantsListItemComponent } from './channel-participants-list-item.component';
 
 @Component({
   selector: 'stottle-channel-participants-list-inner',
   template: `
-    <div
-      *ngFor="let participant of participants"
-      fxLayout
-      class="participant-container"
-    >
-      <div class="avatar-container">
-        <img
-          class="img-avatar"
-          [src]="participant.profileUrl"
-          [alt]="participant.userId"
-        />
-      </div>
-      <h3 fxFlex="grow">{{ participant.userId }}</h3>
+    <div class="channel-participants-container">
+      <ng-container
+        #channelparticipantsList
+        *ngFor="let participant of participants; trackBy: trackByFn"
+      >
+        <template #channelparticipantsListItem></template>
+      </ng-container>
     </div>
   `,
   styles: [
     `
-      .participant-container {
-        border-bottom: 1px solid #ccc;
-      }
-
-      .avatar-container {
-        margin: 0 10px;
-      }
-
-      .img-avatar {
-        width: 32px;
-      }
-
-      h3 {
-        margin: 0;
-      }
-
-      img {
-        height: auto;
-        max-width: 100%;
-        display: block;
-        vertical-align: middle;
-        border-style: none;
+      .channel-participants-container {
+        width: 250px;
       }
     `
   ],
@@ -49,5 +36,60 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class ChannelParticipantsListInnerComponent {
   @Input()
-  participants: SendBird.User;
+  participants: SendBird.User[];
+
+  @ViewChildren('channelparticipantsListItem', { read: ViewContainerRef })
+  channelparticipantsListItems: QueryList<ViewContainerRef>;
+  @ViewChildren('channelparticipantsList', { read: ViewContainerRef })
+  channelparticipantsList: QueryList<ViewContainerRef>;
+
+  private get channelparticipantsListItemsRefs(): ViewContainerRef[] {
+    return this.channelparticipantsListItems.toArray();
+  }
+
+  private componentRefs: ComponentRef<ChannelParticipantsListItemComponent>[];
+  private destroy$ = new Subject();
+
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngAfterViewInit(): void {
+    this.channelparticipantsList.changes
+      .pipe(
+        takeUntil(this.destroy$),
+        tap(() => (this.componentRefs = [])),
+        tap(change => {
+          change.forEach((ref: ViewContainerRef, index: number) => {
+            const target = this.channelparticipantsListItemsRefs[index];
+
+            target.clear();
+
+            const channelparticipantsListItemCmp = this.resolver.resolveComponentFactory(
+              ChannelParticipantsListItemComponent
+            );
+            const cmpRef = target.createComponent(
+              channelparticipantsListItemCmp
+            );
+
+            cmpRef.instance.participant = this.participants[index];
+
+            this.componentRefs.push(cmpRef);
+          });
+        }),
+        tap(() => this.cdr.detectChanges())
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.componentRefs.forEach(ref => ref.destroy());
+  }
+
+  trackByFn(index: number, item: SendBird.OpenChannel): string {
+    return item ? item.url : index.toString();
+  }
 }

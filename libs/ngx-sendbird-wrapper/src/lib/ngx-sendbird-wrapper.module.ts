@@ -8,6 +8,7 @@ import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
 import { ChannelListItemComponent } from './components/channel-list-item.component';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
+import { ChannelParticipantsListItemComponent } from './components/channel-participants-list-item.component';
 import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessageFormComponent } from './components/message-form.component';
 import { MessageListItemComponent } from './components/message-list-item.component';
@@ -31,7 +32,8 @@ const entryComponents = [
   MessageListItemComponent,
   MessageFormComponent,
   MessageFileFormComponent,
-  ChannelListItemComponent
+  ChannelListItemComponent,
+  ChannelParticipantsListItemComponent
 ];
 
 const declarations = [
