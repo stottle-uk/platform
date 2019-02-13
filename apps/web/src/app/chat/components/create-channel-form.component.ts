@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { CreateChannel } from '../models/messages.model';
+import {
+  CreateChannel,
+  SendbirdCreateChannelFormComponent
+} from '@stottle-platform/ngx-sendbird-wrapper';
 
 @Component({
   selector: 'stottle-create-channel-form',
@@ -16,7 +19,8 @@ import { CreateChannel } from '../models/messages.model';
   `,
   styles: []
 })
-export class CreateChannelFormComponent {
+export class CreateChannelFormComponent
+  implements SendbirdCreateChannelFormComponent {
   @Output()
   channelSubmit = new EventEmitter<CreateChannel>();
 

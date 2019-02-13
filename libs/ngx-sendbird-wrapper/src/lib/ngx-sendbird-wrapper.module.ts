@@ -6,15 +6,8 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
-import { ChannelListItemComponent } from './components/channel-list-item.component';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
-import { ChannelParticipantsListItemComponent } from './components/channel-participants-list-item.component';
-import { CreateChannelFormComponent } from './components/create-channel-form.component';
-import { FetchMoreMessagesBtnComponent } from './components/fetch-more-messages-btn.component';
-import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
-import { MessagesListItemComponent } from './components/messages-list-item.component';
-import { SendBirdMessageFormComponent } from './components/send-bird-message-form.component';
 import { ChannelListComponent } from './containers/channel-list.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
 import { CreateOpenChannelComponent } from './containers/create-open-channel.component';
@@ -32,6 +25,13 @@ import {
 } from './models/messages.model';
 import { SendbirdComponentResolverService } from './services/sendbird-component-resolver.service';
 import { SEND_BIRD } from './services/sendbird.service';
+import { SendbirdChannelListItemComponent } from './templates/send-bird-channel-list-item.component';
+import { SendbirdChannelParticipantsListItemComponent } from './templates/send-bird-channel-participants-list-item.component';
+import { SendbirdCreateChannelFormComponent } from './templates/send-bird-create-channel-form.component';
+import { SendbirdFetchMoreMessagesBtnComponent } from './templates/send-bird-fetch-more-messages-btn.component';
+import { SendbirdMessageFileFormComponent } from './templates/send-bird-message-file-form.component';
+import { SendBirdMessageFormComponent } from './templates/send-bird-message-form.component';
+import { SendbirdMessagesListItemComponent } from './templates/send-bird-messages-list-item.component';
 
 export function sendBirdFactory(
   options: SendbirdOptions
@@ -40,13 +40,13 @@ export function sendBirdFactory(
 }
 
 const entryComponents = [
-  MessagesListItemComponent,
+  SendbirdMessagesListItemComponent,
   SendBirdMessageFormComponent,
-  MessageFileFormComponent,
-  ChannelListItemComponent,
-  ChannelParticipantsListItemComponent,
-  FetchMoreMessagesBtnComponent,
-  CreateChannelFormComponent
+  SendbirdMessageFileFormComponent,
+  SendbirdChannelListItemComponent,
+  SendbirdChannelParticipantsListItemComponent,
+  SendbirdFetchMoreMessagesBtnComponent,
+  SendbirdCreateChannelFormComponent
 ];
 
 const declarations = [
@@ -57,7 +57,8 @@ const declarations = [
   CreateOpenChannelComponent,
   FetchMoreMessagesComponent,
   DeleteMessageComponent,
-  ChannelParticipantsListComponent
+  ChannelParticipantsListComponent,
+  EnterChannelComponent
 ];
 
 @NgModule({
@@ -73,8 +74,7 @@ const declarations = [
     entryComponents,
     ChannelListInnerComponent,
     MessagesListInnerComponent,
-    ChannelParticipantsListInnerComponent,
-    EnterChannelComponent
+    ChannelParticipantsListInnerComponent
   ],
   exports: [declarations],
   entryComponents: [entryComponents]

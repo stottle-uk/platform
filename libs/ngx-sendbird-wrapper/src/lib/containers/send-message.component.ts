@@ -9,9 +9,9 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { SendBirdMessageFormComponent } from '../components/send-bird-message-form.component';
 import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
+import { SendBirdMessageFormComponent } from '../templates/send-bird-message-form.component';
 
 @Component({
   selector: 'stottle-send-message',

@@ -7,7 +7,10 @@ import {
   ViewChild
 } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import { SendFileMessage } from '../models/messages.model';
+import {
+  SendbirdMessageFileFormComponent,
+  SendFileMessage
+} from '@stottle-platform/ngx-sendbird-wrapper';
 
 @Component({
   selector: 'stottle-message-file-form',
@@ -19,7 +22,8 @@ import { SendFileMessage } from '../models/messages.model';
     </form>
   `
 })
-export class MessageFileFormComponent {
+export class MessageFileFormComponent
+  implements SendbirdMessageFileFormComponent {
   @Output()
   messageSubmit = new EventEmitter<SendFileMessage>();
 

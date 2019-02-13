@@ -1,25 +1,19 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { SendbirdChannelParticipantsListItemComponent } from '@stottle-platform/ngx-sendbird-wrapper';
 
 @Component({
-  selector: 'stottle-channel-list-item',
+  selector: 'stottle-channel-participants-list-item',
   template: `
-    <div
-      class="channel-container"
-      fxLayout
-      stottle-enter-channel
-      [channel]="channel"
-    >
+    <div class="channel-participant-container" fxLayout>
       <div class="avatar-container">
-        <img class="img-avatar" [src]="coverImageUrl" [alt]="name" />
+        <img class="img-avatar" [src]="profileImageUrl" [alt]="name" />
       </div>
-      <h3 fxFlex="grow">
-        <span> {{ name }} </span>
-      </h3>
+      <h3 fxFlex="grow">{{ name }}</h3>
     </div>
   `,
   styles: [
     `
-      .channel-container {
+      .channel-participant-container {
         border-bottom: 1px solid #ccc;
         padding: 10px 0;
       }
@@ -47,15 +41,16 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChannelListItemComponent {
+export class ChannelParticipantsListItemComponent
+  implements SendbirdChannelParticipantsListItemComponent {
   @Input()
-  channel: SendBird.OpenChannel;
+  participant: SendBird.User;
 
   get name(): string {
-    return this.channel && this.channel.name;
+    return this.participant && this.participant.userId;
   }
 
-  get coverImageUrl(): string {
-    return this.channel && this.channel.coverUrl;
+  get profileImageUrl(): string {
+    return this.participant && this.participant.profileUrl;
   }
 }

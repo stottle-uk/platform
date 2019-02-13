@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MessagesListItemComponent } from './messages-list-item.component';
+import { MessageFileFormComponent } from './message-file-form.component';
 
-describe('MessagesListItemComponent', () => {
-  let component: MessagesListItemComponent;
-  let fixture: ComponentFixture<MessagesListItemComponent>;
+describe('MessageFileFormComponent', () => {
+  let component: MessageFileFormComponent;
+  let fixture: ComponentFixture<MessageFileFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MessagesListItemComponent]
+      declarations: [MessageFileFormComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MessagesListItemComponent);
+    fixture = TestBed.createComponent(MessageFileFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

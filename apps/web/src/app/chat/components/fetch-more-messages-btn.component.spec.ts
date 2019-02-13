@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { FetchMoreMessagesBtnComponent } from './fetch-more-messages-btn.component';
 
 describe('FetchMoreMessagesBtnComponent', () => {
@@ -8,9 +7,8 @@ describe('FetchMoreMessagesBtnComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FetchMoreMessagesBtnComponent ]
-    })
-    .compileComponents();
+      declarations: [FetchMoreMessagesBtnComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

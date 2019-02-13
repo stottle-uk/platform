@@ -19,8 +19,8 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
-import { FetchMoreMessagesBtnComponent } from './fetch-more-messages-btn.component';
-import { MessagesListItemComponent } from './messages-list-item.component';
+import { SendbirdFetchMoreMessagesBtnComponent } from '../templates/send-bird-fetch-more-messages-btn.component';
+import { SendbirdMessagesListItemComponent } from '../templates/send-bird-messages-list-item.component';
 
 @Component({
   selector: 'stottle-messages-list-inner',
@@ -74,8 +74,10 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
     return this.messageListItems.toArray();
   }
 
-  private componentRefs: ComponentRef<MessagesListItemComponent>[];
-  private fetchMoreMessagesBtnRef: ComponentRef<FetchMoreMessagesBtnComponent>;
+  private componentRefs: ComponentRef<SendbirdMessagesListItemComponent>[];
+  private fetchMoreMessagesBtnRef: ComponentRef<
+    SendbirdFetchMoreMessagesBtnComponent
+  >;
   private lastScrollHeight = 0;
   private destroy$ = new Subject();
 
@@ -88,7 +90,7 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.fetchMoreMessagesBtnRef = this.resolver.createComponent(
       this.fetchMoreMessagesBtn,
-      FetchMoreMessagesBtnComponent
+      SendbirdFetchMoreMessagesBtnComponent
     );
 
     this.cdr.detectChanges();
@@ -137,7 +139,7 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
     changes.forEach((ref: ViewContainerRef, index: number) => {
       const cmpRef = this.resolver.createComponent(
         this.messageListItemsRefs[index],
-        MessagesListItemComponent
+        SendbirdMessagesListItemComponent
       );
       cmpRef.instance.message = this.messages[index];
       this.componentRefs.push(cmpRef);

@@ -1,11 +1,11 @@
 import { InjectionToken, Type } from '@angular/core';
-import { ChannelListItemComponent } from '../components/channel-list-item.component';
-import { ChannelParticipantsListItemComponent } from '../components/channel-participants-list-item.component';
-import { CreateChannelFormComponent } from '../components/create-channel-form.component';
-import { FetchMoreMessagesBtnComponent } from '../components/fetch-more-messages-btn.component';
-import { MessageFileFormComponent } from '../components/message-file-form.component';
-import { MessagesListItemComponent } from '../components/messages-list-item.component';
-import { SendBirdMessageFormComponent } from '../components/send-bird-message-form.component';
+import { SendbirdChannelListItemComponent } from '../templates/send-bird-channel-list-item.component';
+import { SendbirdChannelParticipantsListItemComponent } from '../templates/send-bird-channel-participants-list-item.component';
+import { SendbirdCreateChannelFormComponent } from '../templates/send-bird-create-channel-form.component';
+import { SendbirdFetchMoreMessagesBtnComponent } from '../templates/send-bird-fetch-more-messages-btn.component';
+import { SendbirdMessageFileFormComponent } from '../templates/send-bird-message-file-form.component';
+import { SendBirdMessageFormComponent } from '../templates/send-bird-message-form.component';
+import { SendbirdMessagesListItemComponent } from '../templates/send-bird-messages-list-item.component';
 
 export interface SendMessage {
   caption: string;
@@ -25,14 +25,16 @@ export interface SendbirdOptions {
 
 export interface SendbirdOptionsDeclarations {
   sendBirdMessageFormComponent?: Type<SendBirdMessageFormComponent>;
-  messageFileFormComponent: Type<MessageFileFormComponent>;
-  channelListItemComponent: Type<ChannelListItemComponent>;
-  channelParticipantsListItemComponent: Type<
-    ChannelParticipantsListItemComponent
+  sendBirdMessageFileFormComponent?: Type<SendbirdMessageFileFormComponent>;
+  sendBirdChannelListItemComponent?: Type<SendbirdChannelListItemComponent>;
+  sendBirdChannelParticipantsListItemComponent?: Type<
+    SendbirdChannelParticipantsListItemComponent
   >;
-  fetchMoreMessagesBtnComponent: Type<FetchMoreMessagesBtnComponent>;
-  messagesListItemComponent: Type<MessagesListItemComponent>;
-  createChannelFormComponent: Type<CreateChannelFormComponent>;
+  sendBirdFetchMoreMessagesBtnComponent?: Type<
+    SendbirdFetchMoreMessagesBtnComponent
+  >;
+  sendBirdMessagesListItemComponent?: Type<SendbirdMessagesListItemComponent>;
+  sendBirdCreateChannelFormComponent?: Type<SendbirdCreateChannelFormComponent>;
 }
 
 export const SEND_BIRD_OPTIONS = new InjectionToken<SendbirdOptions>(

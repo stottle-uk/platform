@@ -11,7 +11,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
-import { ChannelParticipantsListItemComponent } from './channel-participants-list-item.component';
+import { SendbirdChannelParticipantsListItemComponent } from '../templates/send-bird-channel-participants-list-item.component';
 
 @Component({
   selector: 'stottle-channel-participants-list-inner',
@@ -47,7 +47,9 @@ export class ChannelParticipantsListInnerComponent {
     return this.channelParticipantsListItems.toArray();
   }
 
-  private componentRefs: ComponentRef<ChannelParticipantsListItemComponent>[];
+  private componentRefs: ComponentRef<
+    SendbirdChannelParticipantsListItemComponent
+  >[];
   private destroy$ = new Subject();
 
   constructor(
@@ -80,7 +82,7 @@ export class ChannelParticipantsListInnerComponent {
     changes.forEach((ref: ViewContainerRef, index: number) => {
       const cmpRef = this.resolver.createComponent(
         this.channelParticipantsListItemsRefs[index],
-        ChannelParticipantsListItemComponent
+        SendbirdChannelParticipantsListItemComponent
       );
       cmpRef.instance.participant = this.participants[index];
       this.componentRefs.push(cmpRef);

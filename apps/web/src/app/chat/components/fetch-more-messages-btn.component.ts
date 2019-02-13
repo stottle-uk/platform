@@ -1,5 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { FetchMoreMessagesComponent } from '../containers/fetch-more-messages.component';
+import {
+  FetchMoreMessagesComponent,
+  SendbirdFetchMoreMessagesBtnComponent
+} from '@stottle-platform/ngx-sendbird-wrapper';
 
 @Component({
   selector: 'stottle-fetch-more-messages-btn',
@@ -10,7 +13,8 @@ import { FetchMoreMessagesComponent } from '../containers/fetch-more-messages.co
   `,
   styles: []
 })
-export class FetchMoreMessagesBtnComponent {
+export class FetchMoreMessagesBtnComponent
+  implements SendbirdFetchMoreMessagesBtnComponent {
   @ViewChild(FetchMoreMessagesComponent)
   fetchMoreMessages: FetchMoreMessagesComponent;
 }

@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ChannelParticipantsListItemComponent } from './channel-participants-list-item.component';
 
 describe('ChannelParticipantsListItemComponent', () => {
@@ -8,9 +7,8 @@ describe('ChannelParticipantsListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChannelParticipantsListItemComponent ]
-    })
-    .compileComponents();
+      declarations: [ChannelParticipantsListItemComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -7,9 +7,9 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { CreateChannelFormComponent } from '../components/create-channel-form.component';
 import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
+import { SendbirdCreateChannelFormComponent } from '../templates/send-bird-create-channel-form.component';
 
 @Component({
   selector: 'stottle-create-open-channel',
@@ -21,7 +21,7 @@ export class CreateOpenChannelComponent {
   @ViewChild('channelForm', { read: ViewContainerRef })
   channelForm: ViewContainerRef;
 
-  private componentRef: ComponentRef<CreateChannelFormComponent>;
+  private componentRef: ComponentRef<SendbirdCreateChannelFormComponent>;
   private destroy$ = new Subject();
 
   constructor(
@@ -33,7 +33,7 @@ export class CreateOpenChannelComponent {
   ngAfterViewInit(): void {
     this.componentRef = this.resolver.createComponent(
       this.channelForm,
-      CreateChannelFormComponent
+      SendbirdCreateChannelFormComponent
     );
 
     this.componentRef.instance.channelSubmit
