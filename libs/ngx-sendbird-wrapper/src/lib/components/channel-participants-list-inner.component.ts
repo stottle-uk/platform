@@ -18,10 +18,10 @@ import { ChannelParticipantsListItemComponent } from './channel-participants-lis
   template: `
     <div class="channel-participants-container">
       <ng-container
-        #channelparticipantsList
+        #channelParticipantsList
         *ngFor="let participant of participants; trackBy: trackByFn"
       >
-        <template #channelparticipantsListItem></template>
+        <template #channelParticipantsListItem></template>
       </ng-container>
     </div>
   `,
@@ -38,13 +38,13 @@ export class ChannelParticipantsListInnerComponent {
   @Input()
   participants: SendBird.User[];
 
-  @ViewChildren('channelparticipantsListItem', { read: ViewContainerRef })
-  channelparticipantsListItems: QueryList<ViewContainerRef>;
-  @ViewChildren('channelparticipantsList', { read: ViewContainerRef })
-  channelparticipantsList: QueryList<ViewContainerRef>;
+  @ViewChildren('channelParticipantsListItem', { read: ViewContainerRef })
+  channelParticipantsListItems: QueryList<ViewContainerRef>;
+  @ViewChildren('channelParticipantsList', { read: ViewContainerRef })
+  channelParticipantsList: QueryList<ViewContainerRef>;
 
-  private get channelparticipantsListItemsRefs(): ViewContainerRef[] {
-    return this.channelparticipantsListItems.toArray();
+  private get channelParticipantsListItemsRefs(): ViewContainerRef[] {
+    return this.channelParticipantsListItems.toArray();
   }
 
   private componentRefs: ComponentRef<ChannelParticipantsListItemComponent>[];
@@ -56,13 +56,13 @@ export class ChannelParticipantsListInnerComponent {
   ) {}
 
   ngAfterViewInit(): void {
-    this.channelparticipantsList.changes
+    this.channelParticipantsList.changes
       .pipe(
         takeUntil(this.destroy$),
         tap(() => (this.componentRefs = [])),
         tap(change => {
           change.forEach((ref: ViewContainerRef, index: number) => {
-            const target = this.channelparticipantsListItemsRefs[index];
+            const target = this.channelParticipantsListItemsRefs[index];
 
             target.clear();
 
