@@ -25,13 +25,13 @@ const declarations = [
   imports: [
     SharedModule,
     NgxSendbirdWrapperModule.forFeature({
-      sendBirdMessageFormComponent: MessageFormComponent,
-      sendBirdMessageFileFormComponent: MessageFileFormComponent,
-      sendBirdChannelListItemComponent: ChannelListItemComponent,
-      sendBirdChannelParticipantsListItemComponent: ChannelParticipantsListItemComponent,
-      sendBirdFetchMoreMessagesBtnComponent: FetchMoreMessagesBtnComponent,
-      sendBirdMessagesListItemComponent: MessagesListItemComponent,
-      sendBirdCreateChannelFormComponent: CreateChannelFormComponent
+      messageFormComponent: MessageFormComponent,
+      messageFileFormComponent: MessageFileFormComponent,
+      channelListItemComponent: ChannelListItemComponent,
+      channelParticipantsListItemComponent: ChannelParticipantsListItemComponent,
+      fetchMoreMessagesBtnComponent: FetchMoreMessagesBtnComponent,
+      messagesListItemComponent: MessagesListItemComponent,
+      createChannelFormComponent: CreateChannelFormComponent
     }),
     ChatRoutesModule
   ],

@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FetchMoreMessagesComponent } from '../containers/fetch-more-messages.component';
 
 @Component({
-  selector: 'stottle-fetch-more-messages-btn',
+  selector: 'stottle-send-bird-fetch-more-messages-btn',
   template: `
-    stottle-fetch-more-messages-btn
+    <span stottle-fetch-more-messages>
+      stottle-send-bird-fetch-more-messages-btn
+    </span>
   `
 })
 export class SendbirdFetchMoreMessagesBtnComponent {
+  @ViewChild(FetchMoreMessagesComponent)
   fetchMoreMessages: FetchMoreMessagesComponent;
 }

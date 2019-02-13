@@ -31,7 +31,7 @@ export class SendbirdComponentResolverService {
 
   private getComponentOrDefault<T>(type: Type<T>): Type<T> {
     const key = Object.keys(this.declarations).findIndex(
-      key => key.toLowerCase() === type.name.toLowerCase()
+      key => `sendbird${key.toLowerCase()}` === type.name.toLowerCase()
     );
     return Object.values(this.declarations)[key] || type;
   }

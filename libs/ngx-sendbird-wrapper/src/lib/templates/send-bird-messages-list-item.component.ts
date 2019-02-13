@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'stottle-messages-list-item',
+  selector: 'stottle-send-bird-messages-list-item',
   template: `
-    stottle-messages-list-item
+    <pre>{{ message | json }}</pre>
   `
 })
 export class SendbirdMessagesListItemComponent {
-  @Input() message: SendBird.UserMessage | SendBird.FileMessage;
+  message: SendBird.UserMessage | SendBird.FileMessage;
 }

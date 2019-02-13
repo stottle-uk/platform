@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'stottle-channel-list-item',
+  selector: 'stottle-send-bird-channel-list-item',
   template: `
-    stottle-channel-list-item
+    <pre stottle-enter-channel [channel]="channel">{{ channel | json }}</pre>
   `
 })
 export class SendbirdChannelListItemComponent {

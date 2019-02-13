@@ -2,9 +2,9 @@ import { Component, EventEmitter } from '@angular/core';
 import { CreateChannel } from '../models/messages.model';
 
 @Component({
-  selector: 'stottle-create-channel-form',
+  selector: 'stottle-send-bird-create-channel-form',
   template: `
-    stottle-create-channel-form
+    stottle-send-bird-create-channel-form
   `
 })
 export class SendbirdCreateChannelFormComponent {

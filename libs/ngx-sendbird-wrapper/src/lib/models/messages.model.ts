@@ -24,17 +24,15 @@ export interface SendbirdOptions {
 }
 
 export interface SendbirdOptionsDeclarations {
-  sendBirdMessageFormComponent?: Type<SendBirdMessageFormComponent>;
-  sendBirdMessageFileFormComponent?: Type<SendbirdMessageFileFormComponent>;
-  sendBirdChannelListItemComponent?: Type<SendbirdChannelListItemComponent>;
-  sendBirdChannelParticipantsListItemComponent?: Type<
+  messageFormComponent?: Type<SendBirdMessageFormComponent>;
+  messageFileFormComponent?: Type<SendbirdMessageFileFormComponent>;
+  channelListItemComponent?: Type<SendbirdChannelListItemComponent>;
+  channelParticipantsListItemComponent?: Type<
     SendbirdChannelParticipantsListItemComponent
   >;
-  sendBirdFetchMoreMessagesBtnComponent?: Type<
-    SendbirdFetchMoreMessagesBtnComponent
-  >;
-  sendBirdMessagesListItemComponent?: Type<SendbirdMessagesListItemComponent>;
-  sendBirdCreateChannelFormComponent?: Type<SendbirdCreateChannelFormComponent>;
+  fetchMoreMessagesBtnComponent?: Type<SendbirdFetchMoreMessagesBtnComponent>;
+  messagesListItemComponent?: Type<SendbirdMessagesListItemComponent>;
+  createChannelFormComponent?: Type<SendbirdCreateChannelFormComponent>;
 }
 
 export const SEND_BIRD_OPTIONS = new InjectionToken<SendbirdOptions>(
