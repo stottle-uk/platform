@@ -28,6 +28,7 @@ export class MessageFormComponent {
   formSubmit(): void {
     if (this.messageForm.valid) {
       this.messageSubmit.emit(this.messageForm.value);
+      this.messageForm.reset();
     }
   }
 }

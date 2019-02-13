@@ -34,7 +34,7 @@ import { MessageListItemComponent } from './message-list-item.component';
       (scrolledUp)="onScrollUp()"
       [scrollWindow]="false"
     >
-      <button type="button" mat-button>
+      <button type="button">
         <span stottle-fetch-more-messages>Load More</span>
       </button>
       <ng-container
@@ -72,13 +72,13 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   @ViewChildren('messagesList', { read: ViewContainerRef })
   messagesList: QueryList<ViewContainerRef>;
 
-  get messageListItemsRefs(): ViewContainerRef[] {
+  private get messageListItemsRefs(): ViewContainerRef[] {
     return this.messageListItems.toArray();
   }
 
-  componentRefs: ComponentRef<MessageListItemComponent>[];
-  lastScrollHeight = 0;
-  destroy$ = new Subject();
+  private componentRefs: ComponentRef<MessageListItemComponent>[];
+  private lastScrollHeight = 0;
+  private destroy$ = new Subject();
 
   constructor(
     private scrollToService: ScrollToService,
@@ -97,10 +97,10 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
 
             target.clear();
 
-            const widgetComponent = this.resolver.resolveComponentFactory(
+            const messageListItemCmp = this.resolver.resolveComponentFactory(
               MessageListItemComponent
             );
-            const cmpRef = target.createComponent(widgetComponent);
+            const cmpRef = target.createComponent(messageListItemCmp);
 
             cmpRef.instance.message = this.messages[index];
 

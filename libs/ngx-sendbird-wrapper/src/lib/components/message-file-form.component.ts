@@ -15,7 +15,7 @@ import { SendFileMessage } from '../models/messages.model';
     <form [formGroup]="messageForm" (ngSubmit)="formSubmit()">
       <input type="file" #fileInput />
 
-      <button mat-button type="submit" color="primary">Send</button>
+      <button type="submit" color="primary">Send</button>
     </form>
   `,
   styles: []

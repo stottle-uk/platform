@@ -1,20 +1,60 @@
-import { Component } from '@angular/core';
-import { SendMessage } from '../models/messages.model';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  ComponentRef,
+  OnDestroy,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
+import { MessageFormComponent } from '../components/message-form.component';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
 @Component({
   selector: 'stottle-send-message',
   template: `
-    <stottle-message-form
-      (messageSubmit)="sendMessage($event)"
-    ></stottle-message-form>
-  `,
-  styles: []
+    <template #messageForm></template>
+  `
 })
-export class SendMessageComponent {
-  constructor(private vs: SendbirdViewStateService) {}
+export class SendMessageComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('messageForm', { read: ViewContainerRef })
+  messageForm: ViewContainerRef;
 
-  sendMessage(message: SendMessage): void {
-    this.vs.sendMessage(message.caption).subscribe();
+  private componentRef: ComponentRef<MessageFormComponent>;
+  private destroy$ = new Subject();
+
+  constructor(
+    private vs: SendbirdViewStateService,
+    private resolver: ComponentFactoryResolver,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngAfterViewInit(): void {
+    this.messageForm.clear();
+
+    const messageFormCmp = this.resolver.resolveComponentFactory(
+      MessageFormComponent
+    );
+    const cmpRef = this.messageForm.createComponent(messageFormCmp);
+
+    cmpRef.instance.messageSubmit
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap(message => this.vs.sendMessage(message.caption))
+      )
+      .subscribe();
+
+    this.componentRef = cmpRef;
+
+    this.cdr.detectChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.componentRef.destroy();
   }
 }
