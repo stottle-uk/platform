@@ -20,9 +20,7 @@ import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/serv
       </div>
       <div fxLayout="row" *ngIf="(isConnected$ | async)">
         <div>
-          <button type="button" mat-button>
-            <span stottle-add-open-channel>Add</span>
-          </button>
+          <stottle-create-open-channel></stottle-create-open-channel>
 
           <stottle-channel-list></stottle-channel-list>
         </div>

@@ -9,14 +9,15 @@ import { ChannelListInnerComponent } from './components/channel-list-inner.compo
 import { ChannelListItemComponent } from './components/channel-list-item.component';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
 import { ChannelParticipantsListItemComponent } from './components/channel-participants-list-item.component';
+import { CreateChannelFormComponent } from './components/create-channel-form.component';
 import { FetchMoreMessagesBtnComponent } from './components/fetch-more-messages-btn.component';
 import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessageFormComponent } from './components/message-form.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { MessagesListItemComponent } from './components/messages-list-item.component';
-import { AddOpenChannelComponent } from './containers/add-open-channel.component';
 import { ChannelListComponent } from './containers/channel-list.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
+import { CreateOpenChannelComponent } from './containers/create-open-channel.component';
 import { DeleteMessageComponent } from './containers/delete-message.component';
 import { EnterChannelComponent } from './containers/enter-channel.component';
 import { FetchMoreMessagesComponent } from './containers/fetch-more-messages.component';
@@ -35,7 +36,8 @@ const entryComponents = [
   MessageFileFormComponent,
   ChannelListItemComponent,
   ChannelParticipantsListItemComponent,
-  FetchMoreMessagesBtnComponent
+  FetchMoreMessagesBtnComponent,
+  CreateChannelFormComponent
 ];
 
 const declarations = [
@@ -43,7 +45,7 @@ const declarations = [
   MessagesListComponent,
   SendMessageComponent,
   SendFileMessageComponent,
-  AddOpenChannelComponent,
+  CreateOpenChannelComponent,
   FetchMoreMessagesComponent,
   DeleteMessageComponent,
   ChannelParticipantsListComponent

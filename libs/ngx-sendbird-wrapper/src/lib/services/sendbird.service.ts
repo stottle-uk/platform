@@ -66,8 +66,21 @@ export class SendBirdService {
     return this.co(this.sb.OpenChannel.getChannel.bind(this.sb), channelUrl);
   }
 
-  createOpenChannel(): Observable<SendBird.OpenChannel> {
-    return this.co(this.sb.OpenChannel.createChannel.bind(this.sb));
+  createOpenChannel(
+    name: string,
+    coverUrlOrImageFile: string | File,
+    data: string,
+    operatorUserIds: Array<string> | string,
+    customType: string
+  ): Observable<SendBird.OpenChannel> {
+    return this.co(
+      this.sb.OpenChannel.createChannel.bind(this.sb),
+      name,
+      coverUrlOrImageFile,
+      data,
+      operatorUserIds,
+      customType
+    );
   }
 
   getChannelParticipants(

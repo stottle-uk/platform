@@ -104,11 +104,11 @@ export class SendbirdViewStateService {
     );
   }
 
-  createOpenChannel(): Observable<SendBird.OpenChannel> {
+  createOpenChannel(name: string): Observable<SendBird.OpenChannel> {
     const channels = this.internalOpenChannels$.value;
 
     return this.sb
-      .createOpenChannel()
+      .createOpenChannel(name, null, null, null, null)
       .pipe(
         tap(channel => this.internalOpenChannels$.next([channel, ...channels]))
       );
