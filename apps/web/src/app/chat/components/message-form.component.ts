@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { SendMessage } from '../models/messages.model';
+import { SendMessage } from '@stottle-platform/ngx-sendbird-wrapper';
+import { SendBirdMessageFormComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/send-bird-message-form.component';
 
 @Component({
   selector: 'stottle-message-form',
@@ -15,7 +16,7 @@ import { SendMessage } from '../models/messages.model';
     </form>
   `
 })
-export class MessageFormComponent {
+export class MessageFormComponent implements SendBirdMessageFormComponent {
   @Output()
   messageSubmit = new EventEmitter<SendMessage>();
 

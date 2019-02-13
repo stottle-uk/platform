@@ -13,13 +13,6 @@ import { NgxSendbirdWrapperModule } from '@stottle-platform/ngx-sendbird-wrapper
 import { NgxSignalrWrapperNgrxModule } from '@stottle-platform/ngx-signalr-wrapper-ngrx';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryContactsService } from 'libs/manage-contacts/src/lib/services/in-memerory-contacts.service'; // TODO: SORT OUT THIS
-import { ChannelListItemComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/channel-list-item.component';
-import { ChannelParticipantsListItemComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/channel-participants-list-item.component';
-import { CreateChannelFormComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/create-channel-form.component';
-import { FetchMoreMessagesBtnComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/fetch-more-messages-btn.component';
-import { MessageFileFormComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/message-file-form.component';
-import { MessageFormComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/message-form.component';
-import { MessagesListItemComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/messages-list-item.component';
 import { authOptions, environment } from '../environments/environment';
 import { AppRoutesModule } from './app-routes.module';
 import { AppComponent } from './app.component';
@@ -59,16 +52,7 @@ const thirdPatyModules = [
   NgxAuth0WrapperNgrxModule.forRoot(authOptions),
   NgxSignalrWrapperNgrxModule.forRoot(),
   NgxSendbirdWrapperModule.forRoot({
-    appId: 'DE368CF8-F364-498C-A481-554B90C33D4A',
-    declarations: [
-      MessageFormComponent,
-      MessageFileFormComponent,
-      MessagesListItemComponent,
-      FetchMoreMessagesBtnComponent,
-      CreateChannelFormComponent,
-      ChannelListItemComponent,
-      ChannelParticipantsListItemComponent
-    ]
+    appId: 'DE368CF8-F364-498C-A481-554B90C33D4A'
   }),
   NxModule.forRoot()
 ];

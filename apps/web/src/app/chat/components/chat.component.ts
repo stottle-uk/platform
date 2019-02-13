@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import { SendbirdViewStateService } from 'libs/ngx-sendbird-wrapper/src/lib/services/sendbird-view-state.service';
+import { SendbirdViewStateService } from '@stottle-platform/ngx-sendbird-wrapper';
 
 @Component({
   selector: 'stottle-chat',

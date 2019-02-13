@@ -6,29 +6,33 @@ import {
   Type,
   ViewContainerRef
 } from '@angular/core';
-import { SendbirdOptions, SEND_BIRD_OPTIONS } from '../models/messages.model';
+import {
+  SendbirdOptionsDeclarations,
+  SEND_BIRD_DECLARATIONS
+} from '../models/messages.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SendbirdComponentResolverService {
   constructor(
     private resolver: ComponentFactoryResolver,
-    @Inject(SEND_BIRD_OPTIONS) private options: SendbirdOptions
+    @Inject(SEND_BIRD_DECLARATIONS)
+    private declarations: SendbirdOptionsDeclarations
   ) {}
 
   createComponent<T>(
     ref: ViewContainerRef,
     component: Type<T>
   ): ComponentRef<T> {
-    const foundComponent = this.findComponentOrDefault(component);
+    const foundComponent = this.getComponentOrDefault(component);
     const factory = this.resolver.resolveComponentFactory(foundComponent);
     ref.clear();
     return ref.createComponent(factory);
   }
 
-  private findComponentOrDefault<T>(type: Type<T>): Type<T> {
-    return (this.options.declarations.find(d => d.name === type.name) ||
-      type) as Type<T>;
+  private getComponentOrDefault<T>(type: Type<T>): Type<T> {
+    const key = Object.keys(this.declarations).findIndex(
+      key => key.toLowerCase() === type.name.toLowerCase()
+    );
+    return Object.values(this.declarations)[key] || type;
   }
 }

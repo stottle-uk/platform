@@ -12,9 +12,9 @@ import { ChannelParticipantsListItemComponent } from './components/channel-parti
 import { CreateChannelFormComponent } from './components/create-channel-form.component';
 import { FetchMoreMessagesBtnComponent } from './components/fetch-more-messages-btn.component';
 import { MessageFileFormComponent } from './components/message-file-form.component';
-import { MessageFormComponent } from './components/message-form.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { MessagesListItemComponent } from './components/messages-list-item.component';
+import { SendBirdMessageFormComponent } from './components/send-bird-message-form.component';
 import { ChannelListComponent } from './containers/channel-list.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
 import { CreateOpenChannelComponent } from './containers/create-open-channel.component';
@@ -24,7 +24,13 @@ import { FetchMoreMessagesComponent } from './containers/fetch-more-messages.com
 import { MessagesListComponent } from './containers/messages-list.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
-import { SendbirdOptions, SEND_BIRD_OPTIONS } from './models/messages.model';
+import {
+  SendbirdOptions,
+  SendbirdOptionsDeclarations,
+  SEND_BIRD_DECLARATIONS,
+  SEND_BIRD_OPTIONS
+} from './models/messages.model';
+import { SendbirdComponentResolverService } from './services/sendbird-component-resolver.service';
 import { SEND_BIRD } from './services/sendbird.service';
 
 export function sendBirdFactory(
@@ -35,7 +41,7 @@ export function sendBirdFactory(
 
 const entryComponents = [
   MessagesListItemComponent,
-  MessageFormComponent,
+  SendBirdMessageFormComponent,
   MessageFileFormComponent,
   ChannelListItemComponent,
   ChannelParticipantsListItemComponent,
@@ -74,7 +80,9 @@ const declarations = [
   entryComponents: [entryComponents]
 })
 export class NgxSendbirdWrapperModule {
-  static forRoot(sendbirdOptions: SendbirdOptions): ModuleWithProviders {
+  static forRoot(
+    sendbirdOptions: SendbirdOptions
+  ): ModuleWithProviders<NgxSendbirdWrapperModule> {
     return {
       ngModule: NgxSendbirdWrapperModule,
       providers: [
@@ -87,6 +95,21 @@ export class NgxSendbirdWrapperModule {
           provide: SEND_BIRD_OPTIONS,
           useValue: sendbirdOptions
         }
+      ]
+    };
+  }
+
+  static forFeature(
+    declarations: SendbirdOptionsDeclarations
+  ): ModuleWithProviders<NgxSendbirdWrapperModule> {
+    return {
+      ngModule: NgxSendbirdWrapperModule,
+      providers: [
+        {
+          provide: SEND_BIRD_DECLARATIONS,
+          useValue: declarations
+        },
+        SendbirdComponentResolverService
       ]
     };
   }

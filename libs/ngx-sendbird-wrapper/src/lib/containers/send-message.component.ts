@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { MessageFormComponent } from '../components/message-form.component';
+import { SendBirdMessageFormComponent } from '../components/send-bird-message-form.component';
 import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
@@ -23,7 +23,7 @@ export class SendMessageComponent implements AfterViewInit, OnDestroy {
   @ViewChild('messageForm', { read: ViewContainerRef })
   messageForm: ViewContainerRef;
 
-  private componentRef: ComponentRef<MessageFormComponent>;
+  private componentRef: ComponentRef<SendBirdMessageFormComponent>;
   private destroy$ = new Subject();
 
   constructor(
@@ -35,7 +35,7 @@ export class SendMessageComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.componentRef = this.resolver.createComponent(
       this.messageForm,
-      MessageFormComponent
+      SendBirdMessageFormComponent
     );
 
     this.componentRef.instance.messageSubmit
