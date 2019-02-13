@@ -39,7 +39,7 @@ export class CreateOpenChannelComponent {
     this.componentRef.instance.channelSubmit
       .pipe(
         takeUntil(this.destroy$),
-        switchMap(message => this.vs.createOpenChannel(message.name))
+        switchMap(channel => this.vs.createOpenChannel(channel.name))
       )
       .subscribe();
 
