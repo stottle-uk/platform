@@ -14,8 +14,12 @@ import { NgxSignalrWrapperNgrxModule } from '@stottle-platform/ngx-signalr-wrapp
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryContactsService } from 'libs/manage-contacts/src/lib/services/in-memerory-contacts.service'; // TODO: SORT OUT THIS
 import { ChannelListItemComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/channel-list-item.component';
+import { ChannelParticipantsListItemComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/channel-participants-list-item.component';
+import { CreateChannelFormComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/create-channel-form.component';
+import { FetchMoreMessagesBtnComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/fetch-more-messages-btn.component';
 import { MessageFileFormComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/message-file-form.component';
 import { MessageFormComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/message-form.component';
+import { MessagesListItemComponent } from 'libs/ngx-sendbird-wrapper/src/lib/components/messages-list-item.component';
 import { authOptions, environment } from '../environments/environment';
 import { AppRoutesModule } from './app-routes.module';
 import { AppComponent } from './app.component';
@@ -59,7 +63,11 @@ const thirdPatyModules = [
     declarations: [
       MessageFormComponent,
       MessageFileFormComponent,
-      ChannelListItemComponent
+      MessagesListItemComponent,
+      FetchMoreMessagesBtnComponent,
+      CreateChannelFormComponent,
+      ChannelListItemComponent,
+      ChannelParticipantsListItemComponent
     ]
   }),
   NxModule.forRoot()

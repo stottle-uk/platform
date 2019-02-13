@@ -33,8 +33,9 @@ export class SendFileMessageComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
-    this.componentRef = this.resolver.createMessageFileFormComponent(
-      this.messageFileForm
+    this.componentRef = this.resolver.createComponent(
+      this.messageFileForm,
+      MessageFileFormComponent
     );
 
     this.componentRef.instance.messageSubmit

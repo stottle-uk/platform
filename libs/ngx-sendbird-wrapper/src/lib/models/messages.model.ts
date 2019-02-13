@@ -1,12 +1,20 @@
 import { InjectionToken, Type } from '@angular/core';
 import { ChannelListItemComponent } from '../components/channel-list-item.component';
+import { ChannelParticipantsListItemComponent } from '../components/channel-participants-list-item.component';
+import { CreateChannelFormComponent } from '../components/create-channel-form.component';
+import { FetchMoreMessagesBtnComponent } from '../components/fetch-more-messages-btn.component';
 import { MessageFileFormComponent } from '../components/message-file-form.component';
 import { MessageFormComponent } from '../components/message-form.component';
+import { MessagesListItemComponent } from '../components/messages-list-item.component';
 
 export type SendbirdOptionsDeclaration =
   | MessageFormComponent
   | MessageFileFormComponent
-  | ChannelListItemComponent;
+  | ChannelListItemComponent
+  | ChannelParticipantsListItemComponent
+  | FetchMoreMessagesBtnComponent
+  | MessagesListItemComponent
+  | CreateChannelFormComponent;
 
 export interface SendMessage {
   caption: string;
