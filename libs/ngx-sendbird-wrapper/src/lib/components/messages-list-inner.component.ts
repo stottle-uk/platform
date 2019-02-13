@@ -118,14 +118,14 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
       .subscribe();
   }
 
-  onScrollUp(): void {
-    this.fetchMoreMessagesBtnRef.instance.fetchMoreMessages.getMore();
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
     this.componentRefs.forEach(ref => ref.destroy());
+  }
+
+  onScrollUp(): void {
+    this.fetchMoreMessagesBtnRef.instance.fetchMoreMessages.getMore();
   }
 
   trackByFn(

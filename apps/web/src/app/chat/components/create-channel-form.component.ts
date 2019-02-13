@@ -16,8 +16,7 @@ import {
       />
       <button type="submit" color="primary">Create</button>
     </form>
-  `,
-  styles: []
+  `
 })
 export class CreateChannelFormComponent
   implements SendbirdCreateChannelFormComponent {

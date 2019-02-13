@@ -10,8 +10,7 @@ import {
     <button type="button">
       <span stottle-fetch-more-messages>Load More</span>
     </button>
-  `,
-  styles: []
+  `
 })
 export class FetchMoreMessagesBtnComponent
   implements SendbirdFetchMoreMessagesBtnComponent {

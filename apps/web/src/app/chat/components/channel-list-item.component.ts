@@ -18,34 +18,6 @@ import { SendbirdChannelListItemComponent } from '@stottle-platform/ngx-sendbird
       </h3>
     </div>
   `,
-  styles: [
-    `
-      .channel-container {
-        border-bottom: 1px solid #ccc;
-        padding: 10px 0;
-      }
-
-      .avatar-container {
-        margin: 0 10px;
-      }
-
-      .img-avatar {
-        width: 32px;
-      }
-
-      h3 {
-        margin: 0;
-      }
-
-      img {
-        height: auto;
-        max-width: 100%;
-        display: block;
-        vertical-align: middle;
-        border-style: none;
-      }
-    `
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChannelListItemComponent
