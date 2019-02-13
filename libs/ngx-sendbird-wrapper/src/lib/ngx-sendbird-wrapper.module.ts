@@ -11,8 +11,8 @@ import { ChannelParticipantsListInnerComponent } from './components/channel-part
 import { ChannelParticipantsListItemComponent } from './components/channel-participants-list-item.component';
 import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessageFormComponent } from './components/message-form.component';
-import { MessageListItemComponent } from './components/message-list-item.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
+import { MessagesListItemComponent } from './components/messages-list-item.component';
 import { AddOpenChannelComponent } from './containers/add-open-channel.component';
 import { ChannelListComponent } from './containers/channel-list.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
@@ -29,7 +29,7 @@ export function sendBirdFactory(): SendBird.SendBirdInstance {
 }
 
 const entryComponents = [
-  MessageListItemComponent,
+  MessagesListItemComponent,
   MessageFormComponent,
   MessageFileFormComponent,
   ChannelListItemComponent,

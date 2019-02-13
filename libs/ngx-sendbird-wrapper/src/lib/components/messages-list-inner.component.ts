@@ -20,7 +20,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { FetchMoreMessagesComponent } from '../containers/fetch-more-messages.component';
-import { MessageListItemComponent } from './message-list-item.component';
+import { MessagesListItemComponent } from './messages-list-item.component';
 
 @Component({
   selector: 'stottle-messages-list-inner',
@@ -76,7 +76,7 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
     return this.messageListItems.toArray();
   }
 
-  private componentRefs: ComponentRef<MessageListItemComponent>[];
+  private componentRefs: ComponentRef<MessagesListItemComponent>[];
   private lastScrollHeight = 0;
   private destroy$ = new Subject();
 
@@ -98,7 +98,7 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
             target.clear();
 
             const messageListItemCmp = this.resolver.resolveComponentFactory(
-              MessageListItemComponent
+              MessagesListItemComponent
             );
             const cmpRef = target.createComponent(messageListItemCmp);
 

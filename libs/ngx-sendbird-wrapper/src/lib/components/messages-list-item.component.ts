@@ -67,7 +67,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MessageListItemComponent {
+export class MessagesListItemComponent {
   @Input() message: SendBird.UserMessage | SendBird.FileMessage;
 
   get userMessage(): SendBird.UserMessage {
