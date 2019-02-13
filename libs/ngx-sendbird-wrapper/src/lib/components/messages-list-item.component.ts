@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'stottle-message-list-item',
+  selector: 'stottle-messages-list-item',
   template: `
     <div fxLayout class="message-container">
       <div class="avatar-container">
