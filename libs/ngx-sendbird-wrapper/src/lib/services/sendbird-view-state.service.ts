@@ -27,6 +27,9 @@ export class SendbirdViewStateService {
   private internalOpenChannels$ = new BehaviorSubject<SendBird.OpenChannel[]>(
     []
   );
+  private internalGroupChannels$ = new BehaviorSubject<SendBird.GroupChannel[]>(
+    []
+  );
   private internalMessagesForCurrentChannel$ = new BehaviorSubject<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   >([]);
@@ -76,6 +79,10 @@ export class SendbirdViewStateService {
     return this.internalOpenChannels$.asObservable();
   }
 
+  get groupChannels$(): Observable<SendBird.GroupChannel[]> {
+    return this.internalGroupChannels$.asObservable();
+  }
+
   constructor(
     private sb: SendBirdService,
     private sbh: SendbirdEventHandlersService
@@ -114,6 +121,32 @@ export class SendbirdViewStateService {
       );
   }
 
+  getOpenChannels(): Observable<SendBird.OpenChannel[]> {
+    return this.sb
+      .getOpenChannels()
+      .pipe(tap(channels => this.internalOpenChannels$.next(channels)));
+  }
+
+  createGroupChannel(
+    users: SendBird.User[],
+    distinct: boolean,
+    name: string
+  ): Observable<SendBird.GroupChannel> {
+    const channels = this.internalGroupChannels$.value;
+
+    return this.sb
+      .createGroupChannel(users, distinct, name, null, null, null)
+      .pipe(
+        tap(channel => this.internalGroupChannels$.next([channel, ...channels]))
+      );
+  }
+
+  getGroupChannels(): Observable<SendBird.GroupChannel[]> {
+    return this.sb
+      .getGroupChannels()
+      .pipe(tap(channels => this.internalGroupChannels$.next(channels)));
+  }
+
   enterChannel(
     channel: SendBird.OpenChannel
   ): Observable<SendBird.OpenChannel> {
@@ -136,12 +169,6 @@ export class SendbirdViewStateService {
           switchMap(channel => this.sb.exitChannel(channel))
         )
       : of(null);
-  }
-
-  getOpenChannels(): Observable<SendBird.OpenChannel[]> {
-    return this.sb
-      .getOpenChannels()
-      .pipe(tap(channels => this.internalOpenChannels$.next(channels)));
   }
 
   getChannelParticipants(): Observable<SendBird.User[]> {

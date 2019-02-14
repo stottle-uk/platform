@@ -25,6 +25,11 @@ export class SendBirdService {
     return this.co(openChannelListQuery.next.bind(openChannelListQuery));
   }
 
+  getGroupChannels(): Observable<SendBird.GroupChannel[]> {
+    const groupChannelListQuery = this.sb.GroupChannel.createMyGroupChannelListQuery();
+    return this.co(groupChannelListQuery.next.bind(groupChannelListQuery));
+  }
+
   enterChannel(
     channel: SendBird.OpenChannel
   ): Observable<SendBird.OpenChannel> {
@@ -79,6 +84,25 @@ export class SendBirdService {
       coverUrlOrImageFile,
       data,
       operatorUserIds,
+      customType
+    );
+  }
+
+  createGroupChannel(
+    users: SendBird.User[],
+    isDistinct: boolean,
+    name: string,
+    coverUrlOrImageFile: string | File,
+    data: string,
+    customType: string
+  ): Observable<SendBird.GroupChannel> {
+    return this.co(
+      this.sb.GroupChannel.createChannel.bind(this.sb),
+      users,
+      isDistinct,
+      name,
+      coverUrlOrImageFile,
+      data,
       customType
     );
   }
