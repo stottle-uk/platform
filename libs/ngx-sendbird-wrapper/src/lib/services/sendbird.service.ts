@@ -13,6 +13,12 @@ export class SendBirdService {
   constructor(@Inject(SEND_BIRD) private sb: SendBird.SendBirdInstance) {}
 
   connect(userId: string): Observable<SendBird.User> {
+    this.sb.setChannelInvitationPreference(true, function(response, error) {
+      if (error) {
+        return;
+      }
+    });
+
     return this.co(this.sb.connect.bind(this.sb), userId);
   }
 
@@ -27,6 +33,7 @@ export class SendBirdService {
 
   getGroupChannels(): Observable<SendBird.GroupChannel[]> {
     const groupChannelListQuery = this.sb.GroupChannel.createMyGroupChannelListQuery();
+    groupChannelListQuery.includeEmpty = true;
     return this.co(groupChannelListQuery.next.bind(groupChannelListQuery));
   }
 
@@ -48,21 +55,21 @@ export class SendBirdService {
 
   sendMessage(
     message: string,
-    channel: SendBird.OpenChannel
+    channel: SendBird.OpenChannel | SendBird.GroupChannel
   ): Observable<SendBird.UserMessage> {
     return this.co(channel.sendUserMessage.bind(channel), message);
   }
 
   sendFileMessage(
     file: File,
-    channel: SendBird.OpenChannel
+    channel: SendBird.OpenChannel | SendBird.GroupChannel
   ): Observable<SendBird.FileMessage> {
     return this.co(channel.sendFileMessage.bind(channel), file);
   }
 
   deleteMessage(
     message: SendBird.FileMessage | SendBird.UserMessage,
-    channel: SendBird.OpenChannel
+    channel: SendBird.OpenChannel | SendBird.GroupChannel
   ): Observable<any> {
     return this.co(channel.deleteMessage.bind(channel), message);
   }
@@ -89,7 +96,7 @@ export class SendBirdService {
   }
 
   createGroupChannel(
-    users: SendBird.User[],
+    userIds: string[],
     isDistinct: boolean,
     name: string,
     coverUrlOrImageFile: string | File,
@@ -97,8 +104,8 @@ export class SendBirdService {
     customType: string
   ): Observable<SendBird.GroupChannel> {
     return this.co(
-      this.sb.GroupChannel.createChannel.bind(this.sb),
-      users,
+      this.sb.GroupChannel.createChannelWithUserIds.bind(this.sb),
+      userIds,
       isDistinct,
       name,
       coverUrlOrImageFile,

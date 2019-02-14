@@ -14,6 +14,9 @@ import { SendbirdViewStateService } from '@stottle-platform/ngx-sendbird-wrapper
       <div *ngIf="!(isConnected$ | async)">
         <input type="text" #input />
         <button type="button" (click)="username()">Enter</button>
+
+        <button type="button" (click)="first_user()">first_user</button>
+        <button type="button" (click)="other_user()">other_user</button>
       </div>
       <div *ngIf="(isConnected$ | async)">
         <button type="button" (click)="disconnect()">Stop</button>
@@ -21,9 +24,11 @@ import { SendbirdViewStateService } from '@stottle-platform/ngx-sendbird-wrapper
       <div fxLayout="row" *ngIf="(isConnected$ | async)">
         <div>
           <stottle-create-open-channel></stottle-create-open-channel>
-
           <stottle-open-channel-list></stottle-open-channel-list>
 
+          <hr />
+
+          <stottle-create-group-channel></stottle-create-group-channel>
           <stottle-group-channel-list></stottle-group-channel-list>
         </div>
         <div fxFlex="grow">
@@ -52,14 +57,24 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   username(): void {
-    const userId = !!this.userId.nativeElement.value
-      ? this.userId.nativeElement.value
-      : 'first_user';
+    if (!!this.userId.nativeElement.value) {
+      this.connect(this.userId.nativeElement.value);
+    }
+  }
 
-    this.sb.connect(userId).subscribe(console.log, console.error);
+  first_user(): void {
+    this.connect('first_user');
+  }
+
+  other_user(): void {
+    this.connect('other_user');
   }
 
   disconnect(): void {
     this.sb.disconnect().subscribe(console.log, console.error);
+  }
+
+  private connect(userId: string) {
+    this.sb.connect(userId).subscribe(console.log, console.error);
   }
 }

@@ -10,15 +10,15 @@ import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
-import { SendbirdCreateChannelFormComponent } from '../templates/send-bird-create-channel-form.component';
+import { SendbirdCreateChannelFormComponent } from '../templates';
 
 @Component({
-  selector: 'stottle-create-open-channel',
+  selector: 'stottle-create-group-channel',
   template: `
     <template #channelForm></template>
   `
 })
-export class CreateOpenChannelComponent implements AfterViewInit {
+export class CreateGroupChannelComponent implements AfterViewInit {
   @ViewChild('channelForm', { read: ViewContainerRef })
   channelForm: ViewContainerRef;
 
@@ -40,7 +40,13 @@ export class CreateOpenChannelComponent implements AfterViewInit {
     this.componentRef.instance.channelSubmit
       .pipe(
         takeUntil(this.destroy$),
-        switchMap(channel => this.vs.createOpenChannel(channel.name))
+        switchMap(channel =>
+          this.vs.createGroupChannel(
+            ['first_user', 'other_user'],
+            true,
+            channel.name
+          )
+        )
       )
       .subscribe();
 

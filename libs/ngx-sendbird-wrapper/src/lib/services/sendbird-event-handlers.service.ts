@@ -10,7 +10,9 @@ export class SendbirdEventHandlersService {
   private internalReceivedMessage$ = new Subject<
     SendBird.UserMessage | SendBird.FileMessage
   >();
-  private internalChannelChanged$ = new Subject<SendBird.OpenChannel>();
+  private internalChannelChanged$ = new Subject<
+    SendBird.OpenChannel | SendBird.GroupChannel
+  >();
   private channelHandler = new this.sb.ChannelHandler();
 
   get deletedMessage$(): Observable<string> {
@@ -23,7 +25,9 @@ export class SendbirdEventHandlersService {
     return this.internalReceivedMessage$.asObservable();
   }
 
-  get channelChanged$(): Observable<SendBird.OpenChannel> {
+  get channelChanged$(): Observable<
+    SendBird.OpenChannel | SendBird.GroupChannel
+  > {
     return this.internalChannelChanged$.asObservable();
   }
 
@@ -57,7 +61,9 @@ export class SendbirdEventHandlersService {
     this.internalDeletedMessage$.next(messageId);
   }
 
-  private onChannelChanged(channel: SendBird.OpenChannel): void {
+  private onChannelChanged(
+    channel: SendBird.OpenChannel | SendBird.GroupChannel
+  ): void {
     this.internalChannelChanged$.next(channel);
   }
 }

@@ -15,12 +15,22 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
 })
 export class EnterChannelComponent {
   @Input()
-  channel: SendBird.OpenChannel;
+  channel: SendBird.BaseChannel;
 
   constructor(private vs: SendbirdViewStateService) {}
 
   @HostListener('click')
   channelSelected(): void {
-    this.vs.enterChannel(this.channel).subscribe();
+    if (this.channel.isOpenChannel()) {
+      this.vs
+        .enterOpenChannel(this.channel as SendBird.OpenChannel)
+        .subscribe();
+    }
+
+    if (this.channel.isGroupChannel()) {
+      this.vs
+        .enterGroupChannel(this.channel as SendBird.GroupChannel)
+        .subscribe();
+    }
   }
 }

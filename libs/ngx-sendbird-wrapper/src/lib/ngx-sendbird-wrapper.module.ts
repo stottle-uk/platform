@@ -8,6 +8,7 @@ import { ChannelListInnerComponent } from './components/channel-list-inner.compo
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
+import { CreateGroupChannelComponent } from './containers/create-group-channel.component';
 import { CreateOpenChannelComponent } from './containers/create-open-channel.component';
 import { DeleteMessageComponent } from './containers/delete-message.component';
 import { EnterChannelComponent } from './containers/enter-channel.component';
@@ -56,6 +57,7 @@ const declarations = [
   SendMessageComponent,
   SendFileMessageComponent,
   CreateOpenChannelComponent,
+  CreateGroupChannelComponent,
   FetchMoreMessagesComponent,
   DeleteMessageComponent,
   ChannelParticipantsListComponent,
