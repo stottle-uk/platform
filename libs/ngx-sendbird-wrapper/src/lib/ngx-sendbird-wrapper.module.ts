@@ -7,6 +7,7 @@ import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
+import { ReceievedInvitationsInnerComponent } from './components/receieved-invitations-inner.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
 import { CreateGroupChannelComponent } from './containers/create-group-channel.component';
 import { CreateOpenChannelComponent } from './containers/create-open-channel.component';
@@ -16,6 +17,7 @@ import { FetchMoreMessagesComponent } from './containers/fetch-more-messages.com
 import { GroupChannelListComponent } from './containers/group-channel-list.component';
 import { MessagesListComponent } from './containers/messages-list.component';
 import { OpenChannelListComponent } from './containers/open-channel-list.component';
+import { ReceievedInvitationsComponent } from './containers/receieved-invitations.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
 import {
@@ -33,6 +35,7 @@ import { SendbirdFetchMoreMessagesBtnComponent } from './templates/send-bird-fet
 import { SendbirdMessageFileFormComponent } from './templates/send-bird-message-file-form.component';
 import { SendBirdMessageFormComponent } from './templates/send-bird-message-form.component';
 import { SendbirdMessagesListItemComponent } from './templates/send-bird-messages-list-item.component';
+import { SendBirdReceievedInvitationsItemComponent } from './templates/send-bird-receieved-invitations-item.component';
 
 export function sendBirdFactory(
   options: SendbirdOptions
@@ -47,7 +50,8 @@ const entryComponents = [
   SendbirdChannelListItemComponent,
   SendbirdChannelParticipantsListItemComponent,
   SendbirdFetchMoreMessagesBtnComponent,
-  SendbirdCreateChannelFormComponent
+  SendbirdCreateChannelFormComponent,
+  SendBirdReceievedInvitationsItemComponent
 ];
 
 const declarations = [
@@ -61,7 +65,8 @@ const declarations = [
   FetchMoreMessagesComponent,
   DeleteMessageComponent,
   ChannelParticipantsListComponent,
-  EnterChannelComponent
+  EnterChannelComponent,
+  ReceievedInvitationsComponent
 ];
 
 @NgModule({
@@ -76,7 +81,8 @@ const declarations = [
     entryComponents,
     ChannelListInnerComponent,
     MessagesListInnerComponent,
-    ChannelParticipantsListInnerComponent
+    ChannelParticipantsListInnerComponent,
+    ReceievedInvitationsInnerComponent
   ],
   exports: [declarations],
   entryComponents: [entryComponents]

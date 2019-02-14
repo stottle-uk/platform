@@ -38,6 +38,7 @@ import { SendbirdViewStateService } from '@stottle-platform/ngx-sendbird-wrapper
         </div>
         <div>
           <stottle-channel-participants-list></stottle-channel-participants-list>
+          <stottle-receieved-invitations></stottle-receieved-invitations>
         </div>
       </div>
     </div>

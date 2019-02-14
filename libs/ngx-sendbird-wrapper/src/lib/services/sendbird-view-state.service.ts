@@ -9,7 +9,8 @@ export type Connection =
   | SendBird.User
   | string
   | SendBird.UserMessage
-  | SendBird.FileMessage;
+  | SendBird.FileMessage
+  | SendBird.GroupChannel;
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,9 @@ export class SendbirdViewStateService {
   >([]);
   private internalParticipantsForCurrentChannel$ = new BehaviorSubject<
     SendBird.User[]
+  >([]);
+  private internalReceivedInvitations$ = new BehaviorSubject<
+    SendBird.GroupChannel[]
   >([]);
 
   get lastCallType$(): Observable<string> {
@@ -95,6 +99,10 @@ export class SendbirdViewStateService {
     return this.internalGroupChannels$.asObservable();
   }
 
+  get receivedInvitations$(): Observable<SendBird.GroupChannel[]> {
+    return this.internalReceivedInvitations$.asObservable();
+  }
+
   constructor(
     private sb: SendBirdService,
     private sbh: SendbirdEventHandlersService
@@ -107,7 +115,12 @@ export class SendbirdViewStateService {
       tap(() => this.sbh.setupHandlers())
     );
 
-    return merge(connect, this.onMessageDeleted(), this.onMessageReceived());
+    return merge(
+      connect,
+      this.onMessageDeleted(),
+      this.onMessageReceived(),
+      this.onUserReceivedInvitation()
+    );
   }
 
   disconnect(): Observable<Object> {
@@ -309,10 +322,18 @@ export class SendbirdViewStateService {
     SendBird.UserMessage | SendBird.FileMessage
   > {
     return this.sbh.recievedMessage$.pipe(
-      tap(newMessage =>
-        this.internalMessages$.next([
-          ...this.internalMessages$.value,
-          newMessage
+      tap(message =>
+        this.internalMessages$.next([...this.internalMessages$.value, message])
+      )
+    );
+  }
+
+  private onUserReceivedInvitation(): Observable<SendBird.GroupChannel> {
+    return this.sbh.userReceivedInvitation$.pipe(
+      tap(invitation =>
+        this.internalReceivedInvitations$.next([
+          ...this.internalReceivedInvitations$.value,
+          invitation
         ])
       )
     );

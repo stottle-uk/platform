@@ -13,6 +13,7 @@ export class SendbirdEventHandlersService {
   private internalChannelChanged$ = new Subject<
     SendBird.OpenChannel | SendBird.GroupChannel
   >();
+  private internalReceivedInvitation$ = new Subject<SendBird.GroupChannel>();
   private channelHandler = new this.sb.ChannelHandler();
 
   get deletedMessage$(): Observable<string> {
@@ -31,6 +32,10 @@ export class SendbirdEventHandlersService {
     return this.internalChannelChanged$.asObservable();
   }
 
+  get userReceivedInvitation$(): Observable<SendBird.GroupChannel> {
+    return this.internalReceivedInvitation$.asObservable();
+  }
+
   constructor(@Inject(SEND_BIRD) private sb: SendBird.SendBirdInstance) {}
 
   setupHandlers() {
@@ -39,6 +44,9 @@ export class SendbirdEventHandlersService {
     this.channelHandler.onMessageDeleted = this.onMessageDelete.bind(this);
     this.channelHandler.onUserEntered = this.onChannelChanged.bind(this);
     this.channelHandler.onUserExited = this.onChannelChanged.bind(this);
+    this.channelHandler.onUserReceivedInvitation = this.onUserReceivedInvitation.bind(
+      this
+    );
 
     this.sb.addChannelHandler('channelHandler', this.channelHandler);
   }
@@ -65,5 +73,14 @@ export class SendbirdEventHandlersService {
     channel: SendBird.OpenChannel | SendBird.GroupChannel
   ): void {
     this.internalChannelChanged$.next(channel);
+  }
+
+  private onUserReceivedInvitation(
+    channel: SendBird.GroupChannel,
+    inviter: SendBird.User,
+    invitees: SendBird.User[]
+  ): void {
+    console.log(arguments);
+    this.internalReceivedInvitation$.next(channel);
   }
 }
