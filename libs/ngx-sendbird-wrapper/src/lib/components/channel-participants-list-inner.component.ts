@@ -25,13 +25,6 @@ import { SendbirdChannelParticipantsListItemComponent } from '../templates/send-
       </ng-container>
     </div>
   `,
-  styles: [
-    `
-      .channel-participants-container {
-        width: 250px;
-      }
-    `
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChannelParticipantsListInnerComponent {

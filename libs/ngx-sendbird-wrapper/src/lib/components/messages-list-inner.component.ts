@@ -43,15 +43,7 @@ import { SendbirdMessagesListItemComponent } from '../templates/send-bird-messag
       </ng-container>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [
-    `
-      .messages-container {
-        height: calc(100vh - 300px);
-        overflow: auto;
-      }
-    `
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   @Input()

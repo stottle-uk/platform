@@ -28,13 +28,6 @@ import { SendbirdChannelListItemComponent } from '../templates/send-bird-channel
       </ng-container>
     </div>
   `,
-  styles: [
-    `
-      .channels-container {
-        width: 250px;
-      }
-    `
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChannelListInnerComponent implements AfterViewInit, OnDestroy {

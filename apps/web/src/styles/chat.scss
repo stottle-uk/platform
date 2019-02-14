@@ -1,18 +1,28 @@
 @import './shared.scss';
-.channel-container {
-  border-bottom: 1px solid #ccc;
-  padding: 10px 0;
+.channels-container {
+  width: 250px;
+  .channel-container {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
 }
 
-.channel-participant-container {
-  border-bottom: 1px solid #ccc;
-  padding: 10px 0;
+.channel-participants-container {
+  width: 250px;
+  .channel-participant-container {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
 }
 
-.message-container {
-  border-bottom: 1px solid #ccc;
-  padding: 10px 0px;
-  .header-container {
-    margin: 0 0 10px 0;
+.messages-container {
+  height: calc(100vh - 300px);
+  overflow: auto;
+  .message-container {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0px;
+    .header-container {
+      margin: 0 0 10px 0;
+    }
   }
 }
