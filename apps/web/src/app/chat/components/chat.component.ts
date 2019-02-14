@@ -22,7 +22,7 @@ import { SendbirdViewStateService } from '@stottle-platform/ngx-sendbird-wrapper
         <div>
           <stottle-create-open-channel></stottle-create-open-channel>
 
-          <stottle-channel-list></stottle-channel-list>
+          <stottle-open-channel-list></stottle-open-channel-list>
         </div>
         <div fxFlex="grow">
           <stottle-messages-list></stottle-messages-list>
