@@ -12,6 +12,7 @@ import { CreateOpenChannelComponent } from './containers/create-open-channel.com
 import { DeleteMessageComponent } from './containers/delete-message.component';
 import { EnterChannelComponent } from './containers/enter-channel.component';
 import { FetchMoreMessagesComponent } from './containers/fetch-more-messages.component';
+import { GroupChannelListComponent } from './containers/group-channel-list.component';
 import { MessagesListComponent } from './containers/messages-list.component';
 import { OpenChannelListComponent } from './containers/open-channel-list.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
@@ -50,6 +51,7 @@ const entryComponents = [
 
 const declarations = [
   OpenChannelListComponent,
+  GroupChannelListComponent,
   MessagesListComponent,
   SendMessageComponent,
   SendFileMessageComponent,
