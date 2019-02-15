@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ComponentRef,
   ElementRef,
@@ -75,8 +74,9 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private scrollToService: ScrollToService,
-    private resolver: SendbirdComponentResolverService,
-    private cdr: ChangeDetectorRef
+    private resolver: SendbirdComponentResolverService<
+      SendbirdMessagesListItemComponent
+    >
   ) {}
 
   ngAfterViewInit(): void {
@@ -85,14 +85,18 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
       SendbirdFetchMoreMessagesBtnComponent
     );
 
-    this.cdr.detectChanges();
+    this.fetchMoreMessagesBtnRef.hostView.markForCheck();
 
-    this.messagesList.changes
+    this.resolver
+      .trackChanges(
+        SendbirdMessagesListItemComponent,
+        this.messagesList,
+        this.messageListItems,
+        this.updateInstance.bind(this)
+      )
       .pipe(
         takeUntil(this.destroy$),
-        tap(() => (this.componentRefs = [])),
-        tap(change => this.updateMessagesList(change)),
-        tap(() => this.cdr.detectChanges()),
+        tap(refs => (this.componentRefs = refs)),
         tap(
           () =>
             this.scrollToBottomEnabled && this.scrollToBottomOfMessagesList()
@@ -128,17 +132,6 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
     return item ? item.messageId : index;
   }
 
-  private updateMessagesList(changes: any[]): void {
-    changes.forEach((ref: ViewContainerRef, index: number) => {
-      const cmpRef = this.resolver.createComponent(
-        this.messageListItemsRefs[index],
-        SendbirdMessagesListItemComponent
-      );
-      cmpRef.instance.message = this.messages[index];
-      this.componentRefs.push(cmpRef);
-    });
-  }
-
   private scrollToBottomOfMessagesList(): void {
     const config: ScrollToConfigOptions = {
       container: this.messagesContainer,
@@ -150,5 +143,12 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   private setScrollPositionToTopOfListBeforeItemsWereAdded(): void {
     this.messagesContainer.nativeElement.scrollTop =
       this.messagesContainer.nativeElement.scrollHeight - this.lastScrollHeight;
+  }
+
+  private updateInstance(
+    instance: SendbirdMessagesListItemComponent,
+    index: number
+  ): void {
+    instance.message = this.messages[index];
   }
 }

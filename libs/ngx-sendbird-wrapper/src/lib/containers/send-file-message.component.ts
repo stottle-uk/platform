@@ -28,7 +28,9 @@ export class SendFileMessageComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private vs: SendbirdViewStateService,
-    private resolver: SendbirdComponentResolverService,
+    private resolver: SendbirdComponentResolverService<
+      SendbirdMessageFileFormComponent
+    >,
     private cdr: ChangeDetectorRef
   ) {}
 

@@ -27,7 +27,9 @@ export class CreateOpenChannelComponent implements AfterViewInit {
 
   constructor(
     private vs: SendbirdViewStateService,
-    private resolver: SendbirdComponentResolverService,
+    private resolver: SendbirdComponentResolverService<
+      SendbirdCreateChannelFormComponent
+    >,
     private cdr: ChangeDetectorRef
   ) {}
 

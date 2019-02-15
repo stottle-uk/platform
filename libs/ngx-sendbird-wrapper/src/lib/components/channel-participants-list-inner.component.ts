@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ComponentRef,
   Input,
@@ -46,17 +45,22 @@ export class ChannelParticipantsListInnerComponent {
   private destroy$ = new Subject();
 
   constructor(
-    private resolver: SendbirdComponentResolverService,
-    private cdr: ChangeDetectorRef
+    private resolver: SendbirdComponentResolverService<
+      SendbirdChannelParticipantsListItemComponent
+    >
   ) {}
 
   ngAfterViewInit(): void {
-    this.channelParticipantsList.changes
+    this.resolver
+      .trackChanges(
+        SendbirdChannelParticipantsListItemComponent,
+        this.channelParticipantsList,
+        this.channelParticipantsListItems,
+        this.updateInstance.bind(this)
+      )
       .pipe(
         takeUntil(this.destroy$),
-        tap(() => (this.componentRefs = [])),
-        tap(change => this.updateChannelParticipantsList(change)),
-        tap(() => this.cdr.detectChanges())
+        tap(refs => (this.componentRefs = refs))
       )
       .subscribe();
   }
@@ -71,14 +75,10 @@ export class ChannelParticipantsListInnerComponent {
     return item ? item.url : index.toString();
   }
 
-  private updateChannelParticipantsList(changes: any[]): void {
-    changes.forEach((ref: ViewContainerRef, index: number) => {
-      const cmpRef = this.resolver.createComponent(
-        this.channelParticipantsListItemsRefs[index],
-        SendbirdChannelParticipantsListItemComponent
-      );
-      cmpRef.instance.participant = this.participants[index];
-      this.componentRefs.push(cmpRef);
-    });
+  private updateInstance(
+    instance: SendbirdChannelParticipantsListItemComponent,
+    index: number
+  ): void {
+    instance.participant = this.participants[index];
   }
 }

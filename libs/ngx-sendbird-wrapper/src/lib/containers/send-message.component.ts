@@ -28,7 +28,9 @@ export class SendMessageComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private vs: SendbirdViewStateService,
-    private resolver: SendbirdComponentResolverService,
+    private resolver: SendbirdComponentResolverService<
+      SendBirdMessageFormComponent
+    >,
     private cdr: ChangeDetectorRef
   ) {}
 

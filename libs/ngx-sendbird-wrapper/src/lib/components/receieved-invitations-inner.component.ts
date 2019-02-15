@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ComponentRef,
   Input,
@@ -25,8 +24,7 @@ import { SendBirdReceievedInvitationsItemComponent } from '../templates/send-bir
         <template #invitationsListItem></template>
       </ng-container>
     </div>
-  `,
-  styles: []
+  `
 })
 export class ReceievedInvitationsInnerComponent
   implements AfterViewInit, OnDestroy {
@@ -38,27 +36,28 @@ export class ReceievedInvitationsInnerComponent
   @ViewChildren('invitationsList', { read: ViewContainerRef })
   invitationsList: QueryList<ViewContainerRef>;
 
-  private get invitationsListItemRefs(): ViewContainerRef[] {
-    return this.invitationsListItems.toArray();
-  }
-
+  private destroy$ = new Subject();
   private componentRefs: ComponentRef<
     SendBirdReceievedInvitationsItemComponent
   >[];
-  private destroy$ = new Subject();
 
   constructor(
-    private resolver: SendbirdComponentResolverService,
-    private cdr: ChangeDetectorRef
+    private resolver: SendbirdComponentResolverService<
+      SendBirdReceievedInvitationsItemComponent
+    >
   ) {}
 
   ngAfterViewInit(): void {
-    this.invitationsList.changes
+    this.resolver
+      .trackChanges(
+        SendBirdReceievedInvitationsItemComponent,
+        this.invitationsList,
+        this.invitationsListItems,
+        this.updateInstance.bind(this)
+      )
       .pipe(
         takeUntil(this.destroy$),
-        tap(() => (this.componentRefs = [])),
-        tap(change => this.updateInvitationsList(change)),
-        tap(() => this.cdr.detectChanges())
+        tap(refs => (this.componentRefs = refs))
       )
       .subscribe();
   }
@@ -73,14 +72,10 @@ export class ReceievedInvitationsInnerComponent
     return item ? item.url : index.toString();
   }
 
-  private updateInvitationsList(changes: any[]): void {
-    changes.forEach((ref: ViewContainerRef, index: number) => {
-      const cmpRef = this.resolver.createComponent(
-        this.invitationsListItemRefs[index],
-        SendBirdReceievedInvitationsItemComponent
-      );
-      cmpRef.instance.invitation = this.invitations[index];
-      this.componentRefs.push(cmpRef);
-    });
+  private updateInstance(
+    instance: SendBirdReceievedInvitationsItemComponent,
+    index: number
+  ): void {
+    instance.invitation = this.invitations[index];
   }
 }

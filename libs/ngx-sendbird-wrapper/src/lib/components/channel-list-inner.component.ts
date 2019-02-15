@@ -39,25 +39,27 @@ export class ChannelListInnerComponent implements AfterViewInit, OnDestroy {
   @ViewChildren('channelsList', { read: ViewContainerRef })
   channelsList: QueryList<ViewContainerRef>;
 
-  private get channelsListItemsRefs(): ViewContainerRef[] {
-    return this.channelsListItems.toArray();
-  }
-
   private componentRefs: ComponentRef<SendbirdChannelListItemComponent>[];
   private destroy$ = new Subject();
 
   constructor(
-    private resolver: SendbirdComponentResolverService,
+    private resolver: SendbirdComponentResolverService<
+      SendbirdChannelListItemComponent
+    >,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit(): void {
-    this.channelsList.changes
+    this.resolver
+      .trackChanges(
+        SendbirdChannelListItemComponent,
+        this.channelsList,
+        this.channelsListItems,
+        this.updateInstance.bind(this)
+      )
       .pipe(
         takeUntil(this.destroy$),
-        tap(() => (this.componentRefs = [])),
-        tap(change => this.updateChannelsList(change)),
-        tap(() => this.cdr.detectChanges())
+        tap(refs => (this.componentRefs = refs))
       )
       .subscribe();
   }
@@ -72,14 +74,10 @@ export class ChannelListInnerComponent implements AfterViewInit, OnDestroy {
     return item ? item.url : index.toString();
   }
 
-  private updateChannelsList(changes: any[]): void {
-    changes.forEach((ref: ViewContainerRef, index: number) => {
-      const cmpRef = this.resolver.createComponent(
-        this.channelsListItemsRefs[index],
-        SendbirdChannelListItemComponent
-      );
-      cmpRef.instance.channel = this.channels[index];
-      this.componentRefs.push(cmpRef);
-    });
+  private updateInstance(
+    instance: SendbirdChannelListItemComponent,
+    index: number
+  ): void {
+    instance.channel = this.channels[index];
   }
 }

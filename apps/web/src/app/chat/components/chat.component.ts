@@ -31,11 +31,13 @@ import { SendbirdViewStateService } from '@stottle-platform/ngx-sendbird-wrapper
           <stottle-create-group-channel></stottle-create-group-channel>
           <stottle-group-channel-list></stottle-group-channel-list>
         </div>
+
         <div fxFlex="grow">
           <stottle-messages-list></stottle-messages-list>
           <stottle-send-message></stottle-send-message>
           <stottle-send-file-message></stottle-send-file-message>
         </div>
+
         <div>
           <stottle-channel-participants-list></stottle-channel-participants-list>
           <stottle-receieved-invitations></stottle-receieved-invitations>
