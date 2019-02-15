@@ -57,7 +57,14 @@ const entryComponents = [
   SendBirdReceievedInvitationsItemComponent
 ];
 
+const directives = [
+  EnterChannelDirective,
+  DeleteMessageDirective,
+  FetchMoreMessagesDirective
+];
+
 const declarations = [
+  ...directives,
   OpenChannelListComponent,
   GroupChannelListComponent,
   MessagesListComponent,
@@ -65,10 +72,7 @@ const declarations = [
   SendFileMessageComponent,
   CreateOpenChannelComponent,
   CreateGroupChannelComponent,
-  FetchMoreMessagesDirective,
-  DeleteMessageDirective,
   ChannelParticipantsListComponent,
-  EnterChannelDirective,
   ReceievedInvitationsComponent
 ];
 
