@@ -1,59 +1,43 @@
-import {
-  AfterViewInit,
-  Component,
-  ComponentRef,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
+import { GenericOptions } from '../models/messages.model';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 import { SendbirdCreateChannelFormComponent } from '../templates';
 
 @Component({
   selector: 'stottle-create-group-channel',
   template: `
-    <template #channelForm></template>
+    <ng-container stottleGeneric [options]="options"></ng-container>
   `
 })
-export class CreateGroupChannelComponent implements AfterViewInit {
-  @ViewChild('channelForm', { read: ViewContainerRef })
-  channelForm: ViewContainerRef;
+export class CreateGroupChannelComponent implements OnDestroy {
+  options: GenericOptions<SendbirdCreateChannelFormComponent> = {
+    component: SendbirdCreateChannelFormComponent,
+    updateInstance: this.updateInstance.bind(this)
+  };
 
-  private componentRef: ComponentRef<SendbirdCreateChannelFormComponent>;
   private destroy$ = new Subject();
 
-  constructor(
-    private vs: SendbirdViewStateService,
-    private resolver: SendbirdComponentResolverService
-  ) {}
+  constructor(private vs: SendbirdViewStateService) {}
 
-  ngAfterViewInit(): void {
-    this.componentRef = this.resolver.createComponent(
-      this.channelForm,
-      SendbirdCreateChannelFormComponent
-    );
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
-    this.componentRef.instance.channelSubmit
+  private updateInstance(instance: SendbirdCreateChannelFormComponent): void {
+    instance.channelSubmit
       .pipe(
         takeUntil(this.destroy$),
         switchMap(channel =>
           this.vs.createGroupChannel(
             ['first_user', 'other_user'],
-            true,
+            false, // TODO - sort this!
             channel.name
           )
         )
       )
       .subscribe();
-
-    this.componentRef.hostView.detectChanges();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.componentRef.destroy();
   }
 }

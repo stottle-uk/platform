@@ -1,20 +1,20 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ComponentRef,
   ElementRef,
+  EventEmitter,
   Input,
   OnDestroy,
-  ViewChild,
-  ViewContainerRef
+  Output,
+  ViewChild
 } from '@angular/core';
 import {
   ScrollToConfigOptions,
   ScrollToService
 } from '@nicky-lenaers/ngx-scroll-to';
-import { GenericListOptions } from '../models/messages.model';
-import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { take, takeUntil, tap } from 'rxjs/operators';
+import { GenericListOptions, GenericOptions } from '../models/messages.model';
 import { SendbirdFetchMoreMessagesBtnComponent } from '../templates/send-bird-fetch-more-messages-btn.component';
 import { SendbirdMessagesListItemComponent } from '../templates/send-bird-messages-list-item.component';
 
@@ -27,10 +27,10 @@ import { SendbirdMessagesListItemComponent } from '../templates/send-bird-messag
       infiniteScroll
       [infiniteScrollUpDistance]="0.5"
       [infiniteScrollThrottle]="200"
-      (scrolledUp)="onScrollUp()"
+      (scrolledUp)="scrolledUp.emit()"
       [scrollWindow]="false"
     >
-      <template #fetchMoreMessagesBtn></template>
+      <ng-template stottleGeneric [options]="getMoreBtnOptions"></ng-template>
       <stottle-generic-list
         [options]="options"
         (changes)="onChanges($event)"
@@ -39,13 +39,18 @@ import { SendbirdMessagesListItemComponent } from '../templates/send-bird-messag
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
+export class MessagesListInnerComponent implements OnDestroy {
   @Input()
   messages: Array<SendBird.UserMessage | SendBird.FileMessage>;
   @Input()
   scrollToBottomEnabled: boolean;
   @Input()
   scrollPositionMaintainEnabled: boolean;
+  @Output()
+  scrolledUp = new EventEmitter();
+
+  @ViewChild('messagesContainer')
+  messagesContainer: ElementRef<Element>;
 
   get options(): GenericListOptions<
     SendBird.UserMessage | SendBird.FileMessage,
@@ -59,43 +64,46 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  @ViewChild('messagesContainer')
-  messagesContainer: ElementRef<Element>;
-  @ViewChild('fetchMoreMessagesBtn', { read: ViewContainerRef })
-  fetchMoreMessagesBtn: ViewContainerRef;
-
-  private fetchMoreMessagesBtnRef: ComponentRef<
+  get getMoreBtnOptions(): GenericOptions<
     SendbirdFetchMoreMessagesBtnComponent
-  >;
-  private lastScrollHeight = 0;
-
-  constructor(
-    private scrollToService: ScrollToService,
-    private resolver: SendbirdComponentResolverService
-  ) {}
-
-  ngAfterViewInit(): void {
-    this.fetchMoreMessagesBtnRef = this.resolver.createComponent(
-      this.fetchMoreMessagesBtn,
-      SendbirdFetchMoreMessagesBtnComponent
-    );
-
-    this.fetchMoreMessagesBtnRef.hostView.detectChanges();
+  > {
+    return {
+      component: SendbirdFetchMoreMessagesBtnComponent,
+      updateInstance: () => {}
+    };
   }
+
+  private lastScrollHeight = new BehaviorSubject<number>(0);
+  private destroy$ = new Subject();
+
+  constructor(private scrollToService: ScrollToService) {}
 
   ngOnDestroy(): void {
-    this.fetchMoreMessagesBtnRef.destroy();
-  }
-
-  onScrollUp(): void {
-    this.fetchMoreMessagesBtnRef.instance.fetchMoreMessages.getMore();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onChanges(): void {
-    this.scrollToBottomEnabled && this.scrollToBottomOfMessagesList();
-    this.scrollPositionMaintainEnabled &&
-      this.setScrollPositionToTopOfListBeforeItemsWereAdded();
-    this.lastScrollHeight = this.messagesContainer.nativeElement.scrollHeight;
+    this.lastScrollHeight
+      .pipe(
+        takeUntil(this.destroy$),
+        take(1),
+        tap(
+          () =>
+            this.scrollToBottomEnabled && this.scrollToBottomOfMessagesList()
+        ),
+        tap(
+          ls =>
+            this.scrollPositionMaintainEnabled &&
+            this.setScrollPositionToTopOfListBeforeItemsWereAdded(ls)
+        ),
+        tap(() =>
+          this.lastScrollHeight.next(
+            this.messagesContainer.nativeElement.scrollHeight
+          )
+        )
+      )
+      .subscribe();
   }
 
   private trackByKey(
@@ -119,8 +127,10 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
     this.scrollToService.scrollTo(config);
   }
 
-  private setScrollPositionToTopOfListBeforeItemsWereAdded(): void {
+  private setScrollPositionToTopOfListBeforeItemsWereAdded(
+    lastScrollHeight: number
+  ): void {
     this.messagesContainer.nativeElement.scrollTop =
-      this.messagesContainer.nativeElement.scrollHeight - this.lastScrollHeight;
+      this.messagesContainer.nativeElement.scrollHeight - lastScrollHeight;
   }
 }

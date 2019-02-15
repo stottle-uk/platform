@@ -10,6 +10,7 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
       [messages]="messages$ | async"
       [scrollToBottomEnabled]="scrollToBottomEnabled$ | async"
       [scrollPositionMaintainEnabled]="scrollPositionMaintainEnabled$ | async"
+      (scrolledUp)="onScrolledUp()"
     ></stottle-messages-list-inner>
   `
 })
@@ -26,6 +27,10 @@ export class MessagesListComponent implements OnInit {
 
   ngOnInit() {
     this.vs.getMessagesForCurrentChannel().subscribe();
+  }
+
+  onScrolledUp(): void {
+    this.vs.getMoreMessagesForCurrentChannel().subscribe();
   }
 
   private isOfType(types: string[]): OperatorFunction<string, boolean> {
