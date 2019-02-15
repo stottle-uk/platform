@@ -1,13 +1,10 @@
-import { Component, HostListener } from '@angular/core';
+import { Directive, HostListener } from '@angular/core';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
-@Component({
-  selector: '[stottle-fetch-more-messages]',
-  template: `
-    <ng-content></ng-content>
-  `
+@Directive({
+  selector: '[stottleFetchMoreMessages]'
 })
-export class FetchMoreMessagesComponent {
+export class FetchMoreMessagesDirective {
   constructor(private vs: SendbirdViewStateService) {}
 
   @HostListener('click')

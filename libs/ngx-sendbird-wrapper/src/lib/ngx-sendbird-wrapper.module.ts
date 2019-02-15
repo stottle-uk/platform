@@ -15,13 +15,13 @@ import { CreateGroupChannelComponent } from './containers/create-group-channel.c
 import { CreateOpenChannelComponent } from './containers/create-open-channel.component';
 import { DeleteMessageComponent } from './containers/delete-message.component';
 import { EnterChannelComponent } from './containers/enter-channel.component';
-import { FetchMoreMessagesComponent } from './containers/fetch-more-messages.component';
 import { GroupChannelListComponent } from './containers/group-channel-list.component';
 import { MessagesListComponent } from './containers/messages-list.component';
 import { OpenChannelListComponent } from './containers/open-channel-list.component';
 import { ReceievedInvitationsComponent } from './containers/receieved-invitations.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
+import { FetchMoreMessagesDirective } from './directives/fetch-more-messages.directive';
 import {
   SendbirdOptions,
   SendbirdOptionsDeclarations,
@@ -65,7 +65,7 @@ const declarations = [
   SendFileMessageComponent,
   CreateOpenChannelComponent,
   CreateGroupChannelComponent,
-  FetchMoreMessagesComponent,
+  FetchMoreMessagesDirective,
   DeleteMessageComponent,
   ChannelParticipantsListComponent,
   EnterChannelComponent,
