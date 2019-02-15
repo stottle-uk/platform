@@ -1,13 +1,10 @@
-import { Component, HostListener, Input } from '@angular/core';
+import { Directive, HostListener, Input } from '@angular/core';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
-@Component({
-  selector: '[stottle-delete-message]',
-  template: `
-    <ng-content></ng-content>
-  `
+@Directive({
+  selector: '[stottleDeleteMessage]'
 })
-export class DeleteMessageComponent {
+export class DeleteMessageDirective {
   @Input()
   message: SendBird.UserMessage | SendBird.FileMessage;
 

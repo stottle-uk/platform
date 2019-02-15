@@ -13,7 +13,6 @@ import { ReceievedInvitationsInnerComponent } from './components/receieved-invit
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
 import { CreateGroupChannelComponent } from './containers/create-group-channel.component';
 import { CreateOpenChannelComponent } from './containers/create-open-channel.component';
-import { DeleteMessageComponent } from './containers/delete-message.component';
 import { EnterChannelComponent } from './containers/enter-channel.component';
 import { GroupChannelListComponent } from './containers/group-channel-list.component';
 import { MessagesListComponent } from './containers/messages-list.component';
@@ -21,6 +20,7 @@ import { OpenChannelListComponent } from './containers/open-channel-list.compone
 import { ReceievedInvitationsComponent } from './containers/receieved-invitations.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
+import { DeleteMessageDirective } from './directives/delete-message.directive';
 import { FetchMoreMessagesDirective } from './directives/fetch-more-messages.directive';
 import {
   SendbirdOptions,
@@ -66,7 +66,7 @@ const declarations = [
   CreateOpenChannelComponent,
   CreateGroupChannelComponent,
   FetchMoreMessagesDirective,
-  DeleteMessageComponent,
+  DeleteMessageDirective,
   ChannelParticipantsListComponent,
   EnterChannelComponent,
   ReceievedInvitationsComponent

@@ -18,7 +18,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
           <h3 fxFlex="grow">{{ senderName }}</h3>
           <small>
             <span> {{ createdAt | date }} </span>
-            <span *ngIf="message" stottle-delete-message [message]="message">
+            <span *ngIf="message" stottleDeleteMessage [message]="message">
               delete
             </span>
           </small>
