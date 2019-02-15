@@ -20,8 +20,8 @@ import { SendbirdComponentResolverService } from '../services/sendbird-component
 @Component({
   selector: 'stottle-geniric-list',
   template: `
-    <ng-container #messagesList *ngFor="let item of items; trackBy: trackByFn">
-      <template #messageListItem></template>
+    <ng-container #list *ngFor="let item of items; trackBy: trackByFn">
+      <template #listItem></template>
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -33,10 +33,10 @@ export class GeniricListComponent<T, TComp>
   @Output()
   changes = new EventEmitter<ComponentRef<TComp>[]>();
 
-  @ViewChildren('messageListItem', { read: ViewContainerRef })
-  messageListItems: QueryList<ViewContainerRef>;
-  @ViewChildren('messagesList', { read: ViewContainerRef })
-  messagesList: QueryList<ViewContainerRef>;
+  @ViewChildren('listItem', { read: ViewContainerRef })
+  listItems: QueryList<ViewContainerRef>;
+  @ViewChildren('list', { read: ViewContainerRef })
+  list: QueryList<ViewContainerRef>;
 
   get items(): T[] {
     return this.options ? this.options.items : [];
@@ -44,14 +44,16 @@ export class GeniricListComponent<T, TComp>
 
   private componentRefs: ComponentRef<TComp>[] = [];
   private destroy$ = new Subject();
+  private get listItemsRefs(): ViewContainerRef[] {
+    return this.listItems.toArray();
+  }
 
   constructor(private resolver: SendbirdComponentResolverService) {}
 
   ngAfterViewInit(): void {
     this.trackChanges(
       this.options.component,
-      this.messagesList,
-      this.messageListItems,
+      this.list,
       this.options.updateInstance
     )
       .pipe(
@@ -77,13 +79,10 @@ export class GeniricListComponent<T, TComp>
   trackChanges<TComp>(
     compoent: Type<TComp>,
     list: QueryList<ViewContainerRef>,
-    listItems: QueryList<ViewContainerRef>,
     updateInsatnce: (instance: TComp, index: number) => void
   ): Observable<ComponentRef<TComp>[]> {
     return list.changes.pipe(
-      map(changes =>
-        this.updateList(changes, compoent, listItems, updateInsatnce)
-      ),
+      map(changes => this.updateList(changes, compoent, updateInsatnce)),
       tap(refs => refs.forEach(r => r.hostView.detectChanges()))
     );
   }
@@ -91,22 +90,20 @@ export class GeniricListComponent<T, TComp>
   private updateList<TComp>(
     changes: any[],
     compoent: Type<TComp>,
-    listItems: QueryList<ViewContainerRef>,
     updateInsatnce: (instance: TComp, index: number) => void
   ): ComponentRef<TComp>[] {
     return changes.map((ref: ViewContainerRef, index: number) =>
-      this.buildComponent<TComp>(listItems, index, compoent, updateInsatnce)
+      this.buildComponent<TComp>(index, compoent, updateInsatnce)
     );
   }
 
   private buildComponent<TComp>(
-    listItems: QueryList<ViewContainerRef>,
     index: number,
     compoent: Type<TComp>,
     updateInsatnce: (instance: TComp, index: number) => void
   ) {
     const cmpRef = this.resolver.createComponent(
-      listItems.toArray()[index],
+      this.listItemsRefs[index],
       compoent
     );
     updateInsatnce(cmpRef.instance, index);
