@@ -54,7 +54,7 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
     return {
       component: SendbirdMessagesListItemComponent,
       items: this.messages,
-      trackByKey: this.trackByFn,
+      trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
     };
   }
@@ -98,7 +98,9 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
     this.lastScrollHeight = this.messagesContainer.nativeElement.scrollHeight;
   }
 
-  private trackByFn(item: SendBird.UserMessage | SendBird.FileMessage): number {
+  private trackByKey(
+    item: SendBird.UserMessage | SendBird.FileMessage
+  ): number {
     return item.messageId;
   }
 

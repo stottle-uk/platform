@@ -6,12 +6,7 @@ import { SendBirdReceievedInvitationsItemComponent } from '../templates/send-bir
   selector: 'stottle-receieved-invitations-inner',
   template: `
     <div class="receieved-invitations-container">
-      <ng-container
-        #invitationsList
-        *ngFor="let invitation of invitations; trackBy: trackByFn"
-      >
-        <template #invitationsListItem></template>
-      </ng-container>
+      <stottle-generic-list [options]="options"></stottle-generic-list>
     </div>
   `
 })
@@ -26,12 +21,12 @@ export class ReceievedInvitationsInnerComponent {
     return {
       component: SendBirdReceievedInvitationsItemComponent,
       items: this.invitations,
-      trackByKey: this.trackByFn,
+      trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
     };
   }
 
-  private trackByFn(item: SendBird.GroupChannel): string {
+  private trackByKey(item: SendBird.GroupChannel): string {
     return item.url;
   }
 

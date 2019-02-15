@@ -22,12 +22,12 @@ export class ChannelParticipantsListInnerComponent {
     return {
       component: SendbirdChannelParticipantsListItemComponent,
       items: this.participants,
-      trackByKey: this.trackByFn,
+      trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
     };
   }
 
-  private trackByFn(item: SendBird.User): string {
+  private trackByKey(item: SendBird.User): string {
     return item.userId;
   }
 

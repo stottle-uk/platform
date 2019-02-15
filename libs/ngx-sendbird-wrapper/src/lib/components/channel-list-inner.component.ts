@@ -23,12 +23,12 @@ export class ChannelListInnerComponent {
     return {
       component: SendbirdChannelListItemComponent,
       items: this.channels,
-      trackByKey: this.trackByFn,
+      trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
     };
   }
 
-  private trackByFn(item: SendBird.OpenChannel): string {
+  private trackByKey(item: SendBird.OpenChannel): string {
     return item.url;
   }
 

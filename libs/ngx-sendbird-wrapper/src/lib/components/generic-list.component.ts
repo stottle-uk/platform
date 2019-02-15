@@ -12,7 +12,7 @@ import {
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { GenericListOptions } from '../models/messages.model';
 import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
@@ -51,13 +51,17 @@ export class GenericListComponent<T, TComp>
   constructor(private resolver: SendbirdComponentResolverService) {}
 
   ngAfterViewInit(): void {
-    this.trackChanges(
-      this.options.component,
-      this.list,
-      this.options.updateInstance
-    )
+    this.list.changes
       .pipe(
         takeUntil(this.destroy$),
+        map(changes =>
+          this.updateList(
+            changes,
+            this.options.component,
+            this.options.updateInstance
+          )
+        ),
+        tap(refs => refs.forEach(r => r.hostView.detectChanges())),
         tap(refs => this.changes.emit(refs)),
         tap(refs => this.componentRefs.concat(refs))
       )
@@ -76,37 +80,26 @@ export class GenericListComponent<T, TComp>
       : index;
   }
 
-  trackChanges<TComp>(
-    compoent: Type<TComp>,
-    list: QueryList<ViewContainerRef>,
-    updateInsatnce: (instance: TComp, index: number) => void
-  ): Observable<ComponentRef<TComp>[]> {
-    return list.changes.pipe(
-      map(changes => this.updateList(changes, compoent, updateInsatnce)),
-      tap(refs => refs.forEach(r => r.hostView.detectChanges()))
-    );
-  }
-
   private updateList<TComp>(
     changes: any[],
     compoent: Type<TComp>,
-    updateInsatnce: (instance: TComp, index: number) => void
+    updateInstance: (instance: TComp, index: number) => void
   ): ComponentRef<TComp>[] {
     return changes.map((ref: ViewContainerRef, index: number) =>
-      this.buildComponent<TComp>(index, compoent, updateInsatnce)
+      this.buildComponent<TComp>(index, compoent, updateInstance)
     );
   }
 
   private buildComponent<TComp>(
     index: number,
     compoent: Type<TComp>,
-    updateInsatnce: (instance: TComp, index: number) => void
+    updateInstance: (instance: TComp, index: number) => void
   ) {
     const cmpRef = this.resolver.createComponent(
       this.listItemsRefs[index],
       compoent
     );
-    updateInsatnce(cmpRef.instance, index);
+    updateInstance(cmpRef.instance, index);
     return cmpRef;
   }
 }
