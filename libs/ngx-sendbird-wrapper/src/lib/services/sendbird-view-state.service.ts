@@ -12,9 +12,7 @@ export type Connection =
   | SendBird.FileMessage
   | SendBird.GroupChannel;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SendbirdViewStateService {
   private internalLastCallType$ = new BehaviorSubject<string>('');
   private internalIsConnected$ = new BehaviorSubject<boolean>(false);

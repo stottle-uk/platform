@@ -7,6 +7,7 @@ import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
 import { GenericListComponent } from './components/generic-list.component';
+import { GenericComponent } from './components/generic.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { ReceievedInvitationsInnerComponent } from './components/receieved-invitations-inner.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
@@ -28,6 +29,7 @@ import {
   SEND_BIRD_OPTIONS
 } from './models/messages.model';
 import { SendbirdComponentResolverService } from './services/sendbird-component-resolver.service';
+import { SendbirdViewStateService } from './services/sendbird-view-state.service';
 import { SEND_BIRD } from './services/sendbird.service';
 import { SendbirdChannelListItemComponent } from './templates/send-bird-channel-list-item.component';
 import { SendbirdChannelParticipantsListItemComponent } from './templates/send-bird-channel-participants-list-item.component';
@@ -84,7 +86,8 @@ const declarations = [
     MessagesListInnerComponent,
     ChannelParticipantsListInnerComponent,
     ReceievedInvitationsInnerComponent,
-    GenericListComponent
+    GenericListComponent,
+    GenericComponent
   ],
   exports: [declarations],
   entryComponents: [entryComponents]
@@ -119,7 +122,8 @@ export class NgxSendbirdWrapperModule {
           provide: SEND_BIRD_DECLARATIONS,
           useValue: declarations
         },
-        SendbirdComponentResolverService
+        SendbirdComponentResolverService,
+        SendbirdViewStateService
       ]
     };
   }

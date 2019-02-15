@@ -30,6 +30,11 @@ export interface GenericListOptions<T, TComp> {
   updateInstance: (instance: TComp, index: number) => void;
 }
 
+export interface GenericOptions<TComp> {
+  component: Type<TComp>;
+  updateInstance: (instance: TComp) => void;
+}
+
 export interface SendbirdOptionsDeclarations {
   messageFormComponent?: Type<SendBirdMessageFormComponent>;
   messageFileFormComponent?: Type<SendbirdMessageFileFormComponent>;
