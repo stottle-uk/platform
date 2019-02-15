@@ -1,19 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostListener,
-  Input
-} from '@angular/core';
+import { Directive, HostListener, Input } from '@angular/core';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
-@Component({
-  selector: '[stottle-enter-channel]',
-  template: `
-    <ng-content></ng-content>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+@Directive({
+  selector: '[stottleEnterChannel]'
 })
-export class EnterChannelComponent {
+export class EnterChannelDirective {
   @Input()
   channel: SendBird.BaseChannel;
 

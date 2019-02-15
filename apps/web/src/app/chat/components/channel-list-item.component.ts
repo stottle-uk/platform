@@ -7,7 +7,7 @@ import { SendbirdChannelListItemComponent } from '@stottle-platform/ngx-sendbird
     <div
       class="channel-container"
       fxLayout
-      stottle-enter-channel
+      stottleEnterChannel
       [channel]="channel"
     >
       <div class="avatar-container">

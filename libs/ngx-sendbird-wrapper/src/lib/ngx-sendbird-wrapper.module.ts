@@ -12,7 +12,6 @@ import { ReceievedInvitationsInnerComponent } from './components/receieved-invit
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
 import { CreateGroupChannelComponent } from './containers/create-group-channel.component';
 import { CreateOpenChannelComponent } from './containers/create-open-channel.component';
-import { EnterChannelComponent } from './containers/enter-channel.component';
 import { GroupChannelListComponent } from './containers/group-channel-list.component';
 import { MessagesListComponent } from './containers/messages-list.component';
 import { OpenChannelListComponent } from './containers/open-channel-list.component';
@@ -20,6 +19,7 @@ import { ReceievedInvitationsComponent } from './containers/receieved-invitation
 import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
 import { DeleteMessageDirective } from './directives/delete-message.directive';
+import { EnterChannelDirective } from './directives/enter-channel.directive';
 import { FetchMoreMessagesDirective } from './directives/fetch-more-messages.directive';
 import { GenericDirective } from './directives/generic.directive';
 import {
@@ -68,7 +68,7 @@ const declarations = [
   FetchMoreMessagesDirective,
   DeleteMessageDirective,
   ChannelParticipantsListComponent,
-  EnterChannelComponent,
+  EnterChannelDirective,
   ReceievedInvitationsComponent
 ];
 
