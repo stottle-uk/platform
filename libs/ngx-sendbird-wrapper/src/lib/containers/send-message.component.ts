@@ -8,7 +8,7 @@ import { SendBirdMessageFormComponent } from '../templates/send-bird-message-for
 @Component({
   selector: 'stottle-send-message',
   template: `
-    <ng-container stottle-generic [options]="options"></ng-container>
+    <ng-container stottleGeneric [options]="options"></ng-container>
   `
 })
 export class SendMessageComponent implements OnDestroy {

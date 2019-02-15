@@ -7,7 +7,7 @@ import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
 import { GenericListComponent } from './components/generic-list.component';
-import { GenericComponent } from './components/generic.component';
+import { GenericDirective } from './components/generic.directive';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { ReceievedInvitationsInnerComponent } from './components/receieved-invitations-inner.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
@@ -87,7 +87,7 @@ const declarations = [
     ChannelParticipantsListInnerComponent,
     ReceievedInvitationsInnerComponent,
     GenericListComponent,
-    GenericComponent
+    GenericDirective
   ],
   exports: [declarations],
   entryComponents: [entryComponents]

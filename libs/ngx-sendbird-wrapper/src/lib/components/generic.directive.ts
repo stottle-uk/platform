@@ -6,19 +6,17 @@ import {
   OnDestroy,
   ViewContainerRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
 import { GenericOptions } from '../models/messages.model';
 import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 
 @Directive({
-  selector: '[stottle-generic]'
+  selector: '[stottleGeneric]'
 })
-export class GenericComponent<TComp> implements AfterViewInit, OnDestroy {
+export class GenericDirective<TComp> implements AfterViewInit, OnDestroy {
   @Input()
   options: GenericOptions<TComp>;
 
   private componentRef: ComponentRef<TComp>;
-  private destroy$ = new Subject();
 
   constructor(
     private resolver: SendbirdComponentResolverService,
@@ -37,8 +35,6 @@ export class GenericComponent<TComp> implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
     this.componentRef.destroy();
   }
 }
