@@ -1,75 +1,35 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ComponentRef,
-  Input,
-  OnDestroy,
-  QueryList,
-  ViewChildren,
-  ViewContainerRef
-} from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import * as SendBird from 'sendbird';
-import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
+import { GenericListOptions } from '../models/messages.model';
 import { SendbirdChannelListItemComponent } from '../templates/send-bird-channel-list-item.component';
 
 @Component({
   selector: 'stottle-channel-list-inner',
   template: `
     <div class="channels-container">
-      <ng-container
-        #channelsList
-        *ngFor="let channel of channels; trackBy: trackByFn"
-      >
-        <template #channelsListItem></template>
-      </ng-container>
+      <stottle-geniric-list [options]="options"></stottle-geniric-list>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChannelListInnerComponent implements AfterViewInit, OnDestroy {
+export class ChannelListInnerComponent {
   @Input()
   channels: SendBird.OpenChannel[];
 
-  @ViewChildren('channelsListItem', { read: ViewContainerRef })
-  channelsListItems: QueryList<ViewContainerRef>;
-  @ViewChildren('channelsList', { read: ViewContainerRef })
-  channelsList: QueryList<ViewContainerRef>;
-
-  private componentRefs: ComponentRef<SendbirdChannelListItemComponent>[];
-  private destroy$ = new Subject();
-
-  constructor(
-    private resolver: SendbirdComponentResolverService<
-      SendbirdChannelListItemComponent
-    >
-  ) {}
-
-  ngAfterViewInit(): void {
-    this.resolver
-      .trackChanges(
-        SendbirdChannelListItemComponent,
-        this.channelsList,
-        this.channelsListItems,
-        this.updateInstance.bind(this)
-      )
-      .pipe(
-        takeUntil(this.destroy$),
-        tap(refs => (this.componentRefs = refs))
-      )
-      .subscribe();
+  get options(): GenericListOptions<
+    SendBird.OpenChannel,
+    SendbirdChannelListItemComponent
+  > {
+    return {
+      component: SendbirdChannelListItemComponent,
+      items: this.channels,
+      trackByKey: this.trackByFn,
+      updateInstance: this.updateInstance.bind(this)
+    };
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.componentRefs.forEach(ref => ref.destroy());
-  }
-
-  trackByFn(index: number, item: SendBird.OpenChannel): string {
-    return item ? item.url : index.toString();
+  private trackByFn(item: SendBird.OpenChannel): string {
+    return item.url;
   }
 
   private updateInstance(

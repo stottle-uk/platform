@@ -27,9 +27,7 @@ export class SendFileMessageComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private vs: SendbirdViewStateService,
-    private resolver: SendbirdComponentResolverService<
-      SendbirdMessageFileFormComponent
-    >
+    private resolver: SendbirdComponentResolverService
   ) {}
 
   ngAfterViewInit(): void {

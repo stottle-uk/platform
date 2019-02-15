@@ -23,6 +23,13 @@ export interface SendbirdOptions {
   appId: string;
 }
 
+export interface GenericListOptions<T, TComp> {
+  items: T[];
+  component: Type<TComp>;
+  trackByKey: (item: T) => string | number;
+  updateInstance: (instance: TComp, index: number) => void;
+}
+
 export interface SendbirdOptionsDeclarations {
   messageFormComponent?: Type<SendBirdMessageFormComponent>;
   messageFileFormComponent?: Type<SendbirdMessageFileFormComponent>;

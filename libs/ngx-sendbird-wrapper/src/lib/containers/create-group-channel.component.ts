@@ -26,9 +26,7 @@ export class CreateGroupChannelComponent implements AfterViewInit {
 
   constructor(
     private vs: SendbirdViewStateService,
-    private resolver: SendbirdComponentResolverService<
-      SendbirdCreateChannelFormComponent
-    >
+    private resolver: SendbirdComponentResolverService
   ) {}
 
   ngAfterViewInit(): void {

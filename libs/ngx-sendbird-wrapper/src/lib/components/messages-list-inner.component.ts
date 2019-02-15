@@ -6,17 +6,14 @@ import {
   ElementRef,
   Input,
   OnDestroy,
-  QueryList,
   ViewChild,
-  ViewChildren,
   ViewContainerRef
 } from '@angular/core';
 import {
   ScrollToConfigOptions,
   ScrollToService
 } from '@nicky-lenaers/ngx-scroll-to';
-import { Subject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { GenericListOptions } from '../models/messages.model';
 import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 import { SendbirdFetchMoreMessagesBtnComponent } from '../templates/send-bird-fetch-more-messages-btn.component';
 import { SendbirdMessagesListItemComponent } from '../templates/send-bird-messages-list-item.component';
@@ -34,12 +31,10 @@ import { SendbirdMessagesListItemComponent } from '../templates/send-bird-messag
       [scrollWindow]="false"
     >
       <template #fetchMoreMessagesBtn></template>
-      <ng-container
-        #messagesList
-        *ngFor="let message of messages; trackBy: trackByFn"
-      >
-        <template #messageListItem></template>
-      </ng-container>
+      <stottle-geniric-list
+        [options]="options"
+        (changes)="onChanges($event)"
+      ></stottle-geniric-list>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -52,27 +47,31 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   @Input()
   scrollPositionMaintainEnabled: boolean;
 
+  get options(): GenericListOptions<
+    SendBird.UserMessage | SendBird.FileMessage,
+    SendbirdMessagesListItemComponent
+  > {
+    return {
+      component: SendbirdMessagesListItemComponent,
+      items: this.messages,
+      trackByKey: this.trackByFn,
+      updateInstance: this.updateInstance.bind(this)
+    };
+  }
+
   @ViewChild('messagesContainer')
   messagesContainer: ElementRef<Element>;
   @ViewChild('fetchMoreMessagesBtn', { read: ViewContainerRef })
   fetchMoreMessagesBtn: ViewContainerRef;
-  @ViewChildren('messageListItem', { read: ViewContainerRef })
-  messageListItems: QueryList<ViewContainerRef>;
-  @ViewChildren('messagesList', { read: ViewContainerRef })
-  messagesList: QueryList<ViewContainerRef>;
 
-  private componentRefs: ComponentRef<SendbirdMessagesListItemComponent>[];
   private fetchMoreMessagesBtnRef: ComponentRef<
     SendbirdFetchMoreMessagesBtnComponent
   >;
   private lastScrollHeight = 0;
-  private destroy$ = new Subject();
 
   constructor(
     private scrollToService: ScrollToService,
-    private resolver: SendbirdComponentResolverService<
-      SendbirdMessagesListItemComponent
-    >
+    private resolver: SendbirdComponentResolverService
   ) {}
 
   ngAfterViewInit(): void {
@@ -81,51 +80,33 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
       SendbirdFetchMoreMessagesBtnComponent
     );
 
-    this.fetchMoreMessagesBtnRef.hostView.markForCheck();
-
-    this.resolver
-      .trackChanges(
-        SendbirdMessagesListItemComponent,
-        this.messagesList,
-        this.messageListItems,
-        this.updateInstance.bind(this)
-      )
-      .pipe(
-        takeUntil(this.destroy$),
-        tap(refs => (this.componentRefs = refs)),
-        tap(
-          () =>
-            this.scrollToBottomEnabled && this.scrollToBottomOfMessagesList()
-        ),
-        tap(
-          () =>
-            this.scrollPositionMaintainEnabled &&
-            this.setScrollPositionToTopOfListBeforeItemsWereAdded()
-        ),
-        tap(
-          () =>
-            (this.lastScrollHeight = this.messagesContainer.nativeElement.scrollHeight)
-        )
-      )
-      .subscribe();
+    this.fetchMoreMessagesBtnRef.hostView.detectChanges();
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
     this.fetchMoreMessagesBtnRef.destroy();
-    this.componentRefs.forEach(ref => ref.destroy());
   }
 
   onScrollUp(): void {
     this.fetchMoreMessagesBtnRef.instance.fetchMoreMessages.getMore();
   }
 
-  trackByFn(
-    index: number,
-    item: SendBird.UserMessage | SendBird.FileMessage
-  ): number {
-    return item ? item.messageId : index;
+  onChanges(): void {
+    this.scrollToBottomEnabled && this.scrollToBottomOfMessagesList();
+    this.scrollPositionMaintainEnabled &&
+      this.setScrollPositionToTopOfListBeforeItemsWereAdded();
+    this.lastScrollHeight = this.messagesContainer.nativeElement.scrollHeight;
+  }
+
+  private trackByFn(item: SendBird.UserMessage | SendBird.FileMessage): number {
+    return item.messageId;
+  }
+
+  private updateInstance(
+    instance: SendbirdMessagesListItemComponent,
+    index: number
+  ): void {
+    instance.message = this.messages[index];
   }
 
   private scrollToBottomOfMessagesList(): void {
@@ -139,12 +120,5 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   private setScrollPositionToTopOfListBeforeItemsWereAdded(): void {
     this.messagesContainer.nativeElement.scrollTop =
       this.messagesContainer.nativeElement.scrollHeight - this.lastScrollHeight;
-  }
-
-  private updateInstance(
-    instance: SendbirdMessagesListItemComponent,
-    index: number
-  ): void {
-    instance.message = this.messages[index];
   }
 }
