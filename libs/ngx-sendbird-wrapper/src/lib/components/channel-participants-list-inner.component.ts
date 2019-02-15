@@ -6,7 +6,7 @@ import { SendbirdChannelParticipantsListItemComponent } from '../templates/send-
   selector: 'stottle-channel-participants-list-inner',
   template: `
     <div class="channel-participants-container">
-      <stottle-geniric-list [options]="options"></stottle-geniric-list>
+      <stottle-generic-list [options]="options"></stottle-generic-list>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

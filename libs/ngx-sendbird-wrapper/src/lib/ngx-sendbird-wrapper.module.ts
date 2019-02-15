@@ -6,7 +6,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
-import { GeniricListComponent } from './components/geniric-list.component';
+import { GenericListComponent } from './components/generic-list.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { ReceievedInvitationsInnerComponent } from './components/receieved-invitations-inner.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
@@ -84,7 +84,7 @@ const declarations = [
     MessagesListInnerComponent,
     ChannelParticipantsListInnerComponent,
     ReceievedInvitationsInnerComponent,
-    GeniricListComponent
+    GenericListComponent
   ],
   exports: [declarations],
   entryComponents: [entryComponents]

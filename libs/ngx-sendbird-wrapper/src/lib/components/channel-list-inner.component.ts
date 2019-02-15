@@ -7,7 +7,7 @@ import { SendbirdChannelListItemComponent } from '../templates/send-bird-channel
   selector: 'stottle-channel-list-inner',
   template: `
     <div class="channels-container">
-      <stottle-geniric-list [options]="options"></stottle-geniric-list>
+      <stottle-generic-list [options]="options"></stottle-generic-list>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

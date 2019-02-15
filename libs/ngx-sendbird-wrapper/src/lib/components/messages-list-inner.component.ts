@@ -31,10 +31,10 @@ import { SendbirdMessagesListItemComponent } from '../templates/send-bird-messag
       [scrollWindow]="false"
     >
       <template #fetchMoreMessagesBtn></template>
-      <stottle-geniric-list
+      <stottle-generic-list
         [options]="options"
         (changes)="onChanges($event)"
-      ></stottle-geniric-list>
+      ></stottle-generic-list>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

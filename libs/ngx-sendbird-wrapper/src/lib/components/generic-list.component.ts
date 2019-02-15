@@ -18,7 +18,7 @@ import { GenericListOptions } from '../models/messages.model';
 import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 
 @Component({
-  selector: 'stottle-geniric-list',
+  selector: 'stottle-generic-list',
   template: `
     <ng-container #list *ngFor="let item of items; trackBy: trackByFn">
       <template #listItem></template>
@@ -26,7 +26,7 @@ import { SendbirdComponentResolverService } from '../services/sendbird-component
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GeniricListComponent<T, TComp>
+export class GenericListComponent<T, TComp>
   implements AfterViewInit, OnDestroy {
   @Input()
   options: GenericListOptions<T, TComp>;
