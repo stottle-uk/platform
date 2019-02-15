@@ -61,10 +61,6 @@ export class MessagesListInnerComponent implements AfterViewInit, OnDestroy {
   @ViewChildren('messagesList', { read: ViewContainerRef })
   messagesList: QueryList<ViewContainerRef>;
 
-  private get messageListItemsRefs(): ViewContainerRef[] {
-    return this.messageListItems.toArray();
-  }
-
   private componentRefs: ComponentRef<SendbirdMessagesListItemComponent>[];
   private fetchMoreMessagesBtnRef: ComponentRef<
     SendbirdFetchMoreMessagesBtnComponent
