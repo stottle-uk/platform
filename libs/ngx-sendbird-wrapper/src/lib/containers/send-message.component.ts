@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ComponentRef,
   OnDestroy,
@@ -30,8 +29,7 @@ export class SendMessageComponent implements AfterViewInit, OnDestroy {
     private vs: SendbirdViewStateService,
     private resolver: SendbirdComponentResolverService<
       SendBirdMessageFormComponent
-    >,
-    private cdr: ChangeDetectorRef
+    >
   ) {}
 
   ngAfterViewInit(): void {
@@ -47,7 +45,7 @@ export class SendMessageComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe();
 
-    this.cdr.detectChanges();
+    this.componentRef.hostView.detectChanges();
   }
 
   ngOnDestroy(): void {

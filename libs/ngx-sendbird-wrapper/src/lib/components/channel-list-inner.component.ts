@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ComponentRef,
   Input,
@@ -45,8 +44,7 @@ export class ChannelListInnerComponent implements AfterViewInit, OnDestroy {
   constructor(
     private resolver: SendbirdComponentResolverService<
       SendbirdChannelListItemComponent
-    >,
-    private cdr: ChangeDetectorRef
+    >
   ) {}
 
   ngAfterViewInit(): void {

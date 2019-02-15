@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ComponentRef,
   ViewChild,
@@ -29,8 +28,7 @@ export class CreateOpenChannelComponent implements AfterViewInit {
     private vs: SendbirdViewStateService,
     private resolver: SendbirdComponentResolverService<
       SendbirdCreateChannelFormComponent
-    >,
-    private cdr: ChangeDetectorRef
+    >
   ) {}
 
   ngAfterViewInit(): void {
@@ -46,7 +44,7 @@ export class CreateOpenChannelComponent implements AfterViewInit {
       )
       .subscribe();
 
-    this.cdr.detectChanges();
+    this.componentRef.hostView.detectChanges();
   }
 
   ngOnDestroy(): void {
