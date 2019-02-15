@@ -32,7 +32,7 @@ export interface GenericListOptions<T, TComp> {
 
 export interface GenericOptions<TComp> {
   component: Type<TComp>;
-  updateInstance: (instance: TComp) => void;
+  updateInstance?: (instance: TComp) => void;
 }
 
 export interface SendbirdOptionsDeclarations {

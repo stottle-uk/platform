@@ -68,8 +68,7 @@ export class MessagesListInnerComponent implements OnDestroy {
     SendbirdFetchMoreMessagesBtnComponent
   > {
     return {
-      component: SendbirdFetchMoreMessagesBtnComponent,
-      updateInstance: () => {}
+      component: SendbirdFetchMoreMessagesBtnComponent
     };
   }
 
