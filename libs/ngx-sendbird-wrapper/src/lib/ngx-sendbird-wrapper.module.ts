@@ -7,7 +7,6 @@ import * as SendBird from 'sendbird';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
 import { GenericListComponent } from './components/generic-list.component';
-import { GenericDirective } from './components/generic.directive';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { ReceievedInvitationsInnerComponent } from './components/receieved-invitations-inner.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
@@ -22,6 +21,7 @@ import { SendFileMessageComponent } from './containers/send-file-message.compone
 import { SendMessageComponent } from './containers/send-message.component';
 import { DeleteMessageDirective } from './directives/delete-message.directive';
 import { FetchMoreMessagesDirective } from './directives/fetch-more-messages.directive';
+import { GenericDirective } from './directives/generic.directive';
 import {
   SendbirdOptions,
   SendbirdOptionsDeclarations,
