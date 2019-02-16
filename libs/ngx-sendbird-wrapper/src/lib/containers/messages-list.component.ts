@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { OperatorFunction } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { OperatorFunction, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
     ></stottle-messages-list-inner>
   `
 })
-export class MessagesListComponent implements OnInit {
+export class MessagesListComponent implements OnInit, OnDestroy {
   messages$ = this.vs.messagesForCurrentChannel$;
   scrollToBottomEnabled$ = this.vs.lastCallType$.pipe(
     this.isOfType(['add', 'get'])
@@ -23,14 +23,27 @@ export class MessagesListComponent implements OnInit {
     this.isOfType(['getMore'])
   );
 
+  private destroy$ = new Subject();
+
   constructor(private vs: SendbirdViewStateService) {}
 
   ngOnInit() {
-    this.vs.getMessagesForCurrentChannel().subscribe();
+    this.vs
+      .getMessagesForCurrentChannel()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onScrolledUp(): void {
-    this.vs.getMoreMessagesForCurrentChannel().subscribe();
+    this.vs
+      .getMoreMessagesForCurrentChannel()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
 
   private isOfType(types: string[]): OperatorFunction<string, boolean> {

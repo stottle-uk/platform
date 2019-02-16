@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
 
 @Component({
@@ -9,12 +11,22 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
     ></stottle-channel-participants-list-inner>
   `
 })
-export class ChannelParticipantsListComponent implements OnInit {
+export class ChannelParticipantsListComponent implements OnInit, OnDestroy {
   participants$ = this.vs.participantsForCurrentChannel$;
+
+  private destroy$ = new Subject();
 
   constructor(private vs: SendbirdViewStateService) {}
 
   ngOnInit() {
-    this.vs.getChannelParticipants().subscribe();
+    this.vs
+      .getChannelParticipants()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
