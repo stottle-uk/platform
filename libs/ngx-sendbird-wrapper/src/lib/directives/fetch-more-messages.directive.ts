@@ -19,7 +19,7 @@ export class FetchMoreMessagesDirective implements OnDestroy {
   @HostListener('click')
   getMore(): void {
     this.vs
-      .getMoreMessagesForCurrentChannel()
+      .getCurrentChannelMoreMessages()
       .pipe(takeUntil(this.destroy$))
       .subscribe();
   }

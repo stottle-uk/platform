@@ -235,7 +235,7 @@ export class SendbirdViewStateService {
     );
   }
 
-  getMessagesForCurrentChannel(): Observable<
+  getCurrentChannelMessages(): Observable<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {
     return this.currentChannel$.pipe(
@@ -253,7 +253,7 @@ export class SendbirdViewStateService {
     );
   }
 
-  getMoreMessagesForCurrentChannel(): Observable<
+  getCurrentChannelMoreMessages(): Observable<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {
     return this.currentChannelPreviousMessageListQuery$.pipe(
