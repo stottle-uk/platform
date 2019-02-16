@@ -1,5 +1,5 @@
 import { Component, EventEmitter } from '@angular/core';
-import { SendMessage } from '../models/messages.model';
+import { SendMessage } from '@stottle-platform/ngx-sendbird-wrapper';
 
 @Component({
   selector: 'stottle-send-bird-message-form',

@@ -2,12 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, merge, Observable, of } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
+import { PreviousMessageListQueries } from '../coversations/models/convsersations.models';
 import { SendbirdEventHandlersService } from './sendbird-event-handlers.service';
 import { SendBirdService } from './sendbird.service';
-
-export interface PreviousMessageListQueries {
-  [url: string]: SendBird.PreviousMessageListQuery;
-}
 
 export type Connection =
   | SendBird.User

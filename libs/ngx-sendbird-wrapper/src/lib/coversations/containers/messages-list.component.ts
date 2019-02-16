@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OperatorFunction, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
+import { ConversationsViewStateService } from '../services/conversations-view-state.service';
 
 @Component({
   selector: 'stottle-messages-list',
@@ -25,7 +25,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private vs: SendbirdViewStateService) {}
+  constructor(private vs: ConversationsViewStateService) {}
 
   ngOnInit() {
     this.vs

@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
-import { SendbirdMessageFileFormComponent } from '../templates/send-bird-message-file-form.component';
-import { GenericOptions } from '../_shared/models/shared.models';
+import { SendbirdMessageFileFormComponent } from '../../templates/send-bird-message-file-form.component';
+import { GenericOptions } from '../../_shared/models/shared.models';
+import { ConversationsViewStateService } from '../services/conversations-view-state.service';
 
 @Component({
   selector: 'stottle-send-file-message',
@@ -19,7 +19,7 @@ export class SendFileMessageComponent implements OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private vs: SendbirdViewStateService) {}
+  constructor(private vs: ConversationsViewStateService) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();

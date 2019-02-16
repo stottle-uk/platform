@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
-import { SendBirdMessageFormComponent } from '../templates/send-bird-message-form.component';
-import { GenericOptions } from '../_shared/models/shared.models';
+import { SendBirdMessageFormComponent } from '../../templates/send-bird-message-form.component';
+import { GenericOptions } from '../../_shared/models/shared.models';
+import { ConversationsViewStateService } from '../services/conversations-view-state.service';
 
 @Component({
   selector: 'stottle-send-message',
@@ -19,7 +19,7 @@ export class SendMessageComponent implements OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private vs: SendbirdViewStateService) {}
+  constructor(private vs: ConversationsViewStateService) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -5,8 +5,10 @@ import { CreateGroupChannelComponent } from './containers/create-group-channel.c
 import { CreateOpenChannelComponent } from './containers/create-open-channel.component';
 import { GroupChannelListComponent } from './containers/group-channel-list.component';
 import { OpenChannelListComponent } from './containers/open-channel-list.component';
+import { EnterChannelDirective } from './directives/enter-channel.directive';
 
 const declarations = [
+  EnterChannelDirective,
   OpenChannelListComponent,
   GroupChannelListComponent,
   CreateOpenChannelComponent,

@@ -4,17 +4,6 @@ import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { SendBirdService } from '../../services/sendbird.service';
 
-export interface PreviousMessageListQueries {
-  [url: string]: SendBird.PreviousMessageListQuery;
-}
-
-export type Connection =
-  | SendBird.User
-  | string
-  | SendBird.UserMessage
-  | SendBird.FileMessage
-  | SendBird.GroupChannel;
-
 @Injectable({
   providedIn: 'root'
 })

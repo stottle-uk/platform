@@ -1,7 +1,7 @@
 import { Directive, HostListener, Input, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
+import { ChannelsViewStateService } from '../services/channels-view-state.services';
 
 @Directive({
   selector: '[stottleEnterChannel]'
@@ -12,7 +12,7 @@ export class EnterChannelDirective implements OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private vs: SendbirdViewStateService) {}
+  constructor(private vs: ChannelsViewStateService) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();

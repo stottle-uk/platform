@@ -1,7 +1,7 @@
 import { Directive, HostListener, Input, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
+import { ConversationsViewStateService } from '../services/conversations-view-state.service';
 
 @Directive({
   selector: '[stottleDeleteMessage]'
@@ -12,7 +12,7 @@ export class DeleteMessageDirective implements OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private vs: SendbirdViewStateService) {}
+  constructor(private vs: ConversationsViewStateService) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();
