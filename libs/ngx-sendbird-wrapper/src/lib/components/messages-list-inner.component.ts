@@ -14,9 +14,12 @@ import {
 } from '@nicky-lenaers/ngx-scroll-to';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';
-import { GenericListOptions, GenericOptions } from '../models/messages.model';
 import { SendbirdFetchMoreMessagesBtnComponent } from '../templates/send-bird-fetch-more-messages-btn.component';
 import { SendbirdMessagesListItemComponent } from '../templates/send-bird-messages-list-item.component';
+import {
+  GenericListOptions,
+  GenericOptions
+} from '../_shared/models/shared.models';
 
 @Component({
   selector: 'stottle-messages-list-inner',

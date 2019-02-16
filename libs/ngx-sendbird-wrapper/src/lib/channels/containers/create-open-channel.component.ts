@@ -1,8 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { GenericOptions } from '../../models/messages.model';
 import { SendbirdCreateChannelFormComponent } from '../../templates/send-bird-create-channel-form.component';
+import { GenericOptions } from '../../_shared/models/shared.models';
 import { ChannelsViewStateService } from '../services/channels-view-state.services';
 
 @Component({

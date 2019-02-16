@@ -13,7 +13,7 @@ import {
 import { Subject } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { GenericDirective } from '../directives/generic.directive';
-import { GenericListOptions } from '../models/messages.model';
+import { GenericListOptions } from '../models/shared.models';
 
 @Component({
   selector: 'stottle-generic-list',

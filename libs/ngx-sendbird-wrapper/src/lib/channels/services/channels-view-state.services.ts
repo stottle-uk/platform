@@ -15,7 +15,9 @@ export type Connection =
   | SendBird.FileMessage
   | SendBird.GroupChannel;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ChannelsViewStateService {
   private internalLastCallType$ = new BehaviorSubject<string>('');
   private internalOpenChannels$ = new BehaviorSubject<SendBird.OpenChannel[]>(

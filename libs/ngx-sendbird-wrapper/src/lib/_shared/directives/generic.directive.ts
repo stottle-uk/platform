@@ -6,8 +6,8 @@ import {
   OnDestroy,
   ViewContainerRef
 } from '@angular/core';
-import { GenericOptions } from '../models/messages.model';
-import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
+import { SendbirdComponentResolverService } from '../../services/sendbird-component-resolver.service';
+import { GenericOptions } from '../models/shared.models';
 
 @Directive({
   selector: '[stottleGeneric]'

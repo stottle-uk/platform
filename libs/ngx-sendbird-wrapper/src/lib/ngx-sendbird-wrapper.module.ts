@@ -16,12 +16,6 @@ import { SendMessageComponent } from './containers/send-message.component';
 import { DeleteMessageDirective } from './directives/delete-message.directive';
 import { EnterChannelDirective } from './directives/enter-channel.directive';
 import { FetchMoreMessagesDirective } from './directives/fetch-more-messages.directive';
-import {
-  SendbirdOptions,
-  SendbirdOptionsDeclarations,
-  SEND_BIRD_DECLARATIONS,
-  SEND_BIRD_OPTIONS
-} from './models/messages.model';
 import { SendbirdComponentResolverService } from './services/sendbird-component-resolver.service';
 import { SendbirdViewStateService } from './services/sendbird-view-state.service';
 import { SEND_BIRD } from './services/sendbird.service';
@@ -33,6 +27,12 @@ import { SendbirdMessageFileFormComponent } from './templates/send-bird-message-
 import { SendBirdMessageFormComponent } from './templates/send-bird-message-form.component';
 import { SendbirdMessagesListItemComponent } from './templates/send-bird-messages-list-item.component';
 import { SendBirdReceievedInvitationsItemComponent } from './templates/send-bird-receieved-invitations-item.component';
+import {
+  SendbirdOptions,
+  SendbirdOptionsDeclarations,
+  SEND_BIRD_DECLARATIONS,
+  SEND_BIRD_OPTIONS
+} from './_shared/models/shared.models';
 
 export function sendBirdFactory(
   options: SendbirdOptions

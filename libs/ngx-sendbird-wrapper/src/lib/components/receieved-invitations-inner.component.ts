@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { GenericListOptions } from '../models/messages.model';
 import { SendBirdReceievedInvitationsItemComponent } from '../templates/send-bird-receieved-invitations-item.component';
+import { GenericListOptions } from '../_shared/models/shared.models';
 
 @Component({
   selector: 'stottle-receieved-invitations-inner',
