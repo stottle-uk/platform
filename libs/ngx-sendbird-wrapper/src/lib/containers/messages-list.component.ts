@@ -15,7 +15,7 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
   `
 })
 export class MessagesListComponent implements OnInit, OnDestroy {
-  messages$ = this.vs.messagesForCurrentChannel$;
+  messages$ = this.vs.currentChannelMessages$;
   scrollToBottomEnabled$ = this.vs.lastCallType$.pipe(
     this.isOfType(['add', 'get'])
   );

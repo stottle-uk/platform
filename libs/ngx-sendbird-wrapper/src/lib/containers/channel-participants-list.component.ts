@@ -12,7 +12,7 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
   `
 })
 export class ChannelParticipantsListComponent implements OnInit, OnDestroy {
-  participants$ = this.vs.participantsForCurrentChannel$;
+  participants$ = this.vs.currentChannelParticipants$;
 
   private destroy$ = new Subject();
 

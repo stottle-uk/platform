@@ -5,7 +5,7 @@ import * as SendBird from 'sendbird';
 import { SendbirdEventHandlersService } from './sendbird-event-handlers.service';
 import { SendBirdService } from './sendbird.service';
 
-export interface PreviousMessageListQuery {
+export interface PreviousMessageListQueries {
   [url: string]: SendBird.PreviousMessageListQuery;
 }
 
@@ -21,8 +21,8 @@ export class SendbirdViewStateService {
   private internalLastCallType$ = new BehaviorSubject<string>('');
   private internalIsConnected$ = new BehaviorSubject<boolean>(false);
   private internalCurrentUser$ = new BehaviorSubject<SendBird.User>(null);
-  private internalPreviousMessageListQuery$ = new BehaviorSubject<
-    PreviousMessageListQuery
+  private internalPreviousMessageListQueries$ = new BehaviorSubject<
+    PreviousMessageListQueries
   >({});
 
   private internalCurrentChannel$ = new BehaviorSubject<
@@ -37,7 +37,7 @@ export class SendbirdViewStateService {
   private internalMessages$ = new BehaviorSubject<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   >([]);
-  private internalParticipantsForCurrentChannel$ = new BehaviorSubject<
+  private internalCurrentChannelParticipants$ = new BehaviorSubject<
     SendBird.User[]
   >([]);
   private internalReceivedInvitations$ = new BehaviorSubject<
@@ -58,10 +58,10 @@ export class SendbirdViewStateService {
       .pipe(filter(user => !!user));
   }
 
-  get previousMessageListQuery$(): Observable<PreviousMessageListQuery> {
-    return this.internalPreviousMessageListQuery$
+  get previousMessageListQueries$(): Observable<PreviousMessageListQueries> {
+    return this.internalPreviousMessageListQueries$
       .asObservable()
-      .pipe(filter(query => !!query));
+      .pipe(filter(queries => !!queries));
   }
 
   get currentChannel$(): Observable<
@@ -72,22 +72,22 @@ export class SendbirdViewStateService {
       .pipe(filter(channel => !!channel));
   }
 
-  get previousMessageListQueryForCurrentChannel$(): Observable<
-    SendBird.PreviousMessageListQuery
-  > {
-    return combineLatest(
-      this.previousMessageListQuery$,
-      this.currentChannel$
-    ).pipe(map(([queries, channel]) => queries[channel.url]));
-  }
-
   get messages$(): Observable<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {
     return this.internalMessages$.asObservable();
   }
 
-  get messagesForCurrentChannel$(): Observable<
+  get currentChannelPreviousMessageListQuery$(): Observable<
+    SendBird.PreviousMessageListQuery
+  > {
+    return combineLatest(
+      this.previousMessageListQueries$,
+      this.currentChannel$
+    ).pipe(map(([queries, channel]) => queries[channel.url]));
+  }
+
+  get currentChannelMessages$(): Observable<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {
     return combineLatest(this.messages$, this.currentChannel$).pipe(
@@ -97,8 +97,8 @@ export class SendbirdViewStateService {
     );
   }
 
-  get participantsForCurrentChannel$(): Observable<SendBird.User[]> {
-    return this.internalParticipantsForCurrentChannel$.asObservable();
+  get currentChannelParticipants$(): Observable<SendBird.User[]> {
+    return this.internalCurrentChannelParticipants$.asObservable();
   }
 
   get openChannels$(): Observable<SendBird.OpenChannel[]> {
@@ -138,10 +138,10 @@ export class SendbirdViewStateService {
       tap(() => this.internalCurrentUser$.next(null)),
       tap(() => this.internalCurrentChannel$.next(null)),
       tap(() => this.internalIsConnected$.next(false)),
-      tap(() => this.internalParticipantsForCurrentChannel$.next([])),
+      tap(() => this.internalCurrentChannelParticipants$.next([])),
       tap(() => this.internalMessages$.next([])),
       tap(() => this.internalOpenChannels$.next([])),
-      tap(() => this.internalPreviousMessageListQuery$.next({})),
+      tap(() => this.internalPreviousMessageListQueries$.next({})),
       tap(() => this.sbh.removeHandlers())
     );
   }
@@ -214,7 +214,7 @@ export class SendbirdViewStateService {
     return of(channel).pipe(
       tap(channel => this.internalCurrentChannel$.next(channel)),
       tap(channel =>
-        this.internalParticipantsForCurrentChannel$.next(channel.members)
+        this.internalCurrentChannelParticipants$.next(channel.members)
       )
     );
   }
@@ -228,7 +228,7 @@ export class SendbirdViewStateService {
           .getChannelParticipants(channel)
           .pipe(
             tap(participants =>
-              this.internalParticipantsForCurrentChannel$.next(participants)
+              this.internalCurrentChannelParticipants$.next(participants)
             )
           )
       )
@@ -241,7 +241,7 @@ export class SendbirdViewStateService {
     return this.currentChannel$.pipe(
       tap(() => this.internalLastCallType$.next('get')),
       switchMap(channel =>
-        this.messagesForCurrentChannel$.pipe(
+        this.currentChannelMessages$.pipe(
           take(1),
           switchMap(messages =>
             messages.length > 0
@@ -256,7 +256,7 @@ export class SendbirdViewStateService {
   getMoreMessagesForCurrentChannel(): Observable<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {
-    return this.previousMessageListQueryForCurrentChannel$.pipe(
+    return this.currentChannelPreviousMessageListQuery$.pipe(
       take(1),
       tap(() => this.internalLastCallType$.next('getMore')),
       filter(query => query.hasMore && !query.isLoading),
@@ -332,8 +332,8 @@ export class SendbirdViewStateService {
       switchMap(query =>
         this.sb.getPreviousMessages(query).pipe(
           tap(() =>
-            this.internalPreviousMessageListQuery$.next({
-              ...this.internalPreviousMessageListQuery$.value,
+            this.internalPreviousMessageListQueries$.next({
+              ...this.internalPreviousMessageListQueries$.value,
               [channel.url]: query
             })
           ),
