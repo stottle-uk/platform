@@ -24,15 +24,17 @@ export class GenericDirective<TComp> implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
-    this.componentRef = this.resolver.createComponent(
-      this.vcr,
-      this.options.component
-    );
+    if (!!this.options) {
+      this.componentRef = this.resolver.createComponent(
+        this.vcr,
+        this.options.component
+      );
 
-    !!this.options.updateInstance &&
-      this.options.updateInstance(this.componentRef.instance);
+      !!this.options.updateInstance &&
+        this.options.updateInstance(this.componentRef.instance);
 
-    this.componentRef.hostView.detectChanges();
+      this.componentRef.hostView.detectChanges();
+    }
   }
 
   ngOnDestroy(): void {

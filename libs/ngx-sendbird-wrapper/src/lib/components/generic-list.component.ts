@@ -2,26 +2,24 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ComponentRef,
   EventEmitter,
   Input,
   OnDestroy,
   Output,
   QueryList,
-  Type,
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
+import { GenericDirective } from '../directives/generic.directive';
 import { GenericListOptions } from '../models/messages.model';
-import { SendbirdComponentResolverService } from '../services/sendbird-component-resolver.service';
 
 @Component({
   selector: 'stottle-generic-list',
   template: `
     <ng-container #list *ngFor="let item of items; trackBy: trackByFn">
-      <template #listItem></template>
+      <ng-template stottleGeneric></ng-template>
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -31,10 +29,10 @@ export class GenericListComponent<T, TComp>
   @Input()
   options: GenericListOptions<T, TComp>;
   @Output()
-  changes = new EventEmitter<ComponentRef<TComp>[]>();
+  changes = new EventEmitter<GenericDirective<TComp>[]>();
 
-  @ViewChildren('listItem', { read: ViewContainerRef })
-  listItems: QueryList<ViewContainerRef>;
+  @ViewChildren(GenericDirective)
+  listItems: QueryList<GenericDirective<TComp>>;
   @ViewChildren('list', { read: ViewContainerRef })
   list: QueryList<ViewContainerRef>;
 
@@ -42,26 +40,17 @@ export class GenericListComponent<T, TComp>
     return this.options ? this.options.items : [];
   }
 
-  private componentRefs: ComponentRef<TComp>[] = [];
+  private componentRefs: GenericDirective<TComp>[] = [];
   private destroy$ = new Subject();
-  private get listItemsRefs(): ViewContainerRef[] {
+  private get listItemsRefs(): GenericDirective<TComp>[] {
     return this.listItems.toArray();
   }
-
-  constructor(private resolver: SendbirdComponentResolverService) {}
 
   ngAfterViewInit(): void {
     this.list.changes
       .pipe(
         takeUntil(this.destroy$),
-        map(changes =>
-          this.updateList(
-            changes,
-            this.options.component,
-            this.options.updateInstance
-          )
-        ),
-        tap(refs => refs.forEach(r => r.hostView.detectChanges())),
+        map(changes => this.updateList(changes)),
         tap(refs => this.changes.emit(refs)),
         tap(refs => this.componentRefs.concat(refs))
       )
@@ -71,7 +60,7 @@ export class GenericListComponent<T, TComp>
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    this.componentRefs.forEach(ref => ref.destroy());
+    this.componentRefs.forEach(ref => ref.ngOnDestroy());
   }
 
   trackByFn(index: number, item: T): string | number {
@@ -80,26 +69,22 @@ export class GenericListComponent<T, TComp>
       : index;
   }
 
-  private updateList<TComp>(
-    changes: any[],
-    compoent: Type<TComp>,
-    updateInstance: (instance: TComp, index: number) => void
-  ): ComponentRef<TComp>[] {
+  private updateList(changes: any[]): GenericDirective<TComp>[] {
     return changes.map((ref: ViewContainerRef, index: number) =>
-      this.buildComponent<TComp>(index, compoent, updateInstance)
+      this.buildComponent(index)
     );
   }
 
-  private buildComponent<TComp>(
-    index: number,
-    compoent: Type<TComp>,
-    updateInstance: (instance: TComp, index: number) => void
-  ) {
-    const cmpRef = this.resolver.createComponent(
-      this.listItemsRefs[index],
-      compoent
-    );
-    updateInstance(cmpRef.instance, index);
-    return cmpRef;
+  private buildComponent(index: number): GenericDirective<TComp> {
+    this.listItemsRefs[index].options = {
+      component: this.options.component,
+      updateInstance: this.updateInstance(index)
+    };
+    this.listItemsRefs[index].ngAfterViewInit();
+    return this.listItemsRefs[index];
+  }
+
+  private updateInstance(index: number): (instance: TComp) => void {
+    return instance => this.options.updateInstance(instance, index);
   }
 }
