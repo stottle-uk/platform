@@ -29,7 +29,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.vs
-      .getCurrentChannelMessages()
+      .getMessagesForCurrentChannel()
       .pipe(takeUntil(this.destroy$))
       .subscribe();
   }
@@ -41,7 +41,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
 
   onScrolledUp(): void {
     this.vs
-      .getCurrentChannelMoreMessages()
+      .getMoreMessagesForCurrentChannel()
       .pipe(takeUntil(this.destroy$))
       .subscribe();
   }
