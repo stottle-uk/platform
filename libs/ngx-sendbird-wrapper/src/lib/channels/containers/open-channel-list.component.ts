@@ -1,27 +1,26 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
+import { ChannelsViewStateService } from '../services/channels-view-state.services';
 
 @Component({
-  selector: 'stottle-group-channel-list',
+  selector: 'stottle-open-channel-list',
   template: `
     <stottle-channel-list-inner
-      [channels]="groupChannels$ | async"
+      [channels]="openChannels$ | async"
     ></stottle-channel-list-inner>
-  `,
-  styles: []
+  `
 })
-export class GroupChannelListComponent implements OnInit, OnDestroy {
-  groupChannels$ = this.vs.groupChannels$;
+export class OpenChannelListComponent implements OnInit, OnDestroy {
+  openChannels$ = this.vs.openChannels$;
 
   private destroy$ = new Subject();
 
-  constructor(private vs: SendbirdViewStateService) {}
+  constructor(private vs: ChannelsViewStateService) {}
 
   ngOnInit(): void {
     this.vs
-      .getGroupChannels()
+      .getOpenChannels()
       .pipe(takeUntil(this.destroy$))
       .subscribe();
   }

@@ -4,24 +4,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import * as SendBird from 'sendbird';
-import { ChannelListInnerComponent } from './components/channel-list-inner.component';
+import { ChannelsModule } from './channels/channels.module';
 import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
-import { GenericListComponent } from './components/generic-list.component';
 import { MessagesListInnerComponent } from './components/messages-list-inner.component';
 import { ReceievedInvitationsInnerComponent } from './components/receieved-invitations-inner.component';
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
-import { CreateGroupChannelComponent } from './containers/create-group-channel.component';
-import { CreateOpenChannelComponent } from './containers/create-open-channel.component';
-import { GroupChannelListComponent } from './containers/group-channel-list.component';
 import { MessagesListComponent } from './containers/messages-list.component';
-import { OpenChannelListComponent } from './containers/open-channel-list.component';
 import { ReceievedInvitationsComponent } from './containers/receieved-invitations.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
 import { DeleteMessageDirective } from './directives/delete-message.directive';
 import { EnterChannelDirective } from './directives/enter-channel.directive';
 import { FetchMoreMessagesDirective } from './directives/fetch-more-messages.directive';
-import { GenericDirective } from './directives/generic.directive';
 import {
   SendbirdOptions,
   SendbirdOptionsDeclarations,
@@ -65,13 +59,9 @@ const directives = [
 
 const declarations = [
   ...directives,
-  OpenChannelListComponent,
-  GroupChannelListComponent,
   MessagesListComponent,
   SendMessageComponent,
   SendFileMessageComponent,
-  CreateOpenChannelComponent,
-  CreateGroupChannelComponent,
   ChannelParticipantsListComponent,
   ReceievedInvitationsComponent
 ];
@@ -81,19 +71,17 @@ const declarations = [
     CommonModule,
     ReactiveFormsModule,
     InfiniteScrollModule,
-    ScrollToModule.forRoot()
+    ScrollToModule.forRoot(),
+    ChannelsModule
   ],
   declarations: [
     declarations,
     entryComponents,
-    ChannelListInnerComponent,
     MessagesListInnerComponent,
     ChannelParticipantsListInnerComponent,
-    ReceievedInvitationsInnerComponent,
-    GenericListComponent,
-    GenericDirective
+    ReceievedInvitationsInnerComponent
   ],
-  exports: [declarations],
+  exports: [declarations, ChannelsModule],
   entryComponents: [entryComponents]
 })
 export class NgxSendbirdWrapperModule {

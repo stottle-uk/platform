@@ -1,17 +1,17 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { GenericOptions } from '../models/messages.model';
-import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
-import { SendbirdCreateChannelFormComponent } from '../templates';
+import { GenericOptions } from '../../models/messages.model';
+import { SendbirdCreateChannelFormComponent } from '../../templates/send-bird-create-channel-form.component';
+import { ChannelsViewStateService } from '../services/channels-view-state.services';
 
 @Component({
-  selector: 'stottle-create-group-channel',
+  selector: 'stottle-create-open-channel',
   template: `
     <ng-container stottleGeneric [options]="options"></ng-container>
   `
 })
-export class CreateGroupChannelComponent implements OnDestroy {
+export class CreateOpenChannelComponent implements OnDestroy {
   options: GenericOptions<SendbirdCreateChannelFormComponent> = {
     component: SendbirdCreateChannelFormComponent,
     updateInstance: this.updateInstance.bind(this)
@@ -19,7 +19,7 @@ export class CreateGroupChannelComponent implements OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private vs: SendbirdViewStateService) {}
+  constructor(private vs: ChannelsViewStateService) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -30,13 +30,7 @@ export class CreateGroupChannelComponent implements OnDestroy {
     instance.channelSubmit
       .pipe(
         takeUntil(this.destroy$),
-        switchMap(channel =>
-          this.vs.createGroupChannel(
-            ['first_user', 'other_user'],
-            false, // TODO - sort this!
-            channel.name
-          )
-        )
+        switchMap(channel => this.vs.createOpenChannel(channel.name))
       )
       .subscribe();
   }
