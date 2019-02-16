@@ -18,7 +18,7 @@ import { GenericListOptions } from '../models/messages.model';
 @Component({
   selector: 'stottle-generic-list',
   template: `
-    <ng-container #list *ngFor="let item of items; trackBy: trackByFn">
+    <ng-container #list *ngFor="let item of items; trackBy: trackByFn()">
       <ng-template stottleGeneric></ng-template>
     </ng-container>
   `,
@@ -50,9 +50,10 @@ export class GenericListComponent<T, TComp>
     this.list.changes
       .pipe(
         takeUntil(this.destroy$),
+        tap(() => this.componentRefs.forEach(ref => ref.ngOnDestroy())),
         map(changes => this.updateList(changes)),
         tap(refs => this.changes.emit(refs)),
-        tap(refs => this.componentRefs.concat(refs))
+        tap(refs => (this.componentRefs = refs))
       )
       .subscribe();
   }
@@ -63,10 +64,11 @@ export class GenericListComponent<T, TComp>
     this.componentRefs.forEach(ref => ref.ngOnDestroy());
   }
 
-  trackByFn(index: number, item: T): string | number {
-    return item && !!this.options && !!this.options.trackByKey
-      ? this.options.trackByKey(item)
-      : index;
+  trackByFn(): (index: number, item: T) => string | number {
+    return (index, item) =>
+      item && !!this.options && !!this.options.trackByKey
+        ? this.options.trackByKey(item)
+        : index;
   }
 
   private updateList(changes: any[]): GenericDirective<TComp>[] {

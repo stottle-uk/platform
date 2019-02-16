@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { GenericListOptions } from '../models/messages.model';
 import { SendBirdReceievedInvitationsItemComponent } from '../templates/send-bird-receieved-invitations-item.component';
 
@@ -8,7 +8,8 @@ import { SendBirdReceievedInvitationsItemComponent } from '../templates/send-bir
     <div class="receieved-invitations-container">
       <stottle-generic-list [options]="options"></stottle-generic-list>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReceievedInvitationsInnerComponent {
   @Input()

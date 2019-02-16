@@ -5,6 +5,10 @@ import * as SendBird from 'sendbird';
 import { SendbirdEventHandlersService } from './sendbird-event-handlers.service';
 import { SendBirdService } from './sendbird.service';
 
+export interface PreviousMessageListQuery {
+  [url: string]: SendBird.PreviousMessageListQuery;
+}
+
 export type Connection =
   | SendBird.User
   | string
@@ -18,8 +22,9 @@ export class SendbirdViewStateService {
   private internalIsConnected$ = new BehaviorSubject<boolean>(false);
   private internalCurrentUser$ = new BehaviorSubject<SendBird.User>(null);
   private internalPreviousMessageListQuery$ = new BehaviorSubject<
-    SendBird.PreviousMessageListQuery
-  >(null);
+    PreviousMessageListQuery
+  >({});
+
   private internalCurrentChannel$ = new BehaviorSubject<
     SendBird.OpenChannel | SendBird.GroupChannel
   >(null);
@@ -53,9 +58,7 @@ export class SendbirdViewStateService {
       .pipe(filter(user => !!user));
   }
 
-  get previousMessageListQuery$(): Observable<
-    SendBird.PreviousMessageListQuery
-  > {
+  get previousMessageListQuery$(): Observable<PreviousMessageListQuery> {
     return this.internalPreviousMessageListQuery$
       .asObservable()
       .pipe(filter(query => !!query));
@@ -67,6 +70,15 @@ export class SendbirdViewStateService {
     return this.internalCurrentChannel$
       .asObservable()
       .pipe(filter(channel => !!channel));
+  }
+
+  get previousMessageListQueryForCurrentChannel$(): Observable<
+    SendBird.PreviousMessageListQuery
+  > {
+    return combineLatest(
+      this.previousMessageListQuery$,
+      this.currentChannel$
+    ).pipe(map(([queries, channel]) => queries[channel.url]));
   }
 
   get messages$(): Observable<
@@ -129,7 +141,7 @@ export class SendbirdViewStateService {
       tap(() => this.internalParticipantsForCurrentChannel$.next([])),
       tap(() => this.internalMessages$.next([])),
       tap(() => this.internalOpenChannels$.next([])),
-      tap(() => this.internalPreviousMessageListQuery$.next(null)),
+      tap(() => this.internalPreviousMessageListQuery$.next({})),
       tap(() => this.sbh.removeHandlers())
     );
   }
@@ -228,13 +240,15 @@ export class SendbirdViewStateService {
   > {
     return this.currentChannel$.pipe(
       tap(() => this.internalLastCallType$.next('get')),
-      map(channel => channel.createPreviousMessageListQuery()),
-      tap(query => (query.limit = 5)),
-      tap(query => this.internalPreviousMessageListQuery$.next(query)),
-      switchMap(query =>
-        this.sb
-          .getPreviousMessages(query)
-          .pipe(tap(messages => this.internalMessages$.next(messages)))
+      switchMap(channel =>
+        this.messagesForCurrentChannel$.pipe(
+          take(1),
+          switchMap(messages =>
+            messages.length > 0
+              ? of([])
+              : this.createQueryAndGetMessages(channel)
+          )
+        )
       )
     );
   }
@@ -242,9 +256,7 @@ export class SendbirdViewStateService {
   getMoreMessagesForCurrentChannel(): Observable<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {
-    const messages = this.internalMessages$.value;
-
-    return this.previousMessageListQuery$.pipe(
+    return this.previousMessageListQueryForCurrentChannel$.pipe(
       take(1),
       tap(() => this.internalLastCallType$.next('getMore')),
       filter(query => query.hasMore && !query.isLoading),
@@ -253,7 +265,10 @@ export class SendbirdViewStateService {
           .getPreviousMessages(query)
           .pipe(
             tap(newMessages =>
-              this.internalMessages$.next([...newMessages, ...messages])
+              this.internalMessages$.next([
+                ...newMessages,
+                ...this.internalMessages$.value
+              ])
             )
           )
       )
@@ -261,8 +276,6 @@ export class SendbirdViewStateService {
   }
 
   sendMessage(message: string): Observable<SendBird.UserMessage> {
-    const messages = this.internalMessages$.value;
-
     return this.currentChannel$.pipe(
       take(1),
       tap(() => this.internalLastCallType$.next('add')),
@@ -271,7 +284,10 @@ export class SendbirdViewStateService {
           .sendMessage(message, channel)
           .pipe(
             tap(newMessage =>
-              this.internalMessages$.next([...messages, newMessage])
+              this.internalMessages$.next([
+                ...this.internalMessages$.value,
+                newMessage
+              ])
             )
           )
       )
@@ -279,8 +295,6 @@ export class SendbirdViewStateService {
   }
 
   sendFileMessage(file: File): Observable<SendBird.FileMessage> {
-    const messages = this.internalMessages$.value;
-
     return this.currentChannel$.pipe(
       take(1),
       tap(() => this.internalLastCallType$.next('add')),
@@ -289,7 +303,10 @@ export class SendbirdViewStateService {
           .sendFileMessage(file, channel)
           .pipe(
             tap(newMessage =>
-              this.internalMessages$.next([...messages, newMessage])
+              this.internalMessages$.next([
+                ...this.internalMessages$.value,
+                newMessage
+              ])
             )
           )
       )
@@ -303,6 +320,31 @@ export class SendbirdViewStateService {
       take(1),
       tap(() => this.internalLastCallType$.next('delete')),
       switchMap(channel => this.sb.deleteMessage(message, channel))
+    );
+  }
+
+  private createQueryAndGetMessages(
+    channel: SendBird.OpenChannel | SendBird.GroupChannel
+  ) {
+    const query = channel.createPreviousMessageListQuery();
+    return of(query).pipe(
+      tap(query => (query.limit = 5)),
+      switchMap(query =>
+        this.sb.getPreviousMessages(query).pipe(
+          tap(() =>
+            this.internalPreviousMessageListQuery$.next({
+              ...this.internalPreviousMessageListQuery$.value,
+              [channel.url]: query
+            })
+          ),
+          tap(newMessages =>
+            this.internalMessages$.next([
+              ...newMessages,
+              ...this.internalMessages$.value
+            ])
+          )
+        )
+      )
     );
   }
 

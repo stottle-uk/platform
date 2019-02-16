@@ -80,7 +80,6 @@ export class SendbirdEventHandlersService {
     inviter: SendBird.User,
     invitees: SendBird.User[]
   ): void {
-    console.log(arguments);
     this.internalReceivedInvitation$.next(channel);
   }
 }
