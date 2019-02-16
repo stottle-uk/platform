@@ -180,7 +180,7 @@ export class ConversationsViewStateService {
   }
 
   // TODO: listen to these
-  private onMessageDeleted(): Observable<string> {
+  onMessageDeleted(): Observable<string> {
     return this.sbh.deletedMessage$.pipe(
       tap(messageId =>
         this.internalMessages$.next(
@@ -190,9 +190,7 @@ export class ConversationsViewStateService {
     );
   }
 
-  private onMessageReceived(): Observable<
-    SendBird.UserMessage | SendBird.FileMessage
-  > {
+  onMessageReceived(): Observable<SendBird.UserMessage | SendBird.FileMessage> {
     return this.sbh.recievedMessage$.pipe(
       tap(message =>
         this.internalMessages$.next([...this.internalMessages$.value, message])
