@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
-import { SendBirdService } from '../../services/sendbird.service';
+import { SendBirdService } from '../../_shared/services/sendbird.service';
 
 @Injectable({
   providedIn: 'root'

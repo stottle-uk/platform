@@ -8,9 +8,7 @@ import { ReceievedInvitationsInnerComponent } from './components/receieved-invit
 import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
 import { ReceievedInvitationsComponent } from './containers/receieved-invitations.component';
 import { ConverstionsModule } from './coversations/conversations.module';
-import { SendbirdComponentResolverService } from './services/sendbird-component-resolver.service';
 import { SendbirdViewStateService } from './services/sendbird-view-state.service';
-import { SEND_BIRD } from './services/sendbird.service';
 import { SendbirdChannelListItemComponent } from './templates/send-bird-channel-list-item.component';
 import { SendbirdChannelParticipantsListItemComponent } from './templates/send-bird-channel-participants-list-item.component';
 import { SendbirdCreateChannelFormComponent } from './templates/send-bird-create-channel-form.component';
@@ -25,6 +23,8 @@ import {
   SEND_BIRD_DECLARATIONS,
   SEND_BIRD_OPTIONS
 } from './_shared/models/shared.models';
+import { SendbirdComponentResolverService } from './_shared/services/sendbird-component-resolver.service';
+import { SEND_BIRD } from './_shared/services/sendbird.service';
 
 export function sendBirdFactory(
   options: SendbirdOptions

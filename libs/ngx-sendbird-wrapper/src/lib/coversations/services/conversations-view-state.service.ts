@@ -4,8 +4,8 @@ import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { ChannelsViewStateService } from '../../channels/services/channels-view-state.services';
-import { SendbirdEventHandlersService } from '../../services/sendbird-event-handlers.service';
-import { SendBirdService } from '../../services/sendbird.service';
+import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
+import { SendBirdService } from '../../_shared/services/sendbird.service';
 
 @Injectable({
   providedIn: 'root'

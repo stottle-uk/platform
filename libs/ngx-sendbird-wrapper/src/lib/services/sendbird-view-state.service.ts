@@ -4,8 +4,8 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { ChannelsViewStateService } from '../channels/services/channels-view-state.services';
 import { ConversationsViewStateService } from '../coversations/services/conversations-view-state.service';
-import { SendbirdEventHandlersService } from './sendbird-event-handlers.service';
-import { SendBirdService } from './sendbird.service';
+import { SendbirdEventHandlersService } from '../_shared/services/sendbird-event-handlers.service';
+import { SendBirdService } from '../_shared/services/sendbird.service';
 
 export type Connection =
   | SendBird.User

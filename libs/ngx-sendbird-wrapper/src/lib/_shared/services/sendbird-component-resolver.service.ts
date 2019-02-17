@@ -9,7 +9,7 @@ import {
 import {
   SendbirdOptionsDeclarations,
   SEND_BIRD_DECLARATIONS
-} from '../_shared/models/shared.models';
+} from '../models/shared.models';
 
 @Injectable()
 export class SendbirdComponentResolverService {
