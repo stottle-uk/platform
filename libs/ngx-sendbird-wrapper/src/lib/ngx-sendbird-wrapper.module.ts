@@ -40,24 +40,17 @@ const entryComponents = [
   SendBirdReceievedInvitationsItemComponent
 ];
 
-const declarations = [];
+const modules = [
+  ChannelsModule,
+  ConverstionsModule,
+  ChannelParticipantsModule,
+  ReceievedInvitationsModule
+];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ChannelsModule,
-    ConverstionsModule,
-    ChannelParticipantsModule,
-    ReceievedInvitationsModule
-  ],
-  declarations: [declarations, entryComponents],
-  exports: [
-    declarations,
-    ChannelsModule,
-    ConverstionsModule,
-    ChannelParticipantsModule,
-    ReceievedInvitationsModule
-  ],
+  imports: [CommonModule, ...modules],
+  declarations: [entryComponents],
+  exports: [...modules],
   entryComponents: [entryComponents]
 })
 export class NgxSendbirdWrapperModule {
