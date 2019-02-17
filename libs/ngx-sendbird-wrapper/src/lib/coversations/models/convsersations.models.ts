@@ -1,7 +1,3 @@
-export interface PreviousMessageListQueries {
-  [url: string]: SendBird.PreviousMessageListQuery;
-}
-
 export interface SendMessage {
   caption: string;
 }

@@ -44,3 +44,7 @@ export const SEND_BIRD_OPTIONS = new InjectionToken<SendbirdOptions>(
 export const SEND_BIRD_DECLARATIONS = new InjectionToken<
   SendbirdOptionsDeclarations
 >('SEND_BIRD_DECLARATIONS');
+
+export interface PreviousListQueries<T> {
+  [key: string]: T;
+}

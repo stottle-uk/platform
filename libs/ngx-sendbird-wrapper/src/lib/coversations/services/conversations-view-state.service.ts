@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { PreviousMessageListQueries } from '@stottle-platform/ngx-sendbird-wrapper';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { ChannelsViewStateService } from '../../channels/services/channels-view-state.services';
+import { PreviousListQueries } from '../../_shared/models/shared.models';
 import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
@@ -13,7 +13,7 @@ import { SendBirdService } from '../../_shared/services/sendbird.service';
 export class ConversationsViewStateService {
   private internalLastCallType$ = new BehaviorSubject<string>('');
   private internalPreviousMessageListQueries$ = new BehaviorSubject<
-    PreviousMessageListQueries
+    PreviousListQueries<SendBird.PreviousMessageListQuery>
   >({});
   private internalMessages$ = new BehaviorSubject<
     Array<SendBird.UserMessage | SendBird.FileMessage>
@@ -23,7 +23,9 @@ export class ConversationsViewStateService {
     return this.internalLastCallType$.asObservable();
   }
 
-  get previousMessageListQueries$(): Observable<PreviousMessageListQueries> {
+  get previousMessageListQueries$(): Observable<
+    PreviousListQueries<SendBird.PreviousMessageListQuery>
+  > {
     return this.internalPreviousMessageListQueries$
       .asObservable()
       .pipe(filter(queries => !!queries));
