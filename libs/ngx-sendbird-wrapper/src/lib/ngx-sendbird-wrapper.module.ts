@@ -67,6 +67,7 @@ export class NgxSendbirdWrapperModule {
     return {
       ngModule: NgxSendbirdWrapperModule,
       providers: [
+        SendbirdViewStateService,
         {
           provide: SEND_BIRD,
           useFactory: sendBirdFactory,
@@ -90,8 +91,7 @@ export class NgxSendbirdWrapperModule {
           provide: SEND_BIRD_DECLARATIONS,
           useValue: declarations
         },
-        SendbirdComponentResolverService,
-        SendbirdViewStateService
+        SendbirdComponentResolverService
       ]
     };
   }
