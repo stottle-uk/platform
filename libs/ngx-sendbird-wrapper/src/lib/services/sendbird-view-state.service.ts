@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
-import * as SendBird from 'sendbird';
+import { filter, tap } from 'rxjs/operators';
 import { ChannelsViewStateService } from '../channels/services/channels-view-state.services';
 import { ConversationsViewStateService } from '../coversations/services/conversations-view-state.service';
 import { SendbirdEventHandlersService } from '../_shared/services/sendbird-event-handlers.service';
@@ -18,9 +17,7 @@ export type Connection =
 export class SendbirdViewStateService {
   private internalIsConnected$ = new BehaviorSubject<boolean>(false);
   private internalCurrentUser$ = new BehaviorSubject<SendBird.User>(null);
-  private internalCurrentChannelParticipants$ = new BehaviorSubject<
-    SendBird.User[]
-  >([]);
+
   private internalReceivedInvitations$ = new BehaviorSubject<
     SendBird.GroupChannel[]
   >([]);
@@ -39,10 +36,6 @@ export class SendbirdViewStateService {
     SendBird.OpenChannel | SendBird.GroupChannel
   > {
     return this.channels.currentChannel$;
-  }
-
-  get currentChannelParticipants$(): Observable<SendBird.User[]> {
-    return this.internalCurrentChannelParticipants$.asObservable();
   }
 
   get receivedInvitations$(): Observable<SendBird.GroupChannel[]> {
@@ -75,24 +68,7 @@ export class SendbirdViewStateService {
     return this.sb.disconnect().pipe(
       tap(() => this.internalCurrentUser$.next(null)),
       tap(() => this.internalIsConnected$.next(false)),
-      tap(() => this.internalCurrentChannelParticipants$.next([])),
       tap(() => this.sbh.removeHandlers())
-    );
-  }
-
-  getChannelParticipants(): Observable<SendBird.User[]> {
-    return merge(this.currentChannel$, this.sbh.channelChanged$).pipe(
-      filter(channel => channel.isOpenChannel()),
-      map(channel => channel as SendBird.OpenChannel),
-      switchMap(channel =>
-        this.sb
-          .getChannelParticipants(channel)
-          .pipe(
-            tap(participants =>
-              this.internalCurrentChannelParticipants$.next(participants)
-            )
-          )
-      )
     );
   }
 

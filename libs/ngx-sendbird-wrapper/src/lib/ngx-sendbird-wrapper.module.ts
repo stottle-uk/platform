@@ -2,10 +2,9 @@ import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import * as SendBird from 'sendbird';
+import { ChannelParticipantsModule } from './channel-participants/channel-participants.module';
 import { ChannelsModule } from './channels/channels.module';
-import { ChannelParticipantsListInnerComponent } from './components/channel-participants-list-inner.component';
 import { ReceievedInvitationsInnerComponent } from './components/receieved-invitations-inner.component';
-import { ChannelParticipantsListComponent } from './containers/channel-participants-list.component';
 import { ReceievedInvitationsComponent } from './containers/receieved-invitations.component';
 import { ConverstionsModule } from './coversations/conversations.module';
 import { SendbirdViewStateService } from './services/sendbird-view-state.service';
@@ -43,25 +42,27 @@ const entryComponents = [
   SendBirdReceievedInvitationsItemComponent
 ];
 
-const declarations = [
-  ChannelParticipantsListComponent,
-  ReceievedInvitationsComponent
-];
+const declarations = [ReceievedInvitationsComponent];
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     ChannelsModule,
-    ConverstionsModule
+    ConverstionsModule,
+    ChannelParticipantsModule
   ],
   declarations: [
     declarations,
     entryComponents,
-    ChannelParticipantsListInnerComponent,
     ReceievedInvitationsInnerComponent
   ],
-  exports: [declarations, ChannelsModule, ConverstionsModule],
+  exports: [
+    declarations,
+    ChannelsModule,
+    ConverstionsModule,
+    ChannelParticipantsModule
+  ],
   entryComponents: [entryComponents]
 })
 export class NgxSendbirdWrapperModule {

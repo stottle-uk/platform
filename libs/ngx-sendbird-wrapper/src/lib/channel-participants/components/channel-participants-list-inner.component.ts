@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { SendbirdChannelParticipantsListItemComponent } from '../templates/send-bird-channel-participants-list-item.component';
-import { GenericListOptions } from '../_shared/models/shared.models';
+import { SendbirdChannelParticipantsListItemComponent } from '../../templates/send-bird-channel-participants-list-item.component';
+import { GenericListOptions } from '../../_shared/models/shared.models';
 
 @Component({
   selector: 'stottle-channel-participants-list-inner',
