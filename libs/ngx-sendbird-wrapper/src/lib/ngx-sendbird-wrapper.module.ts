@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import * as SendBird from 'sendbird';
 import { ChannelParticipantsModule } from './channel-participants/channel-participants.module';
 import { ChannelsModule } from './channels/channels.module';
-import { ReceievedInvitationsInnerComponent } from './components/receieved-invitations-inner.component';
-import { ReceievedInvitationsComponent } from './containers/receieved-invitations.component';
 import { ConverstionsModule } from './coversations/conversations.module';
+import { ReceievedInvitationsModule } from './receieved-invitations/receieved-invitations.module';
 import { SendbirdViewStateService } from './services/sendbird-view-state.service';
 import { SendbirdChannelListItemComponent } from './templates/send-bird-channel-list-item.component';
 import { SendbirdChannelParticipantsListItemComponent } from './templates/send-bird-channel-participants-list-item.component';
@@ -42,26 +40,23 @@ const entryComponents = [
   SendBirdReceievedInvitationsItemComponent
 ];
 
-const declarations = [ReceievedInvitationsComponent];
+const declarations = [];
 
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     ChannelsModule,
     ConverstionsModule,
-    ChannelParticipantsModule
+    ChannelParticipantsModule,
+    ReceievedInvitationsModule
   ],
-  declarations: [
-    declarations,
-    entryComponents,
-    ReceievedInvitationsInnerComponent
-  ],
+  declarations: [declarations, entryComponents],
   exports: [
     declarations,
     ChannelsModule,
     ConverstionsModule,
-    ChannelParticipantsModule
+    ChannelParticipantsModule,
+    ReceievedInvitationsModule
   ],
   entryComponents: [entryComponents]
 })

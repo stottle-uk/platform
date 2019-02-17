@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SendbirdViewStateService } from '../services/sendbird-view-state.service';
+import { ReceievedInvitationsViewStateService } from '../services/receieved-invitations-view-state.service';
 
 @Component({
   selector: 'stottle-receieved-invitations',
@@ -12,5 +12,5 @@ import { SendbirdViewStateService } from '../services/sendbird-view-state.servic
 export class ReceievedInvitationsComponent {
   invitations$ = this.vs.receivedInvitations$;
 
-  constructor(private vs: SendbirdViewStateService) {}
+  constructor(private vs: ReceievedInvitationsViewStateService) {}
 }

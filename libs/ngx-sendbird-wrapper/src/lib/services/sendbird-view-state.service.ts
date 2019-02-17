@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { ChannelsViewStateService } from '../channels/services/channels-view-state.services';
 import { ConversationsViewStateService } from '../coversations/services/conversations-view-state.service';
+import { ReceievedInvitationsViewStateService } from '../receieved-invitations/services/receieved-invitations-view-state.service';
 import { SendbirdEventHandlersService } from '../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../_shared/services/sendbird.service';
 
@@ -18,10 +18,6 @@ export class SendbirdViewStateService {
   private internalIsConnected$ = new BehaviorSubject<boolean>(false);
   private internalCurrentUser$ = new BehaviorSubject<SendBird.User>(null);
 
-  private internalReceivedInvitations$ = new BehaviorSubject<
-    SendBird.GroupChannel[]
-  >([]);
-
   get isConnected$(): Observable<boolean> {
     return this.internalIsConnected$.asObservable();
   }
@@ -32,21 +28,11 @@ export class SendbirdViewStateService {
       .pipe(filter(user => !!user));
   }
 
-  get currentChannel$(): Observable<
-    SendBird.OpenChannel | SendBird.GroupChannel
-  > {
-    return this.channels.currentChannel$;
-  }
-
-  get receivedInvitations$(): Observable<SendBird.GroupChannel[]> {
-    return this.internalReceivedInvitations$.asObservable();
-  }
-
   constructor(
     private sb: SendBirdService,
     private sbh: SendbirdEventHandlersService,
-    private channels: ChannelsViewStateService,
-    private conversations: ConversationsViewStateService
+    private conversations: ConversationsViewStateService,
+    private invitations: ReceievedInvitationsViewStateService
   ) {}
 
   connect(userId: string): Observable<Connection> {
@@ -58,9 +44,9 @@ export class SendbirdViewStateService {
 
     return merge(
       connect,
-      this.onUserReceivedInvitation(),
       this.conversations.onMessageReceived(),
-      this.conversations.onMessageDeleted()
+      this.conversations.onMessageDeleted(),
+      this.invitations.onUserReceivedInvitation()
     );
   }
 
@@ -69,19 +55,6 @@ export class SendbirdViewStateService {
       tap(() => this.internalCurrentUser$.next(null)),
       tap(() => this.internalIsConnected$.next(false)),
       tap(() => this.sbh.removeHandlers())
-    );
-  }
-
-  // TODO: listen to this
-
-  private onUserReceivedInvitation(): Observable<SendBird.GroupChannel> {
-    return this.sbh.userReceivedInvitation$.pipe(
-      tap(invitation =>
-        this.internalReceivedInvitations$.next([
-          ...this.internalReceivedInvitations$.value,
-          invitation
-        ])
-      )
     );
   }
 }
