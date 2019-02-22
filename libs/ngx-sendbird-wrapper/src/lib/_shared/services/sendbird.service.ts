@@ -10,6 +10,10 @@ export const SEND_BIRD = new InjectionToken<SendBird.SendBirdInstance>(
   providedIn: 'root'
 })
 export class SendBirdService {
+  get sbInstance(): SendBird.SendBirdInstance {
+    return this.sb;
+  }
+
   constructor(@Inject(SEND_BIRD) private sb: SendBird.SendBirdInstance) {}
 
   connect(userId: string): Observable<SendBird.User> {
@@ -24,6 +28,12 @@ export class SendBirdService {
 
   disconnect(): Observable<Object> {
     return this.co(this.sb.disconnect.bind(this.sb));
+  }
+
+  getApplicationUsers(
+    query: SendBird.ApplicationUserListQuery
+  ): Observable<SendBird.User[]> {
+    return this.co(query.next.bind(query));
   }
 
   getOpenChannels(): Observable<SendBird.OpenChannel[]> {

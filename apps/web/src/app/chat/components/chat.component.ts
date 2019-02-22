@@ -6,6 +6,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { SendbirdViewStateService } from '@stottle-platform/ngx-sendbird-wrapper';
+import { merge } from 'rxjs';
 
 @Component({
   selector: 'stottle-chat',
@@ -78,6 +79,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   private connect(userId: string) {
-    this.sb.connect(userId).subscribe(console.log, console.error);
+    const connect$ = this.sb.connect(userId);
+    const getUsers$ = this.sb.getUsers();
+
+    merge(connect$, getUsers$).subscribe(console.log, console.error);
   }
 }
