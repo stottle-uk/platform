@@ -9,14 +9,13 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NxModule } from '@nrwl/nx';
 import {
-  Contact,
+  contactMetaData,
   InMemoryContactsService
 } from '@stottle-platform/manage-contacts';
 import { NgxAuth0WrapperNgrxModule } from '@stottle-platform/ngx-auth0-wrapper-ngrx';
 import { NgxSignalrWrapperNgrxModule } from '@stottle-platform/ngx-signalr-wrapper-ngrx';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import {
-  EntityMetadata,
   EntityMetadataMap,
   NgrxDataModule,
   NgrxDataModuleConfig
@@ -29,12 +28,7 @@ import { RouterClientModule } from './router-client/router-client.module';
 import { SharedModule } from './shared/shared.module';
 import { UsersModule } from './users/users.module';
 
-const contactMetaData: Partial<EntityMetadata<Contact>> = {
-  selectId: contact => contact.id,
-  sortComparer: (a, b) => (a > b ? -1 : 1)
-};
-
-const entityMetadata: EntityMetadataMap = {
+export const entityMetadata: EntityMetadataMap = {
   Contact: contactMetaData
 };
 
