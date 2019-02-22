@@ -23,7 +23,11 @@
     "update:check": "ng update",
     "workspace-schematic": "./node_modules/.bin/nx workspace-schematic",
     "dep-graph": "./node_modules/.bin/nx dep-graph",
-    "help": "./node_modules/.bin/nx help"
+    "help": "./node_modules/.bin/nx help",
+    "cypress:open": "cypress open"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
   },
   "private": true,
   "dependencies": {
@@ -73,6 +77,8 @@
     "@types/node": "~8.9.4",
     "@types/signalr": "^2.2.35",
     "codelyzer": "~4.5.0",
+    "cypress": "^3.1.5",
+    "cypress-cucumber-preprocessor": "^1.11.0",
     "jasmine-core": "~2.99.1",
     "jasmine-marbles": "0.4.0",
     "jasmine-spec-reporter": "~4.2.1",
