@@ -1,3 +1,2 @@
-import { IContact } from '../models/contacts.http';
-
-export interface Contact extends IContact {}
+// tslint:disable-next-line: no-empty-interface
+// export interface Contact extends IContact {}
