@@ -36,14 +36,14 @@ export class SendbirdViewStateService {
   ) {}
 
   connect(userId: string): Observable<Connection> {
-    const connect = this.sb.connect(userId).pipe(
+    const connect$ = this.sb.connect(userId).pipe(
       tap(user => this.internalCurrentUser$.next(user)),
       tap(() => this.internalIsConnected$.next(true)),
       tap(() => this.sbh.setupHandlers())
     );
 
     return merge(
-      connect,
+      connect$,
       this.conversations.onMessageReceived(),
       this.conversations.onMessageDeleted(),
       this.invitations.onUserReceivedInvitation()
