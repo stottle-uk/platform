@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { fromContactsActions } from '../+state/contacts.actions';
-import { ContactsState } from '../+state/contacts.reducer';
+import { ActivatedRoute } from '@angular/router';
 import { ContactsDataSource } from '../components/contacts-datasource';
+import { ContactsStateService } from '../services/contacts-state.service';
 
 @Component({
   selector: 'stottle-platform-contacts-list',
@@ -18,24 +17,21 @@ import { ContactsDataSource } from '../components/contacts-datasource';
 export class ContactsListComponent implements OnInit {
   dataSource: ContactsDataSource;
 
-  constructor(private store: Store<ContactsState>) {}
+  constructor(
+    private contacts: ContactsStateService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.dataSource = new ContactsDataSource(this.store);
-    this.store.dispatch(
-      new fromContactsActions.GetContactsStart({
-        skip: 0,
-        take: 10,
-        sortOrder: 'ASC'
-      })
-    );
+    this.dataSource = new ContactsDataSource(this.contacts);
+    this.contacts.getAll();
   }
 
   onContactSelected(id: number): void {
-    this.store.dispatch(new fromContactsActions.UpdateContact({ id }));
+    this.contacts.goToSelectedContact(id, this.activatedRoute);
   }
 
   onNewContact(): void {
-    this.store.dispatch(new fromContactsActions.AddContact());
+    this.contacts.goToNewContactForm(this.activatedRoute);
   }
 }

@@ -1,17 +1,15 @@
 import { DataSource } from '@angular/cdk/collections';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Contact } from '../+state/contacts.model';
-import { ContactsState } from '../+state/contacts.reducer';
-import { contactsQuery } from '../+state/contacts.selectors';
+import { Contact } from '../models/contacts.http';
+import { ContactsStateService } from '../services/contacts-state.service';
 
 export class ContactsDataSource extends DataSource<Contact> {
-  constructor(private store: Store<ContactsState>) {
+  constructor(private store: ContactsStateService) {
     super();
   }
 
   connect(): Observable<Contact[]> {
-    return this.store.select(contactsQuery.getAllContacts);
+    return this.store.entities$;
   }
 
   disconnect() {}
