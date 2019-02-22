@@ -62,7 +62,7 @@ export class SendbirdViewStateService {
   }
 
   getUsers(): Observable<SendBird.User[]> {
-    const query = this.sb.sbInstance.createApplicationUserListQuery();
+    const query = this.sb.instance.createApplicationUserListQuery();
     return of(query).pipe(
       tap(query => (query.limit = 5)),
       switchMap(query =>

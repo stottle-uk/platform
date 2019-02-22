@@ -10,7 +10,7 @@ export const SEND_BIRD = new InjectionToken<SendBird.SendBirdInstance>(
   providedIn: 'root'
 })
 export class SendBirdService {
-  get sbInstance(): SendBird.SendBirdInstance {
+  get instance(): SendBird.SendBirdInstance {
     return this.sb;
   }
 
