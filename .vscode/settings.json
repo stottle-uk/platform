@@ -4,5 +4,8 @@
   "prettier.printWidth": 100,
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
-  "editor.minimap.maxColumn": 100
+  "editor.minimap.maxColumn": 100,
+  "cucumberautocomplete.steps": ["cypress/integration/**/*.js"],
+  "cucumberautocomplete.syncfeatures": "cypress/integration/*feature",
+  "cucumberautocomplete.strictGherkinCompletion": true
 }
