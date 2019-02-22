@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, merge, Observable } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, merge, Observable, of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { ChannelsViewStateService } from '../../channels/services/channels-view-state.services';
 import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
@@ -32,16 +32,13 @@ export class ChannelParticipantsViewStateService {
 
   getChannelParticipants(): Observable<SendBird.User[]> {
     return merge(this.currentChannel$, this.sbh.channelChanged$).pipe(
-      filter(channel => channel.isOpenChannel()),
-      map(channel => channel as SendBird.OpenChannel),
       switchMap(channel =>
-        this.sb
-          .getChannelParticipants(channel)
-          .pipe(
-            tap(participants =>
-              this.internalCurrentChannelParticipants$.next(participants)
-            )
-          )
+        channel.isOpenChannel()
+          ? this.sb.getChannelParticipants(channel as SendBird.OpenChannel)
+          : of((channel as SendBird.GroupChannel).members)
+      ),
+      tap(participants =>
+        this.internalCurrentChannelParticipants$.next(participants)
       )
     );
   }

@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, merge, Observable, of } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { ChannelsViewStateService } from '../../channels/services/channels-view-state.services';
 import { PreviousListQueries } from '../../_shared/models/shared.models';
 import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
+
+export type MessageHanlderd =
+  | string
+  | SendBird.UserMessage
+  | SendBird.FileMessage;
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +72,10 @@ export class ConversationsViewStateService {
     private sbh: SendbirdEventHandlersService,
     private channels: ChannelsViewStateService
   ) {}
+
+  setupHandlers(): Observable<MessageHanlderd> {
+    return merge(this.onMessageDeleted(), this.onMessageReceived());
+  }
 
   getMessagesForCurrentChannel(): Observable<
     Array<SendBird.UserMessage | SendBird.FileMessage>

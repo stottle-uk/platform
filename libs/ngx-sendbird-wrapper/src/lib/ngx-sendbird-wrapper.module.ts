@@ -5,7 +5,6 @@ import { ChannelParticipantsModule } from './channel-participants/channel-partic
 import { ChannelsModule } from './channels/channels.module';
 import { ConverstionsModule } from './coversations/conversations.module';
 import { ReceievedInvitationsModule } from './receieved-invitations/receieved-invitations.module';
-import { SendbirdViewStateService } from './services/sendbird-view-state.service';
 import { SendbirdChannelListItemComponent } from './templates/send-bird-channel-list-item.component';
 import { SendbirdChannelParticipantsListItemComponent } from './templates/send-bird-channel-participants-list-item.component';
 import { SendbirdCreateChannelFormComponent } from './templates/send-bird-create-channel-form.component';
@@ -60,7 +59,6 @@ export class NgxSendbirdWrapperModule {
     return {
       ngModule: NgxSendbirdWrapperModule,
       providers: [
-        SendbirdViewStateService,
         {
           provide: SEND_BIRD,
           useFactory: sendBirdFactory,

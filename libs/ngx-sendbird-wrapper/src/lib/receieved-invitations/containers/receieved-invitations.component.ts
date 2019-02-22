@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ReceievedInvitationsViewStateService } from '../services/receieved-invitations-view-state.service';
 
 @Component({
@@ -9,8 +11,22 @@ import { ReceievedInvitationsViewStateService } from '../services/receieved-invi
   `,
   styles: []
 })
-export class ReceievedInvitationsComponent {
+export class ReceievedInvitationsComponent implements OnInit, OnDestroy {
   invitations$ = this.vs.receivedInvitations$;
 
+  destroy$ = new Subject();
+
   constructor(private vs: ReceievedInvitationsViewStateService) {}
+
+  ngOnInit(): void {
+    this.vs
+      .setupHandlers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

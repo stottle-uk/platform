@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { OperatorFunction, Subject } from 'rxjs';
+import { merge, OperatorFunction, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { ConversationsViewStateService } from '../services/conversations-view-state.service';
 
@@ -28,8 +28,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
   constructor(private vs: ConversationsViewStateService) {}
 
   ngOnInit() {
-    this.vs
-      .getMessagesForCurrentChannel()
+    merge(this.vs.getMessagesForCurrentChannel(), this.vs.setupHandlers())
       .pipe(takeUntil(this.destroy$))
       .subscribe();
   }

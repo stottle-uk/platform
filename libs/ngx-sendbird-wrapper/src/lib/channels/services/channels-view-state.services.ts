@@ -80,14 +80,17 @@ export class ChannelsViewStateService {
   enterOpenChannel(
     channel: SendBird.OpenChannel
   ): Observable<SendBird.OpenChannel> {
-    return this.sb.enterChannel(channel).pipe(
-      switchMap(() =>
-        this.exitCurrentChannel().pipe(
-          tap(() => this.internalCurrentChannel$.next(channel)),
-          map(() => channel)
-        )
-      )
-    );
+    return !!this.internalCurrentChannel$.value &&
+      this.internalCurrentChannel$.value.url === channel.url
+      ? of(channel)
+      : this.sb.enterChannel(channel).pipe(
+          switchMap(() =>
+            this.exitCurrentChannel().pipe(
+              tap(() => this.internalCurrentChannel$.next(channel)),
+              map(() => channel)
+            )
+          )
+        );
   }
 
   exitCurrentChannel(): Observable<SendBird.OpenChannel> {
@@ -108,9 +111,6 @@ export class ChannelsViewStateService {
   ): Observable<SendBird.GroupChannel> {
     return of(channel).pipe(
       tap(channel => this.internalCurrentChannel$.next(channel))
-      // tap(channel =>
-      //   this.internalCurrentChannelParticipants$.next(channel.members) // TODO: fix this
-      // )
     );
   }
 }

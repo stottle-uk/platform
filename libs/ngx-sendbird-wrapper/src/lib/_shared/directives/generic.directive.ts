@@ -38,6 +38,6 @@ export class GenericDirective<TComp> implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.componentRef.destroy();
+    this.componentRef && this.componentRef.destroy();
   }
 }
