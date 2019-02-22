@@ -8,6 +8,7 @@ import {
   SendBirdMessageFormComponent,
   SendbirdMessagesListItemComponent
 } from '../../templates';
+import { SbUsersListItemComponent } from '../../users/templates/users-list-item.component';
 
 export interface SendbirdOptions {
   appId: string;
@@ -35,6 +36,7 @@ export interface SendbirdOptionsDeclarations {
   fetchMoreMessagesBtnComponent?: Type<SendbirdFetchMoreMessagesBtnComponent>;
   messagesListItemComponent?: Type<SendbirdMessagesListItemComponent>;
   createChannelFormComponent?: Type<SendbirdCreateChannelFormComponent>;
+  userListItemComponent?: Type<SbUsersListItemComponent>;
 }
 
 export const SEND_BIRD_OPTIONS = new InjectionToken<SendbirdOptions>(

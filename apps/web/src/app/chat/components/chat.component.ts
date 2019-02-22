@@ -42,6 +42,7 @@ import { merge } from 'rxjs';
         <div>
           <stottle-channel-participants-list></stottle-channel-participants-list>
           <stottle-receieved-invitations></stottle-receieved-invitations>
+          <stottle-users-list></stottle-users-list>
         </div>
       </div>
     </div>
