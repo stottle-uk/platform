@@ -13,6 +13,7 @@ import { SendbirdMessageFileFormComponent } from './templates/send-bird-message-
 import { SendBirdMessageFormComponent } from './templates/send-bird-message-form.component';
 import { SendbirdMessagesListItemComponent } from './templates/send-bird-messages-list-item.component';
 import { SendBirdReceievedInvitationsItemComponent } from './templates/send-bird-receieved-invitations-item.component';
+import { UsersModule } from './users/users.module';
 import {
   SendbirdOptions,
   SendbirdOptionsDeclarations,
@@ -40,6 +41,7 @@ const entryComponents = [
 ];
 
 const modules = [
+  UsersModule,
   ChannelsModule,
   ConverstionsModule,
   ChannelParticipantsModule,

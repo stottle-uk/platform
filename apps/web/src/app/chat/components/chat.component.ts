@@ -80,8 +80,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   private connect(userId: string) {
     const connect$ = this.sb.connect(userId);
-    const getUsers$ = this.sb.getUsers();
 
-    merge(connect$, getUsers$).subscribe(console.log, console.error);
+    merge(connect$).subscribe(console.log, console.error);
   }
 }
