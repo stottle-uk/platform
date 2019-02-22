@@ -1,31 +1,44 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { EntityCollectionDataService, QueryParams, Update } from 'ngrx-data';
 import { Observable } from 'rxjs';
-import { IContact } from '../models/contacts.http';
+import { Contact, IContact } from '../models/contacts.http';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ContactsService {
-  constructor(private httpClient: HttpClient) {}
+export class ContactsService implements EntityCollectionDataService<Contact> {
+  name: string;
 
-  getContacts(
-    skip: number,
-    take: number,
-    sortOrder: string
-  ): Observable<IContact[]> {
-    return this.httpClient.get<IContact[]>('api/contacts');
+  constructor(private httpClient: HttpClient) {
+    this.name = 'Contacts Data Service';
   }
 
-  getContact(id: number): Observable<IContact> {
-    return this.httpClient.get<IContact>(`api/contacts/${id}`);
-  }
-
-  addContact(contact: IContact): Observable<IContact> {
+  add(contact: Contact): Observable<Contact> {
     return this.httpClient.post<IContact>(`api/contacts`, contact);
   }
 
-  updateContact(contact: IContact): Observable<IContact> {
+  delete(id: string | number): Observable<string | number> {
+    throw new Error('Method not implemented.');
+  }
+
+  getAll(): Observable<Contact[]> {
+    return this.httpClient.get<IContact[]>('api/contacts');
+  }
+
+  getById(id: number): Observable<Contact> {
+    return this.httpClient.get<IContact>(`api/contacts/${id}`);
+  }
+
+  getWithQuery(params: string | QueryParams): Observable<Contact[]> {
+    return this.httpClient.get<IContact[]>('api/contacts');
+  }
+
+  update(contact: Update<Contact>): Observable<Contact> {
     return this.httpClient.put<IContact>(`api/contacts/${contact.id}`, contact);
+  }
+
+  upsert(entity: Contact): Observable<Contact> {
+    throw new Error('Method not implemented.');
   }
 }

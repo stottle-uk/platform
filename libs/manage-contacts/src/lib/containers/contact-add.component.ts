@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { fromContactsActions } from '../+state/contacts.actions';
-import { Contact } from '../+state/contacts.model';
-import { ContactsState } from '../+state/contacts.reducer';
-import { contactsQuery } from '../+state/contacts.selectors';
+import { Contact } from '../models/contacts.http';
+import { ContactsStateService } from '../services/contacts-state.service';
 
 @Component({
-  selector: 'stottle-contact-add',
+  selector: 'stottle-platform-contact-add',
   template: `
     <stottle-platform-contact-form
       [contact]="contact$ | async"
@@ -18,16 +15,17 @@ import { contactsQuery } from '../+state/contacts.selectors';
   styles: []
 })
 export class ContactAddComponent {
-  contact$ = this.store.select(contactsQuery.getSelectedContact);
-  saving$ = this.store.select(contactsQuery.getIsLoading);
+  contact$ = this.contacts.selectedContact$;
+  saving$ = this.contacts.loading$;
 
-  constructor(private store: Store<ContactsState>) {}
+  constructor(private contacts: ContactsStateService) {}
 
   onContactUpdated(contact: Contact): void {
-    this.store.dispatch(new fromContactsActions.AddContactStart({ contact }));
+    this.contacts.add(contact);
+    this.onCancel();
   }
 
   onCancel(): void {
-    this.store.dispatch(new fromContactsActions.AddContactCancel());
+    this.contacts.back();
   }
 }

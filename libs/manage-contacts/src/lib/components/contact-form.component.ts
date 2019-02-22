@@ -6,54 +6,87 @@ import {
   Output
 } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import { Contact } from '../+state/contacts.model';
+import { Contact } from '../models/contacts.http';
 
 @Component({
   selector: 'stottle-platform-contact-form',
   template: `
     <mat-toolbar color="accent">
-
-      <button
-        type="button"
-        mat-icon-button
-        (click)="cancel.emit()">
+      <button type="button" mat-icon-button (click)="cancel.emit()">
         <mat-icon aria-label="Side nav toggle icon">arrow_back</mat-icon>
       </button>
 
-      <span fxFlex="100" *ngIf="!saving">{{headerLabel}}</span>
+      <span fxFlex="100" *ngIf="!saving">{{ headerLabel }}</span>
       <span fxFlex="100" *ngIf="saving">Saving</span>
-
     </mat-toolbar>
 
     <form class="contact-form" [formGroup]="contactForm">
       <mat-form-field class="contact-full-width">
-        <input matInput type="text" placeholder="Your name" formControlName="name">
-        <mat-error *ngIf="emailControl.hasError('name') || emailControl.hasError('required')">
+        <input
+          matInput
+          type="text"
+          placeholder="Your name"
+          formControlName="name"
+        />
+        <mat-error
+          *ngIf="
+            emailControl.hasError('name') || emailControl.hasError('required')
+          "
+        >
           Please enter a valid name
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="contact-full-width">
-        <input matInput type="text" placeholder="Your Address" formControlName="street">
+        <input
+          matInput
+          type="text"
+          placeholder="Your Address"
+          formControlName="street"
+        />
       </mat-form-field>
 
       <mat-form-field class="contact-full-width">
-        <input matInput type="email" placeholder="Your Email" formControlName="email">
+        <input
+          matInput
+          type="email"
+          placeholder="Your Email"
+          formControlName="email"
+        />
         <mat-error *ngIf="emailControl.hasError('email')">
           Please enter a valid email address
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="contact-full-width">
-        <input matInput type="tel" placeholder="Your Phone" formControlName="phone">
+        <input
+          matInput
+          type="tel"
+          placeholder="Your Phone"
+          formControlName="phone"
+        />
       </mat-form-field>
 
       <mat-form-field class="contact-full-width">
-        <input matInput type="number" min="10" max="99" placeholder="Your Age" formControlName="age">
+        <input
+          matInput
+          type="number"
+          min="10"
+          max="99"
+          placeholder="Your Age"
+          formControlName="age"
+        />
       </mat-form-field>
 
       <div class="header-container">
-        <button mat-raised-button color="primary" [disabled]="this.contactForm.invalid" (click)="submitForm()">Save</button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="this.contactForm.invalid"
+          (click)="submitForm()"
+        >
+          Save
+        </button>
       </div>
     </form>
   `,
