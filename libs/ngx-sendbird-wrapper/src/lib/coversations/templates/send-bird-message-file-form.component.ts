@@ -1,5 +1,5 @@
 import { Component, EventEmitter } from '@angular/core';
-import { SendFileMessage } from '../coversations/models/convsersations.models';
+import { SendFileMessage } from '../models/convsersations.models';
 
 @Component({
   selector: 'stottle-send-bird-message-file-form',

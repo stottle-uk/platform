@@ -9,6 +9,17 @@ import { SendFileMessageComponent } from './containers/send-file-message.compone
 import { SendMessageComponent } from './containers/send-message.component';
 import { DeleteMessageDirective } from './directives/delete-message.directive';
 import { FetchMoreMessagesDirective } from './directives/fetch-more-messages.directive';
+import { SendbirdFetchMoreMessagesBtnComponent } from './templates/send-bird-fetch-more-messages-btn.component';
+import { SendbirdMessageFileFormComponent } from './templates/send-bird-message-file-form.component';
+import { SendBirdMessageFormComponent } from './templates/send-bird-message-form.component';
+import { SendbirdMessagesListItemComponent } from './templates/send-bird-messages-list-item.component';
+
+const entryComponents = [
+  SendbirdMessagesListItemComponent,
+  SendBirdMessageFormComponent,
+  SendbirdMessageFileFormComponent,
+  SendbirdFetchMoreMessagesBtnComponent
+];
 
 const declarations = [
   DeleteMessageDirective,
@@ -25,7 +36,8 @@ const declarations = [
     ScrollToModule.forRoot(),
     ChannelsModule
   ],
-  declarations: [declarations, MessagesListInnerComponent],
+  declarations: [declarations, entryComponents, MessagesListInnerComponent],
+  entryComponents: [entryComponents],
   exports: [declarations]
 })
 export class ConverstionsModule {}
