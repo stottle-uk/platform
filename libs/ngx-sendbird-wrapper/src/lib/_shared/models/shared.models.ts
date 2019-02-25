@@ -1,13 +1,15 @@
 import { InjectionToken, Type } from '@angular/core';
+import { SendbirdChannelParticipantsListItemComponent } from '../../channel-participants/templates';
 import {
   SendbirdChannelListItemComponent,
-  SendbirdChannelParticipantsListItemComponent,
-  SendbirdCreateChannelFormComponent,
+  SendbirdCreateChannelFormComponent
+} from '../../channels/templates';
+import {
   SendbirdFetchMoreMessagesBtnComponent,
   SendbirdMessageFileFormComponent,
   SendBirdMessageFormComponent,
   SendbirdMessagesListItemComponent
-} from '../../templates';
+} from '../../coversations/templates';
 import { SbUsersListItemComponent } from '../../users/templates/users-list-item.component';
 
 export interface SendbirdOptions {

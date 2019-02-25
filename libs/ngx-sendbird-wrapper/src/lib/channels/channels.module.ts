@@ -6,6 +6,13 @@ import { CreateOpenChannelComponent } from './containers/create-open-channel.com
 import { GroupChannelListComponent } from './containers/group-channel-list.component';
 import { OpenChannelListComponent } from './containers/open-channel-list.component';
 import { EnterChannelDirective } from './directives/enter-channel.directive';
+import { SendbirdChannelListItemComponent } from './templates/send-bird-channel-list-item.component';
+import { SendbirdCreateChannelFormComponent } from './templates/send-bird-create-channel-form.component';
+
+const entryComponents = [
+  SendbirdChannelListItemComponent,
+  SendbirdCreateChannelFormComponent
+];
 
 const declarations = [
   EnterChannelDirective,
@@ -17,7 +24,8 @@ const declarations = [
 
 @NgModule({
   imports: [SharedModule],
-  declarations: [declarations, ChannelListInnerComponent],
+  declarations: [declarations, entryComponents, ChannelListInnerComponent],
+  entryComponents: [entryComponents],
   exports: [declarations, SharedModule] // TODo: remeove shared module export
 })
 export class ChannelsModule {}

@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { SendbirdMessageFileFormComponent } from '../../templates/send-bird-message-file-form.component';
 import { GenericOptions } from '../../_shared/models/shared.models';
 import { ConversationsViewStateService } from '../services/conversations-view-state.service';
+import { SendbirdMessageFileFormComponent } from '../templates';
 
 @Component({
   selector: 'stottle-send-file-message',

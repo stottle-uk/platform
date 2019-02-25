@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import * as SendBird from 'sendbird';
 import { ChannelParticipantsModule } from './channel-participants/channel-participants.module';
@@ -6,10 +5,6 @@ import { ChannelsModule } from './channels/channels.module';
 import { ConnectionModule } from './connection/connection.module';
 import { ConverstionsModule } from './coversations/conversations.module';
 import { ReceievedInvitationsModule } from './receieved-invitations/receieved-invitations.module';
-import { SendbirdChannelListItemComponent } from './templates/send-bird-channel-list-item.component';
-import { SendbirdChannelParticipantsListItemComponent } from './templates/send-bird-channel-participants-list-item.component';
-import { SendbirdCreateChannelFormComponent } from './templates/send-bird-create-channel-form.component';
-import { SendBirdReceievedInvitationsItemComponent } from './templates/send-bird-receieved-invitations-item.component';
 import { UsersModule } from './users/users.module';
 import {
   SendbirdOptions,
@@ -26,13 +21,6 @@ export function sendBirdFactory(
   return new SendBird({ appId: options.appId });
 }
 
-const entryComponents = [
-  SendbirdChannelListItemComponent,
-  SendbirdChannelParticipantsListItemComponent,
-  SendbirdCreateChannelFormComponent,
-  SendBirdReceievedInvitationsItemComponent
-];
-
 const modules = [
   ConnectionModule,
   UsersModule,
@@ -43,10 +31,8 @@ const modules = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ...modules],
-  declarations: [entryComponents],
-  exports: [...modules],
-  entryComponents: [entryComponents]
+  imports: [...modules],
+  exports: [...modules]
 })
 export class NgxSendbirdWrapperModule {
   static forRoot(

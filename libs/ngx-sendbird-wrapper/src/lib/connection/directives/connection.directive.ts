@@ -1,11 +1,11 @@
-import { Directive, Input } from '@angular/core';
-import { ConnectionViewStateService } from '@stottle-platform/ngx-sendbird-wrapper';
+import { Directive, Input, OnDestroy, OnInit } from '@angular/core';
 import { merge } from 'rxjs';
+import { ConnectionViewStateService } from '../services/connection-view-state.service';
 
 @Directive({
   selector: '[stottleConnection]'
 })
-export class ConnectionDirective {
+export class ConnectionDirective implements OnInit, OnDestroy {
   @Input()
   userId: string;
 

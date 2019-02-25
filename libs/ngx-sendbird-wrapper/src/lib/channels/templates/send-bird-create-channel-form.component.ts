@@ -1,5 +1,5 @@
 import { Component, EventEmitter } from '@angular/core';
-import { CreateChannel } from '../channels/models/channels.models';
+import { CreateChannel } from '../models/channels.models';
 
 @Component({
   selector: 'stottle-send-bird-create-channel-form',
