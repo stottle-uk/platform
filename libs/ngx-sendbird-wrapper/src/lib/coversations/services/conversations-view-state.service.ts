@@ -7,6 +7,10 @@ import { PreviousListQueries } from '../../_shared/models/shared.models';
 import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
+export interface Dictioanry<T> {
+  [key: number]: T;
+}
+
 export type MessageHanlderd =
   | string
   | SendBird.UserMessage
@@ -21,8 +25,8 @@ export class ConversationsViewStateService {
     PreviousListQueries<SendBird.PreviousMessageListQuery>
   >({});
   private internalMessages$ = new BehaviorSubject<
-    Array<SendBird.UserMessage | SendBird.FileMessage>
-  >([]);
+    Dictioanry<SendBird.UserMessage | SendBird.FileMessage>
+  >({});
 
   get lastCallType$(): Observable<string> {
     return this.internalLastCallType$.asObservable();
@@ -45,7 +49,9 @@ export class ConversationsViewStateService {
   get messages$(): Observable<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {
-    return this.internalMessages$.asObservable();
+    return this.internalMessages$
+      .asObservable()
+      .pipe(map(messages => Object.values(messages)));
   }
 
   get currentChannelPreviousMessageListQuery$(): Observable<
@@ -107,10 +113,7 @@ export class ConversationsViewStateService {
           .getPreviousMessages(query)
           .pipe(
             tap(newMessages =>
-              this.internalMessages$.next([
-                ...newMessages,
-                ...this.internalMessages$.value
-              ])
+              this.internalMessages$.next(this.reduceMessages(newMessages))
             )
           )
       )
@@ -126,10 +129,7 @@ export class ConversationsViewStateService {
           .sendMessage(message, channel)
           .pipe(
             tap(newMessage =>
-              this.internalMessages$.next([
-                ...this.internalMessages$.value,
-                newMessage
-              ])
+              this.internalMessages$.next(this.reduceMessages([newMessage]))
             )
           )
       )
@@ -145,10 +145,7 @@ export class ConversationsViewStateService {
           .sendFileMessage(file, channel)
           .pipe(
             tap(newMessage =>
-              this.internalMessages$.next([
-                ...this.internalMessages$.value,
-                newMessage
-              ])
+              this.internalMessages$.next(this.reduceMessages([newMessage]))
             )
           )
       )
@@ -168,8 +165,8 @@ export class ConversationsViewStateService {
   private createQueryAndGetMessages(
     channel: SendBird.OpenChannel | SendBird.GroupChannel
   ) {
-    const query = channel.createPreviousMessageListQuery();
-    return of(query).pipe(
+    const previousMessagesQuery = channel.createPreviousMessageListQuery();
+    return of(previousMessagesQuery).pipe(
       tap(query => (query.limit = 5)),
       switchMap(query =>
         this.sb.getPreviousMessages(query).pipe(
@@ -180,10 +177,9 @@ export class ConversationsViewStateService {
             })
           ),
           tap(newMessages =>
-            this.internalMessages$.next([
-              ...newMessages,
-              ...this.internalMessages$.value
-            ])
+            this.internalMessages$.next(
+              this.reduceMessages(newMessages.reverse(), true)
+            )
           )
         )
       )
@@ -193,19 +189,48 @@ export class ConversationsViewStateService {
   // TODO: listen to these
   onMessageDeleted(): Observable<string> {
     return this.sbh.deletedMessage$.pipe(
-      tap(messageId =>
-        this.internalMessages$.next(
-          this.internalMessages$.value.filter(m => m.messageId !== +messageId)
-        )
-      )
+      tap(deletedMessageId => {
+        const messages = this.internalMessages$.value;
+
+        const updatedMessages = Object.keys(messages)
+          .filter(key => key !== deletedMessageId)
+          .reduce(
+            (prev, key) => ({
+              ...prev,
+              [key]: messages[key]
+            }),
+            {}
+          );
+
+        this.internalMessages$.next(updatedMessages);
+      })
     );
   }
 
   onMessageReceived(): Observable<SendBird.UserMessage | SendBird.FileMessage> {
     return this.sbh.recievedMessage$.pipe(
       tap(message =>
-        this.internalMessages$.next([...this.internalMessages$.value, message])
+        this.internalMessages$.next(this.reduceMessages([message]))
       )
+    );
+  }
+
+  private reduceMessages(
+    newMessages: Array<SendBird.UserMessage | SendBird.FileMessage>,
+    suffix = false
+  ) {
+    return newMessages.reduce(
+      (prev, curr) =>
+        suffix
+          ? {
+              [curr.messageId]: curr,
+              ...prev
+            }
+          : {
+              ...prev,
+              [curr.messageId]: curr
+            },
+      this.internalMessages$.value
     );
   }
 }

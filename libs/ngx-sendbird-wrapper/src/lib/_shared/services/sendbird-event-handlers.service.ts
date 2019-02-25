@@ -41,6 +41,7 @@ export class SendbirdEventHandlersService {
   setupHandlers() {
     this.channelHandler.onChannelChanged = this.onChannelChanged.bind(this);
     this.channelHandler.onMessageReceived = this.onMessageReceived.bind(this);
+    this.channelHandler.onMessageUpdated = this.onMessageReceived.bind(this);
     this.channelHandler.onMessageDeleted = this.onMessageDelete.bind(this);
     this.channelHandler.onUserEntered = this.onChannelChanged.bind(this);
     this.channelHandler.onUserExited = this.onChannelChanged.bind(this);
