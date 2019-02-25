@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { GenericListOptions } from '../../_shared/models/shared.models';
-import { SbUsersListItemComponent } from '../templates/users-list-item.component';
+import { SendbirdUsersListItemComponent } from '../templates/send-bird-users-list-item.component';
 
 @Component({
   selector: 'stottle-users-list-inner',
@@ -15,9 +15,12 @@ export class UsersListInnerComponent {
   @Input()
   users: SendBird.User[];
 
-  get options(): GenericListOptions<SendBird.User, SbUsersListItemComponent> {
+  get options(): GenericListOptions<
+    SendBird.User,
+    SendbirdUsersListItemComponent
+  > {
     return {
-      component: SbUsersListItemComponent,
+      component: SendbirdUsersListItemComponent,
       items: this.users,
       trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
@@ -29,7 +32,7 @@ export class UsersListInnerComponent {
   }
 
   private updateInstance(
-    instance: SbUsersListItemComponent,
+    instance: SendbirdUsersListItemComponent,
     index: number
   ): void {
     instance.user = this.users[index];

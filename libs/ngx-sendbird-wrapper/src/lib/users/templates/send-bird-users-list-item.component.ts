@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'stottle-users-list-item',
+  selector: 'stottle-send-bird-users-list-item',
   template: `
     <pre>{{ user | json }}</pre>
   `
 })
-export class SbUsersListItemComponent {
+export class SendbirdUsersListItemComponent {
   user: SendBird.User;
 }

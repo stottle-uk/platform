@@ -1,1 +1,1 @@
-export * from './users-list-item.component';
+export * from './send-bird-users-list-item.component';

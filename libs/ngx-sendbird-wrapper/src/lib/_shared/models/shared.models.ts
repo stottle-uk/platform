@@ -10,7 +10,7 @@ import {
   SendBirdMessageFormComponent,
   SendbirdMessagesListItemComponent
 } from '../../coversations/templates';
-import { SbUsersListItemComponent } from '../../users/templates/users-list-item.component';
+import { SendbirdUsersListItemComponent } from '../../users/templates/send-bird-users-list-item.component';
 
 export interface SendbirdOptions {
   appId: string;
@@ -38,7 +38,7 @@ export interface SendbirdOptionsDeclarations {
   fetchMoreMessagesBtnComponent?: Type<SendbirdFetchMoreMessagesBtnComponent>;
   messagesListItemComponent?: Type<SendbirdMessagesListItemComponent>;
   createChannelFormComponent?: Type<SendbirdCreateChannelFormComponent>;
-  userListItemComponent?: Type<SbUsersListItemComponent>;
+  userListItemComponent?: Type<SendbirdUsersListItemComponent>;
 }
 
 export const SEND_BIRD_OPTIONS = new InjectionToken<SendbirdOptions>(
