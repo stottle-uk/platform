@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { SendbirdEventHandlersService } from './sendbird-event-handlers.service';
-import { SendBirdService } from './sendbird.service';
+import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
+import { SendBirdService } from '../../_shared/services/sendbird.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SendbirdViewStateService {
+export class ConnectionViewStateService {
   private internalIsConnected$ = new BehaviorSubject<boolean>(false);
   private internalCurrentUser$ = new BehaviorSubject<SendBird.User>(null);
 

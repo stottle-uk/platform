@@ -3,6 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import * as SendBird from 'sendbird';
 import { ChannelParticipantsModule } from './channel-participants/channel-participants.module';
 import { ChannelsModule } from './channels/channels.module';
+import { ConnectionModule } from './connection/connection.module';
 import { ConverstionsModule } from './coversations/conversations.module';
 import { ReceievedInvitationsModule } from './receieved-invitations/receieved-invitations.module';
 import { SendbirdChannelListItemComponent } from './templates/send-bird-channel-list-item.component';
@@ -41,6 +42,7 @@ const entryComponents = [
 ];
 
 const modules = [
+  ConnectionModule,
   UsersModule,
   ChannelsModule,
   ConverstionsModule,
