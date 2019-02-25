@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
@@ -97,20 +97,13 @@ export class ChannelsViewStateService {
     const channel = this.internalCurrentChannel$.value;
 
     return !!channel && channel.isOpenChannel()
-      ? this.currentChannel$.pipe(
-          take(1),
-          switchMap(channel =>
-            this.sb.exitChannel(channel as SendBird.OpenChannel)
-          )
-        )
+      ? this.sb.exitChannel(channel as SendBird.OpenChannel)
       : of(null);
   }
 
   enterGroupChannel(
     channel: SendBird.GroupChannel
   ): Observable<SendBird.GroupChannel> {
-    return of(channel).pipe(
-      tap(channel => this.internalCurrentChannel$.next(channel))
-    );
+    return of(channel).pipe(tap(c => this.internalCurrentChannel$.next(c)));
   }
 }
