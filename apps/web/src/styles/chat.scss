@@ -9,7 +9,17 @@
 
 .channel-participants-container {
   width: 250px;
+  margin-top: 20px;
   .channel-participant-container {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
+}
+
+.users-container {
+  width: 250px;
+  margin-top: 20px;
+  .user-container {
     border-bottom: 1px solid #ccc;
     padding: 10px 0;
   }

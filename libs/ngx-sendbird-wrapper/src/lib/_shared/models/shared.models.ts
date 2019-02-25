@@ -38,7 +38,7 @@ export interface SendbirdOptionsDeclarations {
   fetchMoreMessagesBtnComponent?: Type<SendbirdFetchMoreMessagesBtnComponent>;
   messagesListItemComponent?: Type<SendbirdMessagesListItemComponent>;
   createChannelFormComponent?: Type<SendbirdCreateChannelFormComponent>;
-  userListItemComponent?: Type<SendbirdUsersListItemComponent>;
+  usersListItemComponent?: Type<SendbirdUsersListItemComponent>;
 }
 
 export const SEND_BIRD_OPTIONS = new InjectionToken<SendbirdOptions>(

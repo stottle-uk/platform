@@ -10,6 +10,7 @@ import { FetchMoreMessagesBtnComponent } from './components/fetch-more-messages-
 import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessageFormComponent } from './components/message-form.component';
 import { MessagesListItemComponent } from './components/messages-list-item.component';
+import { UsersListItemComponent } from './components/users-list-item.component';
 
 const declarations = [
   MessageFormComponent,
@@ -18,7 +19,8 @@ const declarations = [
   ChannelParticipantsListItemComponent,
   FetchMoreMessagesBtnComponent,
   MessagesListItemComponent,
-  CreateChannelFormComponent
+  CreateChannelFormComponent,
+  UsersListItemComponent
 ];
 
 @NgModule({
@@ -31,7 +33,8 @@ const declarations = [
       channelParticipantsListItemComponent: ChannelParticipantsListItemComponent,
       fetchMoreMessagesBtnComponent: FetchMoreMessagesBtnComponent,
       messagesListItemComponent: MessagesListItemComponent,
-      createChannelFormComponent: CreateChannelFormComponent
+      createChannelFormComponent: CreateChannelFormComponent,
+      usersListItemComponent: UsersListItemComponent
     }),
     ChatRoutesModule
   ],
