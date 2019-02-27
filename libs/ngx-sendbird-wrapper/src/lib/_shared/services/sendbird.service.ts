@@ -77,6 +77,22 @@ export class SendBirdService {
     return this.co(channel.sendFileMessage.bind(channel), file);
   }
 
+  updateMessage(
+    channel: SendBird.OpenChannel | SendBird.GroupChannel,
+    messageId: number,
+    message: string,
+    data: string,
+    customType: string
+  ): Observable<SendBird.UserMessage> {
+    return this.co(
+      channel.updateUserMessage.bind(channel),
+      messageId,
+      message,
+      data,
+      customType
+    );
+  }
+
   deleteMessage(
     message: SendBird.FileMessage | SendBird.UserMessage,
     channel: SendBird.OpenChannel | SendBird.GroupChannel

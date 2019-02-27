@@ -152,6 +152,25 @@ export class ConversationsViewStateService {
     );
   }
 
+  updateMessage(
+    messageId: number,
+    message: string
+  ): Observable<SendBird.UserMessage> {
+    return this.currentChannel$.pipe(
+      take(1),
+      tap(() => this.internalLastCallType$.next('update')),
+      switchMap(channel =>
+        this.sb
+          .updateMessage(channel, messageId, message, null, null)
+          .pipe(
+            tap(updatedMessage =>
+              this.internalMessages$.next(this.reduceMessages([updatedMessage]))
+            )
+          )
+      )
+    );
+  }
+
   deleteMessage(
     message: SendBird.UserMessage | SendBird.FileMessage
   ): Observable<SendBird.UserMessage | SendBird.FileMessage> {
@@ -216,10 +235,10 @@ export class ConversationsViewStateService {
   }
 
   private reduceMessages(
-    newMessages: Array<SendBird.UserMessage | SendBird.FileMessage>,
+    messages: Array<SendBird.UserMessage | SendBird.FileMessage>,
     suffix = false
   ) {
-    return newMessages.reduce(
+    return messages.reduce(
       (prev, curr) =>
         suffix
           ? {
