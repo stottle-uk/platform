@@ -13,12 +13,14 @@ import { SendbirdFetchMoreMessagesBtnComponent } from './templates/send-bird-fet
 import { SendbirdMessageFileFormComponent } from './templates/send-bird-message-file-form.component';
 import { SendBirdMessageFormComponent } from './templates/send-bird-message-form.component';
 import { SendbirdMessagesListItemComponent } from './templates/send-bird-messages-list-item.component';
+import { SendbirdMessagesUpdateListItemComponent } from './templates/send-bird-messages-update-list-item.component';
 
 const entryComponents = [
   SendbirdMessagesListItemComponent,
   SendBirdMessageFormComponent,
   SendbirdMessageFileFormComponent,
-  SendbirdFetchMoreMessagesBtnComponent
+  SendbirdFetchMoreMessagesBtnComponent,
+  SendbirdMessagesUpdateListItemComponent
 ];
 
 const declarations = [
