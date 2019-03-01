@@ -16,11 +16,13 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';
 import {
   GenericListOptions,
+  GenericListOptionsItem,
   GenericOptions
 } from '../../_shared/models/shared.models';
 import {
   SendbirdFetchMoreMessagesBtnComponent,
-  SendbirdMessagesListItemComponent
+  SendbirdMessagesListItemComponent,
+  SendbirdMessagesUpdateListItemComponent
 } from '../templates';
 
 @Component({
@@ -48,6 +50,7 @@ export class MessagesListInnerComponent implements OnDestroy {
   @Input()
   messages: Array<SendBird.UserMessage | SendBird.FileMessage>;
   @Input()
+  @Input()
   scrollToBottomEnabled: boolean;
   @Input()
   scrollPositionMaintainEnabled: boolean;
@@ -57,13 +60,25 @@ export class MessagesListInnerComponent implements OnDestroy {
   @ViewChild('messagesContainer')
   messagesContainer: ElementRef<Element>;
 
+  get items(): GenericListOptionsItem<
+    SendBird.UserMessage | SendBird.FileMessage,
+    SendbirdMessagesListItemComponent | SendbirdMessagesUpdateListItemComponent
+  >[] {
+    return (
+      this.messages &&
+      this.messages.map(item => ({
+        item,
+        component: SendbirdMessagesListItemComponent
+      }))
+    );
+  }
+
   get options(): GenericListOptions<
     SendBird.UserMessage | SendBird.FileMessage,
-    SendbirdMessagesListItemComponent
+    SendbirdMessagesListItemComponent | SendbirdMessagesUpdateListItemComponent
   > {
     return {
-      component: SendbirdMessagesListItemComponent,
-      items: this.messages,
+      items: this.items,
       trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
     };

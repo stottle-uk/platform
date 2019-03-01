@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import * as SendBird from 'sendbird';
-import { GenericListOptions } from '../../_shared/models/shared.models';
+import {
+  GenericListOptions,
+  GenericListOptionsItem
+} from '../../_shared/models/shared.models';
 import { SendbirdChannelListItemComponent } from '../templates';
 
 @Component({
@@ -16,13 +19,25 @@ export class ChannelListInnerComponent {
   @Input()
   channels: SendBird.OpenChannel[];
 
+  get items(): GenericListOptionsItem<
+    SendBird.OpenChannel,
+    SendbirdChannelListItemComponent
+  >[] {
+    return (
+      this.channels &&
+      this.channels.map(item => ({
+        item,
+        component: SendbirdChannelListItemComponent
+      }))
+    );
+  }
+
   get options(): GenericListOptions<
     SendBird.OpenChannel,
     SendbirdChannelListItemComponent
   > {
     return {
-      component: SendbirdChannelListItemComponent,
-      items: this.channels,
+      items: this.items,
       trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
     };

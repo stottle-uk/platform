@@ -16,9 +16,13 @@ export interface SendbirdOptions {
   appId: string;
 }
 
-export interface GenericListOptions<T, TComp> {
-  items: T[];
+export interface GenericListOptionsItem<T, TComp> {
+  item: T;
   component: Type<TComp>;
+}
+
+export interface GenericListOptions<T, TComp> {
+  items: GenericListOptionsItem<T, TComp>[];
   trackByKey: (item: T) => string | number;
   updateInstance: (instance: TComp, index: number) => void;
 }

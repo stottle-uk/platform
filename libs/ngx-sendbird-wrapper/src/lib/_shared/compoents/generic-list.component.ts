@@ -37,7 +37,9 @@ export class GenericListComponent<T, TComp>
   list: QueryList<ViewContainerRef>;
 
   get items(): T[] {
-    return this.options ? this.options.items : [];
+    return this.options && this.options.items
+      ? this.options.items.map(i => i.item)
+      : [];
   }
 
   private componentRefs: GenericDirective<TComp>[] = [];
@@ -79,7 +81,7 @@ export class GenericListComponent<T, TComp>
 
   private buildComponent(index: number): GenericDirective<TComp> {
     this.listItemsRefs[index].options = {
-      component: this.options.component,
+      component: this.options.items[index].component,
       updateInstance: this.updateInstance(index)
     };
     this.listItemsRefs[index].ngAfterViewInit();
