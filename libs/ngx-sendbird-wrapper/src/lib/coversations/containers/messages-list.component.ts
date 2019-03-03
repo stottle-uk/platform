@@ -8,6 +8,7 @@ import { ConversationsViewStateService } from '../services/conversations-view-st
   template: `
     <stottle-messages-list-inner
       [messages]="messages$ | async"
+      [updateList]="updateList$ | async"
       [scrollToBottomEnabled]="scrollToBottomEnabled$ | async"
       [scrollPositionMaintainEnabled]="scrollPositionMaintainEnabled$ | async"
       (scrolledUp)="onScrolledUp()"
@@ -16,6 +17,7 @@ import { ConversationsViewStateService } from '../services/conversations-view-st
 })
 export class MessagesListComponent implements OnInit, OnDestroy {
   messages$ = this.vs.currentChannelMessages$;
+  updateList$ = this.vs.updateList$;
   scrollToBottomEnabled$ = this.vs.lastCallType$.pipe(
     this.isOfType(['add', 'get'])
   );

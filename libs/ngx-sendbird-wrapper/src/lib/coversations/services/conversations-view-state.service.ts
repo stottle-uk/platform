@@ -27,6 +27,7 @@ export class ConversationsViewStateService {
   private internalMessages$ = new BehaviorSubject<
     Dictioanry<SendBird.UserMessage | SendBird.FileMessage>
   >({});
+  private internalUpdateList$ = new BehaviorSubject<number[]>([]);
 
   get lastCallType$(): Observable<string> {
     return this.internalLastCallType$.asObservable();
@@ -52,6 +53,10 @@ export class ConversationsViewStateService {
     return this.internalMessages$
       .asObservable()
       .pipe(map(messages => Object.values(messages)));
+  }
+
+  get updateList$(): Observable<number[]> {
+    return this.internalUpdateList$.asObservable();
   }
 
   get currentChannelPreviousMessageListQuery$(): Observable<
@@ -81,6 +86,13 @@ export class ConversationsViewStateService {
 
   setupHandlers(): Observable<MessageHanlderd> {
     return merge(this.onMessageDeleted(), this.onMessageReceived());
+  }
+
+  addToUpdateList(messageId: number): void {
+    this.internalUpdateList$.next([
+      ...this.internalUpdateList$.value,
+      messageId
+    ]);
   }
 
   getMessagesForCurrentChannel(): Observable<

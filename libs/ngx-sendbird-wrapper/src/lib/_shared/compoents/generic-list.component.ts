@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
@@ -25,7 +26,7 @@ import { GenericListOptions } from '../models/shared.models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GenericListComponent<T, TComp>
-  implements AfterViewInit, OnDestroy {
+  implements AfterViewInit, AfterViewChecked, OnDestroy {
   @Input()
   options: GenericListOptions<T, TComp>;
   @Output()
@@ -37,9 +38,7 @@ export class GenericListComponent<T, TComp>
   list: QueryList<ViewContainerRef>;
 
   get items(): T[] {
-    return this.options && this.options.items
-      ? this.options.items.map(i => i.item)
-      : [];
+    return this.options && this.options.items ? this.options.items : [];
   }
 
   private componentRefs: GenericDirective<TComp>[] = [];
@@ -58,6 +57,12 @@ export class GenericListComponent<T, TComp>
         tap(refs => (this.componentRefs = refs))
       )
       .subscribe();
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.options.notifyOnChanges) {
+      this.list.notifyOnChanges();
+    }
   }
 
   ngOnDestroy(): void {
@@ -81,7 +86,7 @@ export class GenericListComponent<T, TComp>
 
   private buildComponent(index: number): GenericDirective<TComp> {
     this.listItemsRefs[index].options = {
-      component: this.options.items[index].component,
+      component: this.options.components[index],
       updateInstance: this.updateInstance(index)
     };
     this.listItemsRefs[index].ngAfterViewInit();

@@ -36,7 +36,9 @@ export class UsersListInnerComponent {
     SendbirdUsersListItemComponent
   > {
     return {
-      items: this.items,
+      components:
+        this.users && this.users.map(() => SendbirdUsersListItemComponent),
+      items: this.users,
       trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
     };

@@ -37,7 +37,10 @@ export class ChannelListInnerComponent {
     SendbirdChannelListItemComponent
   > {
     return {
-      items: this.items,
+      components:
+        this.channels &&
+        this.channels.map(() => SendbirdChannelListItemComponent),
+      items: this.channels,
       trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
     };

@@ -21,7 +21,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
             <span *ngIf="message" stottleDeleteMessage [message]="message">
               delete
             </span>
-            <span *ngIf="message">
+            <span *ngIf="message" stottleUpdateMessage [message]="message">
               update
             </span>
           </small>

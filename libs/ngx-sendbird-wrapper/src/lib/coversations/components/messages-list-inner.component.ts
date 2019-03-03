@@ -50,6 +50,7 @@ export class MessagesListInnerComponent implements OnDestroy {
   @Input()
   messages: Array<SendBird.UserMessage | SendBird.FileMessage>;
   @Input()
+  updateList: number[];
   @Input()
   scrollToBottomEnabled: boolean;
   @Input()
@@ -78,7 +79,15 @@ export class MessagesListInnerComponent implements OnDestroy {
     SendbirdMessagesListItemComponent | SendbirdMessagesUpdateListItemComponent
   > {
     return {
-      items: this.items,
+      notifyOnChanges: true,
+      components:
+        this.messages &&
+        this.messages.map(message =>
+          this.updateList.some(m => m === message.messageId)
+            ? SendbirdMessagesUpdateListItemComponent
+            : SendbirdMessagesListItemComponent
+        ),
+      items: this.messages && this.messages,
       trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
     };
@@ -92,7 +101,7 @@ export class MessagesListInnerComponent implements OnDestroy {
     };
   }
 
-  private lastScrollHeight = new BehaviorSubject<number>(0);
+  private lastScrollHeight$ = new BehaviorSubject<number>(0);
   private destroy$ = new Subject();
 
   constructor(private scrollToService: ScrollToService) {}
@@ -103,7 +112,7 @@ export class MessagesListInnerComponent implements OnDestroy {
   }
 
   onChanges(): void {
-    this.lastScrollHeight
+    this.lastScrollHeight$
       .pipe(
         takeUntil(this.destroy$),
         take(1),
@@ -117,7 +126,7 @@ export class MessagesListInnerComponent implements OnDestroy {
             this.setScrollPositionToTopOfListBeforeItemsWereAdded(ls)
         ),
         tap(() =>
-          this.lastScrollHeight.next(
+          this.lastScrollHeight$.next(
             this.messagesContainer.nativeElement.scrollHeight
           )
         )

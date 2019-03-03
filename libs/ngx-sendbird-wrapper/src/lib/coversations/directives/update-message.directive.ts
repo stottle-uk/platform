@@ -4,6 +4,7 @@ import {
   HostListener,
   Input,
   OnDestroy,
+  OnInit,
   Renderer2
 } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -12,13 +13,13 @@ import { ConnectionViewStateService } from '../../connection/services/connection
 import { ConversationsViewStateService } from '../services/conversations-view-state.service';
 
 @Directive({
-  selector: '[stottleDeleteMessage]'
+  selector: '[stottleUpdateMessage]'
 })
-export class DeleteMessageDirective implements OnDestroy {
+export class UpdateMessageDirective implements OnInit, OnDestroy {
   @Input()
   message: SendBird.UserMessage | SendBird.FileMessage;
 
-  private destroy$ = new Subject();
+  destroy$ = new Subject();
 
   constructor(
     private vs: ConversationsViewStateService,
@@ -44,10 +45,7 @@ export class DeleteMessageDirective implements OnDestroy {
 
   @HostListener('click')
   onClick(): void {
-    this.vs
-      .deleteMessage(this.message)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
+    this.vs.addToUpdateList(this.message.messageId);
   }
 
   private hideElement() {

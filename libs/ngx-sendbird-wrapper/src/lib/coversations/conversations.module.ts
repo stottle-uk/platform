@@ -9,6 +9,7 @@ import { SendFileMessageComponent } from './containers/send-file-message.compone
 import { SendMessageComponent } from './containers/send-message.component';
 import { DeleteMessageDirective } from './directives/delete-message.directive';
 import { FetchMoreMessagesDirective } from './directives/fetch-more-messages.directive';
+import { UpdateMessageDirective } from './directives/update-message.directive';
 import { SendbirdFetchMoreMessagesBtnComponent } from './templates/send-bird-fetch-more-messages-btn.component';
 import { SendbirdMessageFileFormComponent } from './templates/send-bird-message-file-form.component';
 import { SendBirdMessageFormComponent } from './templates/send-bird-message-form.component';
@@ -26,6 +27,7 @@ const entryComponents = [
 const declarations = [
   DeleteMessageDirective,
   FetchMoreMessagesDirective,
+  UpdateMessageDirective,
   MessagesListComponent,
   SendMessageComponent,
   SendFileMessageComponent
