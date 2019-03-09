@@ -1,5 +1,6 @@
 export interface SendMessage {
   caption: string;
+  id?: number;
 }
 
 export interface SendFileMessage {

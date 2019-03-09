@@ -27,7 +27,8 @@ export class ConversationsViewStateService {
   private internalMessages$ = new BehaviorSubject<
     Dictioanry<SendBird.UserMessage | SendBird.FileMessage>
   >({});
-  private internalUpdateList$ = new BehaviorSubject<number[]>([]);
+  private internalSelectMessageId$ = new BehaviorSubject<number>(null);
+  private internalNotifyOnChanges$ = new BehaviorSubject<boolean>(false);
 
   get lastCallType$(): Observable<string> {
     return this.internalLastCallType$.asObservable();
@@ -55,8 +56,8 @@ export class ConversationsViewStateService {
       .pipe(map(messages => Object.values(messages)));
   }
 
-  get updateList$(): Observable<number[]> {
-    return this.internalUpdateList$.asObservable();
+  get selectedMessageId$(): Observable<number> {
+    return this.internalSelectMessageId$.asObservable();
   }
 
   get currentChannelPreviousMessageListQuery$(): Observable<
@@ -78,6 +79,20 @@ export class ConversationsViewStateService {
     );
   }
 
+  get currentSelectedMessage$(): Observable<
+    SendBird.UserMessage | SendBird.FileMessage
+  > {
+    return combineLatest(this.messages$, this.selectedMessageId$).pipe(
+      map(([messages, messageId]) =>
+        messages.find(m => m.messageId === messageId)
+      )
+    );
+  }
+
+  get notifyOnChanges$(): Observable<boolean> {
+    return this.internalNotifyOnChanges$.asObservable();
+  }
+
   constructor(
     private sb: SendBirdService,
     private sbh: SendbirdEventHandlersService,
@@ -89,10 +104,12 @@ export class ConversationsViewStateService {
   }
 
   addToUpdateList(messageId: number): void {
-    this.internalUpdateList$.next([
-      ...this.internalUpdateList$.value,
-      messageId
-    ]);
+    this.internalSelectMessageId$.next(messageId);
+    this.internalNotifyOnChanges$.next(true);
+  }
+
+  disableNotifyOnChanges(): void {
+    this.internalNotifyOnChanges$.next(false);
   }
 
   getMessagesForCurrentChannel(): Observable<
@@ -172,13 +189,13 @@ export class ConversationsViewStateService {
       take(1),
       tap(() => this.internalLastCallType$.next('update')),
       switchMap(channel =>
-        this.sb
-          .updateMessage(channel, messageId, message, null, null)
-          .pipe(
-            tap(updatedMessage =>
-              this.internalMessages$.next(this.reduceMessages([updatedMessage]))
-            )
-          )
+        this.sb.updateMessage(channel, messageId, message, null, null).pipe(
+          tap(updatedMessage =>
+            this.internalMessages$.next(this.reduceMessages([updatedMessage]))
+          ),
+          tap(() => this.internalSelectMessageId$.next(null)),
+          tap(() => this.internalNotifyOnChanges$.next(true))
+        )
       )
     );
   }

@@ -7,6 +7,7 @@ import { MessagesListInnerComponent } from './components/messages-list-inner.com
 import { MessagesListComponent } from './containers/messages-list.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
+import { UpdateMessageComponent } from './containers/update-message.component';
 import { DeleteMessageDirective } from './directives/delete-message.directive';
 import { FetchMoreMessagesDirective } from './directives/fetch-more-messages.directive';
 import { UpdateMessageDirective } from './directives/update-message.directive';
@@ -14,14 +15,13 @@ import { SendbirdFetchMoreMessagesBtnComponent } from './templates/send-bird-fet
 import { SendbirdMessageFileFormComponent } from './templates/send-bird-message-file-form.component';
 import { SendBirdMessageFormComponent } from './templates/send-bird-message-form.component';
 import { SendbirdMessagesListItemComponent } from './templates/send-bird-messages-list-item.component';
-import { SendbirdMessagesUpdateListItemComponent } from './templates/send-bird-messages-update-list-item.component';
 
 const entryComponents = [
   SendbirdMessagesListItemComponent,
   SendBirdMessageFormComponent,
   SendbirdMessageFileFormComponent,
   SendbirdFetchMoreMessagesBtnComponent,
-  SendbirdMessagesUpdateListItemComponent
+  UpdateMessageComponent
 ];
 
 const declarations = [

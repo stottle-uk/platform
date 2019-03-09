@@ -8,16 +8,19 @@ import { ConversationsViewStateService } from '../services/conversations-view-st
   template: `
     <stottle-messages-list-inner
       [messages]="messages$ | async"
-      [updateList]="updateList$ | async"
+      [selectedMessageId]="selectedMessageId$ | async"
+      [notifyOnChanges]="notifyOnChanges$ | async"
       [scrollToBottomEnabled]="scrollToBottomEnabled$ | async"
       [scrollPositionMaintainEnabled]="scrollPositionMaintainEnabled$ | async"
       (scrolledUp)="onScrolledUp()"
+      (changesNotified)="onChangesNotified()"
     ></stottle-messages-list-inner>
   `
 })
 export class MessagesListComponent implements OnInit, OnDestroy {
   messages$ = this.vs.currentChannelMessages$;
-  updateList$ = this.vs.updateList$;
+  selectedMessageId$ = this.vs.selectedMessageId$;
+  notifyOnChanges$ = this.vs.notifyOnChanges$;
   scrollToBottomEnabled$ = this.vs.lastCallType$.pipe(
     this.isOfType(['add', 'get'])
   );
@@ -45,6 +48,10 @@ export class MessagesListComponent implements OnInit, OnDestroy {
       .getMoreMessagesForCurrentChannel()
       .pipe(takeUntil(this.destroy$))
       .subscribe();
+  }
+
+  onChangesNotified(): void {
+    this.vs.disableNotifyOnChanges();
   }
 
   private isOfType(types: string[]): OperatorFunction<string, boolean> {

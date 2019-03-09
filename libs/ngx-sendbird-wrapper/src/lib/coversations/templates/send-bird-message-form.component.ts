@@ -8,5 +8,6 @@ import { SendMessage } from '../models/convsersations.models';
   `
 })
 export class SendBirdMessageFormComponent {
+  message: SendBird.UserMessage;
   messageSubmit = new EventEmitter<SendMessage>();
 }

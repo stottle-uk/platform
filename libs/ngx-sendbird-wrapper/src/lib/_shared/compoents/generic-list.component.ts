@@ -22,6 +22,8 @@ import { GenericListOptions } from '../models/shared.models';
     <ng-container #list *ngFor="let item of items; trackBy: trackByFn()">
       <ng-template stottleGeneric></ng-template>
     </ng-container>
+
+    {{ options.notifyOnChanges | json }}
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -36,6 +38,8 @@ export class GenericListComponent<T, TComp>
   listItems: QueryList<GenericDirective<TComp>>;
   @ViewChildren('list', { read: ViewContainerRef })
   list: QueryList<ViewContainerRef>;
+
+  notifyOnChanges = false;
 
   get items(): T[] {
     return this.options && this.options.items ? this.options.items : [];
@@ -60,8 +64,13 @@ export class GenericListComponent<T, TComp>
   }
 
   ngAfterViewChecked(): void {
-    if (this.options.notifyOnChanges) {
+    if (this.notifyOnChanges || this.options.notifyOnChanges) {
+      this.notifyOnChanges = true;
       this.list.notifyOnChanges();
+    }
+
+    if (this.notifyOnChanges && !this.options.notifyOnChanges) {
+      this.notifyOnChanges = false;
     }
   }
 

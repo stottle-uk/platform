@@ -29,6 +29,7 @@ export class GenericDirective<TComp> implements AfterViewInit, OnDestroy {
         this.vcr,
         this.options.component
       );
+
       !!this.options.updateInstance &&
         this.options.updateInstance(this.componentRef.instance);
 
