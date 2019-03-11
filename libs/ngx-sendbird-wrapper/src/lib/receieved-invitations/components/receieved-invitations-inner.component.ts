@@ -36,10 +36,7 @@ export class ReceievedInvitationsInnerComponent {
     SendBirdReceievedInvitationsItemComponent
   > {
     return {
-      components:
-        this.invitations &&
-        this.invitations.map(() => SendBirdReceievedInvitationsItemComponent),
-      items: this.invitations,
+      items: this.items,
       trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
     };

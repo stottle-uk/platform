@@ -23,8 +23,7 @@ export interface GenericListOptionsItem<T, TComp> {
 
 export interface GenericListOptions<T, TComp> {
   notifyOnChanges?: boolean;
-  components: Type<TComp>[];
-  items: T[];
+  items: GenericListOptionsItem<T, TComp>[];
   trackByKey: (item: T) => string | number;
   updateInstance: (instance: TComp, index: number) => void;
 }

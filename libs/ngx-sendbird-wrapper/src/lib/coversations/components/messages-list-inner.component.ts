@@ -72,7 +72,10 @@ export class MessagesListInnerComponent implements OnDestroy {
       this.messages &&
       this.messages.map(item => ({
         item,
-        component: SendbirdMessagesListItemComponent
+        component:
+          item.messageId === this.selectedMessageId.messageId
+            ? UpdateMessageComponent
+            : SendbirdMessagesListItemComponent
       }))
     );
   }
@@ -85,8 +88,7 @@ export class MessagesListInnerComponent implements OnDestroy {
       !!this.selectedMessageId &&
       !!this.messages && {
         notifyOnChanges: this.selectedMessageId.notifyOnchanges,
-        components: this.getComponents(),
-        items: this.messages,
+        items: this.items,
         trackByKey: this.trackByKey,
         updateInstance: this.updateInstance.bind(this)
       }
@@ -146,14 +148,6 @@ export class MessagesListInnerComponent implements OnDestroy {
     index: number
   ): void {
     instance.message = this.messages[index];
-  }
-
-  private getComponents() {
-    return this.messages.map(message =>
-      message.messageId === this.selectedMessageId.messageId
-        ? UpdateMessageComponent
-        : SendbirdMessagesListItemComponent
-    );
   }
 
   private scrollToBottomOfMessagesList(): void {
