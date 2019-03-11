@@ -84,15 +84,13 @@ export class MessagesListInnerComponent implements OnDestroy {
     SendBird.UserMessage | SendBird.FileMessage,
     SendbirdMessagesListItemComponent | UpdateMessageComponent
   > {
-    return (
-      !!this.selectedMessageId &&
-      !!this.messages && {
-        notifyOnChanges: this.selectedMessageId.notifyOnchanges,
-        items: this.items,
-        trackByKey: this.trackByKey,
-        updateInstance: this.updateInstance.bind(this)
-      }
-    );
+    return {
+      notifyOnChanges:
+        this.selectedMessageId && this.selectedMessageId.notifyOnchanges,
+      items: this.items,
+      trackByKey: this.trackByKey,
+      updateInstance: this.updateInstance.bind(this)
+    };
   }
 
   get getMoreBtnOptions(): GenericOptions<
