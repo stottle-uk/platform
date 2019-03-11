@@ -21,8 +21,6 @@ import {
         formControlName="caption"
       />
       <button type="submit" color="primary">Send</button>
-
-      {{ message | json }}
     </form>
   `
 })

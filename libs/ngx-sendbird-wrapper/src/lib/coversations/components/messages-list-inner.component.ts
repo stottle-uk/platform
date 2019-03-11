@@ -13,13 +13,14 @@ import {
   ScrollToService
 } from '@nicky-lenaers/ngx-scroll-to';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { delay, take, takeUntil, tap } from 'rxjs/operators';
+import { take, takeUntil, tap } from 'rxjs/operators';
 import {
   GenericListOptions,
   GenericListOptionsItem,
   GenericOptions
 } from '../../_shared/models/shared.models';
 import { UpdateMessageComponent } from '../containers/update-message.component';
+import { SelectedMessageId } from '../services/conversations-view-state.service';
 import {
   SendbirdFetchMoreMessagesBtnComponent,
   SendbirdMessagesListItemComponent
@@ -50,9 +51,7 @@ export class MessagesListInnerComponent implements OnDestroy {
   @Input()
   messages: Array<SendBird.UserMessage | SendBird.FileMessage>;
   @Input()
-  selectedMessageId: number;
-  @Input()
-  notifyOnChanges: boolean;
+  selectedMessageId: SelectedMessageId;
   @Input()
   scrollToBottomEnabled: boolean;
   @Input()
@@ -82,19 +81,16 @@ export class MessagesListInnerComponent implements OnDestroy {
     SendBird.UserMessage | SendBird.FileMessage,
     SendbirdMessagesListItemComponent | UpdateMessageComponent
   > {
-    return {
-      notifyOnChanges: this.notifyOnChanges,
-      components:
-        this.messages &&
-        this.messages.map(message =>
-          message.messageId === this.selectedMessageId
-            ? UpdateMessageComponent
-            : SendbirdMessagesListItemComponent
-        ),
-      items: this.messages && this.messages,
-      trackByKey: this.trackByKey,
-      updateInstance: this.updateInstance.bind(this)
-    };
+    return (
+      !!this.selectedMessageId &&
+      !!this.messages && {
+        notifyOnChanges: this.selectedMessageId.notifyOnchanges,
+        components: this.getComponents(),
+        items: this.messages,
+        trackByKey: this.trackByKey,
+        updateInstance: this.updateInstance.bind(this)
+      }
+    );
   }
 
   get getMoreBtnOptions(): GenericOptions<
@@ -134,7 +130,6 @@ export class MessagesListInnerComponent implements OnDestroy {
             this.messagesContainer.nativeElement.scrollHeight
           )
         ),
-        delay(0),
         tap(() => this.changesNotified.emit())
       )
       .subscribe();
@@ -151,6 +146,14 @@ export class MessagesListInnerComponent implements OnDestroy {
     index: number
   ): void {
     instance.message = this.messages[index];
+  }
+
+  private getComponents() {
+    return this.messages.map(message =>
+      message.messageId === this.selectedMessageId.messageId
+        ? UpdateMessageComponent
+        : SendbirdMessagesListItemComponent
+    );
   }
 
   private scrollToBottomOfMessagesList(): void {

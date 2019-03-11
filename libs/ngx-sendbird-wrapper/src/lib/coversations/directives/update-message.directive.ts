@@ -45,7 +45,7 @@ export class UpdateMessageDirective implements OnInit, OnDestroy {
 
   @HostListener('click')
   onClick(): void {
-    this.vs.addToUpdateList(this.message.messageId);
+    this.vs.setSelectedMessageId(this.message.messageId);
   }
 
   private hideElement() {
