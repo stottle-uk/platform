@@ -6,6 +6,7 @@ import { ChannelListItemComponent } from './components/channel-list-item.compone
 import { ChannelParticipantsListItemComponent } from './components/channel-participants-list-item.component';
 import { ChatComponent } from './components/chat.component';
 import { CreateChannelFormComponent } from './components/create-channel-form.component';
+import { EditChannelComponent } from './components/edit-channel.component';
 import { FetchMoreMessagesBtnComponent } from './components/fetch-more-messages-btn.component';
 import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessageFormComponent } from './components/message-form.component';
@@ -38,7 +39,7 @@ const declarations = [
     }),
     ChatRoutesModule
   ],
-  declarations: [ChatComponent, declarations],
+  declarations: [ChatComponent, EditChannelComponent, declarations],
   entryComponents: [declarations]
 })
 export class ChatModule {}
