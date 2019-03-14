@@ -17,6 +17,7 @@ import { ConnectionViewStateService } from '@stottle-platform/ngx-sendbird-wrapp
         </div>
 
         <div fxFlex="grow">
+          <button stottleEditCurrentChannelLink location="./edit">Go</button>
           <stottle-messages-list></stottle-messages-list>
           <stottle-send-message></stottle-send-message>
           <stottle-send-file-message></stottle-send-file-message>
