@@ -10,10 +10,6 @@ export const routes: Routes = [
     component: ChatRouteComponent,
     children: [
       {
-        path: '',
-        component: ChatComponent
-      },
-      {
         path: ':channelUrl',
         component: ChatComponent
       },

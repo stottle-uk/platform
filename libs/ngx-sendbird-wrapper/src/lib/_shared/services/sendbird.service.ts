@@ -170,20 +170,6 @@ export class SendBirdService {
     return this.co(participantListQuery.next.bind(participantListQuery));
   }
 
-  // getAndEnterChannel(): (
-  //   source: Observable<SendBird.OpenChannel>
-  // ) => Observable<SendBird.OpenChannel> {
-  //   return source =>
-  //     source.pipe(
-  //       switchMap(channel =>
-  //         this.getChanenel(channel.url).pipe(
-  //           switchMap(chan => this.enterChannel(chan)),
-  //           map(() => channel)
-  //         )
-  //       )
-  //     );
-  // }
-
   private co<T>(fn: (...args: any[]) => void, ...args: any[]): Observable<T> {
     return new Observable(observer => fn(...args, this.callback(observer)));
   }
