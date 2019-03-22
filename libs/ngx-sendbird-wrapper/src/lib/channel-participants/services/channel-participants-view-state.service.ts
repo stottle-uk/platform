@@ -37,6 +37,7 @@ export class ChannelParticipantsViewStateService {
           ? this.sb.getChannelParticipants(channel as SendBird.OpenChannel)
           : of((channel as SendBird.GroupChannel).members)
       ),
+      tap(console.log),
       tap(participants =>
         this.internalCurrentChannelParticipants$.next(participants)
       )

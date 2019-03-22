@@ -4,6 +4,7 @@ import {
   SendbirdChannelListItemComponent,
   SendbirdCreateChannelFormComponent
 } from '../../channels/templates';
+import { SendBirdChannelFormComponent } from '../../channels/templates/send-bird-channel-form.component';
 import {
   SendbirdFetchMoreMessagesBtnComponent,
   SendbirdMessageFileFormComponent,
@@ -44,6 +45,7 @@ export interface SendbirdOptionsDeclarations {
   messagesListItemComponent?: Type<SendbirdMessagesListItemComponent>;
   createChannelFormComponent?: Type<SendbirdCreateChannelFormComponent>;
   usersListItemComponent?: Type<SendbirdUsersListItemComponent>;
+  channelFormComponent?: Type<SendBirdChannelFormComponent>;
 }
 
 export const SEND_BIRD_OPTIONS = new InjectionToken<SendbirdOptions>(

@@ -1,48 +1,46 @@
 import {
   AfterContentInit,
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
   Output
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import {
-  SendBirdMessageFormComponent,
-  SendMessage
-} from '@stottle-platform/ngx-sendbird-wrapper';
+import { EditChannel } from '@stottle-platform/ngx-sendbird-wrapper';
+import { SendBirdChannelFormComponent } from 'libs/ngx-sendbird-wrapper/src/lib/channels/templates/send-bird-channel-form.component';
 
 @Component({
-  selector: 'stottle-message-form',
+  selector: 'stottle-edit-open-channel-form',
   template: `
     <form [formGroup]="messageForm" (ngSubmit)="formSubmit()">
       <input
         type="text"
-        placeholder="Type your message"
-        formControlName="caption"
+        placeholder="Your channel name"
+        formControlName="name"
       />
       <button type="submit" color="primary">Send</button>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MessageFormComponent
-  implements SendBirdMessageFormComponent, AfterContentInit {
+export class EditOpenChannelFormComponent
+  implements SendBirdChannelFormComponent, AfterContentInit {
   @Input()
-  message: SendBird.UserMessage;
+  channel: SendBird.OpenChannel;
   @Output()
-  messageSubmit = new EventEmitter<SendMessage>();
+  messageSubmit = new EventEmitter<EditChannel>();
 
   messageForm = this.fb.group({
-    caption: [null, Validators.required],
-    id: null
+    name: [null, Validators.required]
   });
 
   constructor(private fb: FormBuilder) {}
 
   ngAfterContentInit(): void {
-    if (this.message) {
+    if (this.channel) {
       this.messageForm.patchValue({
-        caption: this.message.message,
-        id: this.message.messageId
+        name: this.channel.name
       });
     }
   }

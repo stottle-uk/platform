@@ -19,6 +19,8 @@ export class OpenChannelListComponent implements OnInit, OnDestroy {
   constructor(private vs: ChannelsViewStateService) {}
 
   ngOnInit(): void {
+    console.log('dsfds');
+
     this.vs
       .getOpenChannels()
       .pipe(takeUntil(this.destroy$))

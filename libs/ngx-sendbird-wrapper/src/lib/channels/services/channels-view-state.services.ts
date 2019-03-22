@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
@@ -41,11 +41,31 @@ export class ChannelsViewStateService {
 
   constructor(private sb: SendBirdService) {}
 
-  createOpenChannel(name: string): Observable<SendBird.OpenChannel> {
+  getOpenChannel(channelUrl: string): Observable<SendBird.OpenChannel> {
+    return this.sb.getOpenChannel(channelUrl);
+  }
+
+  getGroupChannel(channelUrl: string): Observable<SendBird.GroupChannel> {
+    return this.sb.getGroupChannel(channelUrl);
+  }
+
+  createOpenChannel(
+    name: string,
+    coverUrlOrImageFile: string | File,
+    data: string,
+    operatorUserIds: Array<string> | string,
+    customType: string
+  ): Observable<SendBird.OpenChannel> {
     const channels = this.internalOpenChannels$.value;
 
     return this.sb
-      .createOpenChannel(name, null, null, null, null)
+      .createOpenChannel(
+        name,
+        coverUrlOrImageFile,
+        data,
+        operatorUserIds,
+        customType
+      )
       .pipe(
         tap(channel => this.internalOpenChannels$.next([channel, ...channels]))
       );
@@ -105,5 +125,29 @@ export class ChannelsViewStateService {
     channel: SendBird.GroupChannel
   ): Observable<SendBird.GroupChannel> {
     return of(channel).pipe(tap(c => this.internalCurrentChannel$.next(c)));
+  }
+
+  updateOpenChannel(
+    name: string,
+    coverUrl: string,
+    data: string,
+    operatorUserIds: Array<string> | string,
+    customType: string
+  ): Observable<SendBird.OpenChannel> {
+    return this.currentChannel$.pipe(
+      take(1),
+      filter(channel => channel.isOpenChannel()),
+      map(channel => channel as SendBird.OpenChannel),
+      switchMap(channel =>
+        this.sb.updateOpenChannel(
+          channel,
+          name,
+          coverUrl,
+          data,
+          operatorUserIds,
+          customType
+        )
+      )
+    );
   }
 }

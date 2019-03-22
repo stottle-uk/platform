@@ -14,7 +14,9 @@ import { SendbirdChannelListItemComponent } from '@stottle-platform/ngx-sendbird
         <img class="img-avatar" [src]="coverImageUrl" [alt]="name" />
       </div>
       <h3 fxFlex="grow">
-        <span> {{ name }} </span>
+        <a [routerLink]="channelUrl">
+          <span> {{ name }} </span>
+        </a>
       </h3>
     </div>
   `,
@@ -27,6 +29,10 @@ export class ChannelListItemComponent
 
   get name(): string {
     return this.channel && this.channel.name;
+  }
+
+  get channelUrl(): string {
+    return this.channel && this.channel.url;
   }
 
   get coverImageUrl(): string {

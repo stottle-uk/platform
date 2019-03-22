@@ -3,25 +3,27 @@ import { SharedModule } from '../_shared/shared.module';
 import { ChannelListInnerComponent } from './components/channel-list-inner.component';
 import { CreateGroupChannelComponent } from './containers/create-group-channel.component';
 import { CreateOpenChannelComponent } from './containers/create-open-channel.component';
+import { EditCurrentChannelComponent } from './containers/edit-current-channel.component';
 import { GroupChannelListComponent } from './containers/group-channel-list.component';
 import { OpenChannelListComponent } from './containers/open-channel-list.component';
-import { EditCurrentChannelLinkDirective } from './directives/edit-current-channel-link.directive';
 import { EnterChannelDirective } from './directives/enter-channel.directive';
+import { SendBirdChannelFormComponent } from './templates/send-bird-channel-form.component';
 import { SendbirdChannelListItemComponent } from './templates/send-bird-channel-list-item.component';
 import { SendbirdCreateChannelFormComponent } from './templates/send-bird-create-channel-form.component';
 
 const entryComponents = [
   SendbirdChannelListItemComponent,
-  SendbirdCreateChannelFormComponent
+  SendbirdCreateChannelFormComponent,
+  SendBirdChannelFormComponent
 ];
 
 const declarations = [
   EnterChannelDirective,
-  EditCurrentChannelLinkDirective,
   OpenChannelListComponent,
   GroupChannelListComponent,
   CreateOpenChannelComponent,
-  CreateGroupChannelComponent
+  CreateGroupChannelComponent,
+  EditCurrentChannelComponent
 ];
 
 @NgModule({

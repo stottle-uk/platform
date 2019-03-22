@@ -4,9 +4,11 @@ import { SharedModule } from '../shared/shared.module';
 import { ChatRoutesModule } from './chat-routes.module';
 import { ChannelListItemComponent } from './components/channel-list-item.component';
 import { ChannelParticipantsListItemComponent } from './components/channel-participants-list-item.component';
+import { ChatRouteComponent } from './components/chat-route.component';
 import { ChatComponent } from './components/chat.component';
 import { CreateChannelFormComponent } from './components/create-channel-form.component';
 import { EditChannelComponent } from './components/edit-channel.component';
+import { EditOpenChannelFormComponent } from './components/edit-open-channel-form.component';
 import { FetchMoreMessagesBtnComponent } from './components/fetch-more-messages-btn.component';
 import { MessageFileFormComponent } from './components/message-file-form.component';
 import { MessageFormComponent } from './components/message-form.component';
@@ -21,7 +23,8 @@ const declarations = [
   FetchMoreMessagesBtnComponent,
   MessagesListItemComponent,
   CreateChannelFormComponent,
-  UsersListItemComponent
+  UsersListItemComponent,
+  EditOpenChannelFormComponent
 ];
 
 @NgModule({
@@ -35,11 +38,17 @@ const declarations = [
       fetchMoreMessagesBtnComponent: FetchMoreMessagesBtnComponent,
       messagesListItemComponent: MessagesListItemComponent,
       createChannelFormComponent: CreateChannelFormComponent,
-      usersListItemComponent: UsersListItemComponent
+      usersListItemComponent: UsersListItemComponent,
+      channelFormComponent: EditOpenChannelFormComponent
     }),
     ChatRoutesModule
   ],
-  declarations: [ChatComponent, EditChannelComponent, declarations],
+  declarations: [
+    ChatRouteComponent,
+    ChatComponent,
+    EditChannelComponent,
+    declarations
+  ],
   entryComponents: [declarations]
 })
 export class ChatModule {}

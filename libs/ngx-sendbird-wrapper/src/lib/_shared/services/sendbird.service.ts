@@ -100,8 +100,12 @@ export class SendBirdService {
     return this.co(channel.deleteMessage.bind(channel), message);
   }
 
-  getChanenel(channelUrl: string): Observable<SendBird.OpenChannel> {
+  getOpenChannel(channelUrl: string): Observable<SendBird.OpenChannel> {
     return this.co(this.sb.OpenChannel.getChannel.bind(this.sb), channelUrl);
+  }
+
+  getGroupChannel(channelUrl: string): Observable<SendBird.GroupChannel> {
+    return this.co(this.sb.GroupChannel.getChannel.bind(this.sb), channelUrl);
   }
 
   createOpenChannel(
@@ -140,10 +144,29 @@ export class SendBirdService {
     );
   }
 
+  updateOpenChannel(
+    channel: SendBird.OpenChannel,
+    name: string,
+    coverUrl: string,
+    data: string,
+    operatorUserIds: Array<string> | string,
+    customType: string
+  ): Observable<SendBird.OpenChannel> {
+    return this.co(
+      channel.updateChannel.bind(channel),
+      name,
+      coverUrl,
+      data,
+      operatorUserIds,
+      customType
+    );
+  }
+
   getChannelParticipants(
     channel: SendBird.OpenChannel
   ): Observable<SendBird.User[]> {
     const participantListQuery = channel.createParticipantListQuery();
+    console.log(participantListQuery);
     return this.co(participantListQuery.next.bind(participantListQuery));
   }
 

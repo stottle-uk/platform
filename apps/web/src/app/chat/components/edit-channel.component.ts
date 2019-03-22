@@ -6,14 +6,13 @@ import { Component, OnInit } from '@angular/core';
     <p>
       edit-channel works!
     </p>
+
+    <stottle-edit-current-channel></stottle-edit-current-channel>
   `,
   styles: []
 })
 export class EditChannelComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
