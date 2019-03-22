@@ -68,13 +68,7 @@ export class ChannelParticipantsViewStateService {
         this.currentChannelParticipants$.pipe(
           take(1),
           switchMap(participants =>
-            !!participants && participants.length > 0
-              ? of([])
-              : channel.isOpenChannel()
-              ? this.createQueryAndGetParticpants(
-                  channel as SendBird.OpenChannel
-                )
-              : of((channel as SendBird.GroupChannel).members)
+            this.getParticipants(channel, participants)
           ),
           map(participants =>
             this.reduceParticipants(channel.url, participants)
@@ -86,7 +80,20 @@ export class ChannelParticipantsViewStateService {
     );
   }
 
-  private createQueryAndGetParticpants(channel: SendBird.OpenChannel) {
+  private getParticipants(
+    channel: SendBird.OpenChannel | SendBird.GroupChannel,
+    participants: SendBird.User[]
+  ): Observable<any[]> {
+    return !!participants && participants.length > 0
+      ? of([])
+      : channel.isOpenChannel()
+      ? this.createQueryAndGetParticpants(channel as SendBird.OpenChannel)
+      : of((channel as SendBird.GroupChannel).members);
+  }
+
+  private createQueryAndGetParticpants(
+    channel: SendBird.OpenChannel
+  ): Observable<SendBird.User[]> {
     const participantListQuery = channel.createParticipantListQuery();
     return of(participantListQuery).pipe(
       tap(query => (query.limit = 5)),
@@ -106,12 +113,12 @@ export class ChannelParticipantsViewStateService {
   private reduceParticipants(
     channelUrl: string,
     participants: SendBird.User[]
-  ) {
+  ): Dictionary<SendBird.User[]> {
     return participants.reduce(
       (users, user) => ({
         ...users,
         [channelUrl]: !!users[channelUrl]
-          ? this.appendAndRemoveDups(users, channelUrl, user)
+          ? this.appendAndRemoveDups(users[channelUrl], user)
           : [user]
       }),
       this.internalParticipants$.value
@@ -119,16 +126,17 @@ export class ChannelParticipantsViewStateService {
   }
 
   private appendAndRemoveDups(
-    prev: Dictionary<SendBird.User[]>,
-    channelUrl: string,
-    curr: SendBird.User
+    users: SendBird.User[],
+    user: SendBird.User
   ): SendBird.User[] {
-    const sd = [...prev[channelUrl], curr].reduce(
-      (acc, cur: SendBird.User) => ({ ...acc, [cur.userId]: cur }),
-      {}
+    return Object.values(
+      [...users, user].reduce(
+        (prevUsers, currUser) => ({
+          ...prevUsers,
+          [currUser.userId]: currUser
+        }),
+        {}
+      )
     );
-    return Object.values(sd);
   }
 }
-
-//
