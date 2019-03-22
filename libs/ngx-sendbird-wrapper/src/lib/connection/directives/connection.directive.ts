@@ -1,5 +1,6 @@
 import { Directive, Input, OnDestroy, OnInit } from '@angular/core';
 import { merge } from 'rxjs';
+import { ChannelsViewStateService } from '../../channels/services/channels-view-state.services';
 import { ConnectionViewStateService } from '../services/connection-view-state.service';
 
 @Directive({
@@ -9,7 +10,10 @@ export class ConnectionDirective implements OnInit, OnDestroy {
   @Input()
   userId: string;
 
-  constructor(private sb: ConnectionViewStateService) {}
+  constructor(
+    private sb: ConnectionViewStateService,
+    private cvs: ChannelsViewStateService
+  ) {}
 
   ngOnInit(): void {
     this.internalConnect(this.userId);
@@ -26,6 +30,9 @@ export class ConnectionDirective implements OnInit, OnDestroy {
   private internalConnect(userId: string) {
     const connect$ = this.sb.connect(userId);
 
-    merge(connect$).subscribe(console.log, console.error);
+    merge(connect$, this.cvs.setupHandlers()).subscribe(
+      console.log,
+      console.error
+    );
   }
 }

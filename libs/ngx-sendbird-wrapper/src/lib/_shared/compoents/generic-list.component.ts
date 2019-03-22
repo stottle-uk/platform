@@ -12,7 +12,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { delay, map, takeUntil, tap } from 'rxjs/operators';
 import { GenericDirective } from '../directives/generic.directive';
 import { GenericListOptions } from '../models/shared.models';
 
@@ -53,6 +53,7 @@ export class GenericListComponent<T, TComp>
     this.list.changes
       .pipe(
         takeUntil(this.destroy$),
+        delay(0),
         tap(() => this.componentRefs.forEach(ref => ref.ngOnDestroy())),
         map(changes => this.updateList(changes)),
         tap(refs => this.changes.emit(refs)),

@@ -226,7 +226,6 @@ export class ConversationsViewStateService {
     return this.sbh.deletedMessage$.pipe(
       tap(deletedMessageId => {
         const messages = this.internalMessages$.value;
-
         const updatedMessages = Object.keys(messages)
           .filter(key => key !== deletedMessageId)
           .reduce(

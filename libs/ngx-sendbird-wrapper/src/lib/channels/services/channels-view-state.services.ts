@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
+import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
 @Injectable({
@@ -18,6 +19,7 @@ export class ChannelsViewStateService {
   private internalCurrentChannel$ = new BehaviorSubject<
     SendBird.OpenChannel | SendBird.GroupChannel
   >(null);
+  private internalNotifyOnChanges$ = new BehaviorSubject<boolean>(false);
 
   get lastCallType$(): Observable<string> {
     return this.internalLastCallType$.asObservable();
@@ -39,7 +41,22 @@ export class ChannelsViewStateService {
       .pipe(filter(channel => !!channel));
   }
 
-  constructor(private sb: SendBirdService) {}
+  get notifyOnChanges$(): Observable<boolean> {
+    return this.internalNotifyOnChanges$.asObservable();
+  }
+
+  constructor(
+    private sb: SendBirdService,
+    private sbh: SendbirdEventHandlersService
+  ) {}
+
+  setupHandlers(): Observable<SendBird.BaseChannel> {
+    return merge(this.onChannelChanged());
+  }
+
+  disableNotifyOnChanges(): void {
+    this.internalNotifyOnChanges$.next(false);
+  }
 
   getOpenChannel(channelUrl: string): Observable<SendBird.OpenChannel> {
     return this.sb.getOpenChannel(channelUrl);
@@ -149,5 +166,34 @@ export class ChannelsViewStateService {
         )
       )
     );
+  }
+
+  onChannelChanged(): Observable<SendBird.OpenChannel | SendBird.GroupChannel> {
+    return this.sbh.channelChanged$.pipe(
+      tap(channel =>
+        channel.isOpenChannel()
+          ? this.updateChannels(channel, this.internalOpenChannels$)
+          : this.updateChannels(channel, this.internalGroupChannels$)
+      ),
+      tap(() => this.internalNotifyOnChanges$.next(true))
+    );
+  }
+
+  private updateChannels<T extends SendBird.BaseChannel>(
+    updatedChannel: T,
+    channels$: BehaviorSubject<T[]>
+  ): void {
+    return channels$.next(
+      channels$.value.map(channel =>
+        this.updateChannel(channel, updatedChannel)
+      )
+    );
+  }
+
+  private updateChannel<T extends SendBird.BaseChannel>(
+    channel: T,
+    updatedChannel: T
+  ): T {
+    return channel.url === updatedChannel.url ? updatedChannel : channel;
   }
 }

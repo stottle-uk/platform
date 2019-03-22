@@ -29,7 +29,7 @@ export class ChatComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const t = this.activatedRoute.paramMap
+    this.activatedRoute.paramMap
       .pipe(
         filter(params => params.has('channelUrl')),
         map(params => ({
