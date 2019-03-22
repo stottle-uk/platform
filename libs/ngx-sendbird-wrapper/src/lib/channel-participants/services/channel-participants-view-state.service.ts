@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, merge, Observable, of } from 'rxjs';
-import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { ChannelsViewStateService } from '../../channels/services/channels-view-state.services';
-import { Dictionary } from '../../_shared/models/shared.models';
+import {
+  Dictionary,
+  PreviousListQueries
+} from '../../_shared/models/shared.models';
 import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
@@ -11,9 +14,12 @@ import { SendBirdService } from '../../_shared/services/sendbird.service';
   providedIn: 'root'
 })
 export class ChannelParticipantsViewStateService {
-  private internalCurrentChannelParticipants$ = new BehaviorSubject<
+  private internalParticipants$ = new BehaviorSubject<
     Dictionary<SendBird.User[]>
   >([]);
+  private internalParticipantListQueries$ = new BehaviorSubject<
+    PreviousListQueries<SendBird.ParticipantListQuery>
+  >({});
 
   get currentChannel$(): Observable<
     SendBird.OpenChannel | SendBird.GroupChannel
@@ -21,11 +27,33 @@ export class ChannelParticipantsViewStateService {
     return this.channels.currentChannel$;
   }
 
+  get participantListQueries$(): Observable<
+    PreviousListQueries<SendBird.ParticipantListQuery>
+  > {
+    return this.internalParticipantListQueries$
+      .asObservable()
+      .pipe(filter(queries => !!queries));
+  }
+
+  get participants$(): Observable<Dictionary<SendBird.User[]>> {
+    return this.internalParticipants$
+      .asObservable()
+      .pipe(filter(participants => !!participants));
+  }
+
   get currentChannelParticipants$(): Observable<SendBird.User[]> {
+    return combineLatest(this.participants$, this.currentChannel$).pipe(
+      map(([participants, channel]) => participants[channel.url])
+    );
+  }
+
+  get currentChannelParticipantListQuery$(): Observable<
+    SendBird.ParticipantListQuery
+  > {
     return combineLatest(
-      this.internalCurrentChannelParticipants$,
+      this.participantListQueries$,
       this.currentChannel$
-    ).pipe(map(([participants, channel]) => participants[channel.url]));
+    ).pipe(map(([queries, channel]) => queries[channel.url]));
   }
 
   constructor(
@@ -36,25 +64,42 @@ export class ChannelParticipantsViewStateService {
 
   getChannelParticipants(): Observable<SendBird.User[]> {
     return merge(this.currentChannel$, this.sbh.channelChanged$).pipe(
-      mergeMap(channel =>
-        channel.isOpenChannel()
-          ? this.sb
-              .getChannelParticipants(channel as SendBird.OpenChannel)
-              .pipe(
-                map(participants =>
-                  this.reduceParticipants(channel.url, participants)
+      switchMap(channel =>
+        this.currentChannelParticipants$.pipe(
+          take(1),
+          switchMap(participants =>
+            !!participants && participants.length > 0
+              ? of([])
+              : channel.isOpenChannel()
+              ? this.createQueryAndGetParticpants(
+                  channel as SendBird.OpenChannel
                 )
-              )
-          : of((channel as SendBird.GroupChannel).members).pipe(
-              map(participants =>
-                this.reduceParticipants(channel.url, participants)
-              )
-            )
-      ),
-      tap(participants =>
-        this.internalCurrentChannelParticipants$.next(participants)
+              : of((channel as SendBird.GroupChannel).members)
+          ),
+          map(participants =>
+            this.reduceParticipants(channel.url, participants)
+          ),
+          tap(participants => this.internalParticipants$.next(participants))
+        )
       ),
       switchMap(() => this.currentChannelParticipants$)
+    );
+  }
+
+  private createQueryAndGetParticpants(channel: SendBird.OpenChannel) {
+    const participantListQuery = channel.createParticipantListQuery();
+    return of(participantListQuery).pipe(
+      tap(query => (query.limit = 5)),
+      switchMap(query =>
+        this.sb.getChannelParticipants(query).pipe(
+          tap(() =>
+            this.internalParticipantListQueries$.next({
+              ...this.internalParticipantListQueries$.value,
+              [channel.url]: query
+            })
+          )
+        )
+      )
     );
   }
 
@@ -69,7 +114,7 @@ export class ChannelParticipantsViewStateService {
           ? this.appendAndRemoveDups(users, channelUrl, user)
           : [user]
       }),
-      this.internalCurrentChannelParticipants$.value
+      this.internalParticipants$.value
     );
   }
 

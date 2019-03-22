@@ -163,10 +163,9 @@ export class SendBirdService {
   }
 
   getChannelParticipants(
-    channel: SendBird.OpenChannel
+    query: SendBird.ParticipantListQuery
   ): Observable<SendBird.User[]> {
-    const participantListQuery = channel.createParticipantListQuery();
-    return this.co(participantListQuery.next.bind(participantListQuery));
+    return this.co(query.next.bind(query));
   }
 
   private co<T>(fn: (...args: any[]) => void, ...args: any[]): Observable<T> {

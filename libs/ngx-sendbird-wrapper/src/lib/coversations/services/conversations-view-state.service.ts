@@ -221,30 +221,6 @@ export class ConversationsViewStateService {
     );
   }
 
-  private createQueryAndGetMessages(
-    channel: SendBird.OpenChannel | SendBird.GroupChannel
-  ) {
-    const previousMessagesQuery = channel.createPreviousMessageListQuery();
-    return of(previousMessagesQuery).pipe(
-      tap(query => (query.limit = 5)),
-      switchMap(query =>
-        this.sb.getPreviousMessages(query).pipe(
-          tap(() =>
-            this.internalPreviousMessageListQueries$.next({
-              ...this.internalPreviousMessageListQueries$.value,
-              [channel.url]: query
-            })
-          ),
-          tap(newMessages =>
-            this.internalMessages$.next(
-              this.reduceMessages(newMessages.reverse(), true)
-            )
-          )
-        )
-      )
-    );
-  }
-
   // TODO: listen to these
   onMessageDeleted(): Observable<string> {
     return this.sbh.deletedMessage$.pipe(
@@ -270,6 +246,30 @@ export class ConversationsViewStateService {
     return this.sbh.recievedMessage$.pipe(
       tap(message =>
         this.internalMessages$.next(this.reduceMessages([message]))
+      )
+    );
+  }
+
+  private createQueryAndGetMessages(
+    channel: SendBird.OpenChannel | SendBird.GroupChannel
+  ) {
+    const previousMessagesQuery = channel.createPreviousMessageListQuery();
+    return of(previousMessagesQuery).pipe(
+      tap(query => (query.limit = 5)),
+      switchMap(query =>
+        this.sb.getPreviousMessages(query).pipe(
+          tap(() =>
+            this.internalPreviousMessageListQueries$.next({
+              ...this.internalPreviousMessageListQueries$.value,
+              [channel.url]: query
+            })
+          ),
+          tap(newMessages =>
+            this.internalMessages$.next(
+              this.reduceMessages(newMessages.reverse(), true)
+            )
+          )
+        )
       )
     );
   }
