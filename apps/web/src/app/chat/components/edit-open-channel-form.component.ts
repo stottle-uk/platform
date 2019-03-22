@@ -7,13 +7,14 @@ import {
   Output
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EditChannel } from '@stottle-platform/ngx-sendbird-wrapper';
 import { SendBirdChannelFormComponent } from 'libs/ngx-sendbird-wrapper/src/lib/channels/templates/send-bird-channel-form.component';
 
 @Component({
   selector: 'stottle-edit-open-channel-form',
   template: `
-    <form [formGroup]="messageForm" (ngSubmit)="formSubmit()">
+    <form [formGroup]="channelForm" (ngSubmit)="formSubmit()">
       <input
         type="text"
         placeholder="Your channel name"
@@ -29,26 +30,41 @@ export class EditOpenChannelFormComponent
   @Input()
   channel: SendBird.OpenChannel;
   @Output()
-  messageSubmit = new EventEmitter<EditChannel>();
+  channelSubmit = new EventEmitter<EditChannel>();
 
-  messageForm = this.fb.group({
+  channelForm = this.fb.group({
     name: [null, Validators.required]
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngAfterContentInit(): void {
     if (this.channel) {
-      this.messageForm.patchValue({
+      this.channelForm.patchValue({
         name: this.channel.name
       });
     }
   }
 
   formSubmit(): void {
-    if (this.messageForm.valid) {
-      this.messageSubmit.emit(this.messageForm.value);
-      this.messageForm.reset();
+    if (this.channelForm.valid) {
+      this.channelSubmit.emit(this.buildChannelData());
+      this.channelForm.reset();
     }
+  }
+
+  private buildChannelData(): EditChannel {
+    return {
+      ...this.channelForm.value,
+      callback: channel => {
+        this.router.navigate(['../../', channel.url], {
+          relativeTo: this.activatedRoute
+        });
+      }
+    };
   }
 }

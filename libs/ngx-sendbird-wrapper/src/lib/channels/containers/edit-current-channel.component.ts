@@ -32,17 +32,15 @@ export class EditCurrentChannelComponent implements OnDestroy {
   }
 
   private handleSubmit(instance: SendBirdChannelFormComponent) {
-    instance.messageSubmit
+    instance.channelSubmit
       .pipe(
         takeUntil(this.destroy$),
         switchMap(channel =>
-          this.vs.updateOpenChannel(
-            channel.name,
-            channel.coverUrl,
-            null,
-            null,
-            null
-          )
+          this.vs
+            .updateOpenChannel(channel.name, channel.coverUrl, null, null, null)
+            .pipe(
+              tap(updatedChannel => channel && channel.callback(updatedChannel))
+            )
         )
       )
       .subscribe();

@@ -9,5 +9,5 @@ import { EditChannel } from '../models/channels.models';
 })
 export class SendBirdChannelFormComponent {
   channel: SendBird.OpenChannel;
-  messageSubmit = new EventEmitter<EditChannel>();
+  channelSubmit = new EventEmitter<EditChannel>();
 }
