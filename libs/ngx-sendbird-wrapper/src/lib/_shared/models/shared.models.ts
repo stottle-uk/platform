@@ -17,6 +17,10 @@ export interface SendbirdOptions {
   appId: string;
 }
 
+export interface Dictionary<T> {
+  [key: number]: T;
+}
+
 export interface GenericListOptionsItem<T, TComp> {
   item: T;
   component: Type<TComp>;

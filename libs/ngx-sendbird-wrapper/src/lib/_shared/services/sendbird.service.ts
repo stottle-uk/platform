@@ -166,7 +166,6 @@ export class SendBirdService {
     channel: SendBird.OpenChannel
   ): Observable<SendBird.User[]> {
     const participantListQuery = channel.createParticipantListQuery();
-    console.log(participantListQuery);
     return this.co(participantListQuery.next.bind(participantListQuery));
   }
 

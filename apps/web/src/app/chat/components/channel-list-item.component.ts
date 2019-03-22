@@ -4,12 +4,7 @@ import { SendbirdChannelListItemComponent } from '@stottle-platform/ngx-sendbird
 @Component({
   selector: 'stottle-channel-list-item',
   template: `
-    <div
-      class="channel-container"
-      fxLayout
-      stottleEnterChannel
-      [channel]="channel"
-    >
+    <div class="channel-container" fxLayout>
       <div class="avatar-container">
         <img class="img-avatar" [src]="coverImageUrl" [alt]="name" />
       </div>

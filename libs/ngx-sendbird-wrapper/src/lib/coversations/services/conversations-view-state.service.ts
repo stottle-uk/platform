@@ -3,13 +3,12 @@ import { BehaviorSubject, combineLatest, merge, Observable, of } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { ChannelsViewStateService } from '../../channels/services/channels-view-state.services';
-import { PreviousListQueries } from '../../_shared/models/shared.models';
+import {
+  Dictionary,
+  PreviousListQueries
+} from '../../_shared/models/shared.models';
 import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
-
-export interface Dictioanry<T> {
-  [key: number]: T;
-}
 
 export interface SelectedMessageId {
   messageId: number;
@@ -30,7 +29,7 @@ export class ConversationsViewStateService {
     PreviousListQueries<SendBird.PreviousMessageListQuery>
   >({});
   private internalMessages$ = new BehaviorSubject<
-    Dictioanry<SendBird.UserMessage | SendBird.FileMessage>
+    Dictionary<SendBird.UserMessage | SendBird.FileMessage>
   >({});
   private internalSelectedMessageId$ = new BehaviorSubject<SelectedMessageId>({
     messageId: null,
