@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConnectionViewStateService } from '@stottle-platform/ngx-sendbird-wrapper';
 
 @Component({
@@ -7,12 +8,16 @@ import { ConnectionViewStateService } from '@stottle-platform/ngx-sendbird-wrapp
     <div class="content" stottleConnection userId="first_user">
       <div fxLayout="row" *ngIf="(isConnected$ | async)">
         <div>
-          <stottle-create-open-channel></stottle-create-open-channel>
+          <stottle-create-open-channel
+            [callback]="createChannelCallback"
+          ></stottle-create-open-channel>
           <stottle-open-channel-list></stottle-open-channel-list>
 
           <hr />
 
-          <stottle-create-group-channel></stottle-create-group-channel>
+          <stottle-create-group-channel
+            [callback]="createChannelCallback"
+          ></stottle-create-group-channel>
           <stottle-group-channel-list></stottle-group-channel-list>
         </div>
 
@@ -27,5 +32,14 @@ import { ConnectionViewStateService } from '@stottle-platform/ngx-sendbird-wrapp
 export class ChatRouteComponent {
   isConnected$ = this.sb.isConnected$;
 
-  constructor(private sb: ConnectionViewStateService) {}
+  constructor(
+    private sb: ConnectionViewStateService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
+
+  createChannelCallback = (channel: SendBird.BaseChannel) =>
+    this.router.navigate(['./', channel.url], {
+      relativeTo: this.activatedRoute
+    });
 }

@@ -1,6 +1,11 @@
-import { Component, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy
+} from '@angular/core';
 import { Subject } from 'rxjs';
-import { switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ConnectionViewStateService } from '../../connection/services/connection-view-state.service';
 import { GenericOptions } from '../../_shared/models/shared.models';
 import { ChannelsViewStateService } from '../services/channels-view-state.services';
@@ -10,9 +15,13 @@ import { SendbirdCreateChannelFormComponent } from '../templates';
   selector: 'stottle-create-open-channel',
   template: `
     <ng-container stottleGeneric [options]="options"></ng-container>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateOpenChannelComponent implements OnDestroy {
+  @Input()
+  callback: (channel: SendBird.OpenChannel) => void;
+
   options: GenericOptions<SendbirdCreateChannelFormComponent> = {
     component: SendbirdCreateChannelFormComponent,
     updateInstance: this.updateInstance.bind(this)
@@ -43,7 +52,8 @@ export class CreateOpenChannelComponent implements OnDestroy {
             currentUser.userId,
             null
           )
-        )
+        ),
+        tap(channel => !!this.callback && this.callback(channel))
       )
       .subscribe();
   }

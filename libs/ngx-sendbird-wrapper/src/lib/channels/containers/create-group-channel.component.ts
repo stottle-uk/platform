@@ -1,6 +1,11 @@
-import { Component, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy
+} from '@angular/core';
 import { Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { GenericOptions } from '../../_shared/models/shared.models';
 import { ChannelsViewStateService } from '../services/channels-view-state.services';
 import { SendbirdCreateChannelFormComponent } from '../templates';
@@ -9,9 +14,13 @@ import { SendbirdCreateChannelFormComponent } from '../templates';
   selector: 'stottle-create-group-channel',
   template: `
     <ng-container stottleGeneric [options]="options"></ng-container>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateGroupChannelComponent implements OnDestroy {
+  @Input()
+  callback: (channel: SendBird.GroupChannel) => void;
+
   options: GenericOptions<SendbirdCreateChannelFormComponent> = {
     component: SendbirdCreateChannelFormComponent,
     updateInstance: this.updateInstance.bind(this)
@@ -36,7 +45,8 @@ export class CreateGroupChannelComponent implements OnDestroy {
             false, // TODO - sort this!
             channel.name
           )
-        )
+        ),
+        tap(channel => !!this.callback && this.callback(channel))
       )
       .subscribe();
   }
