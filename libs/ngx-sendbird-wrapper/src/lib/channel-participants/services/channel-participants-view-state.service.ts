@@ -67,7 +67,7 @@ export class ChannelParticipantsViewStateService {
   }
 
   getChannelParticipants(): Observable<SendBird.User[]> {
-    return merge(this.currentChannel$, this.sbh.channelChanged$).pipe(
+    return merge(this.currentChannel$, this.sbh.changedChannel$).pipe(
       switchMap(channel =>
         this.currentChannelParticipants$.pipe(
           take(1),

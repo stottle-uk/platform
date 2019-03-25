@@ -13,6 +13,7 @@ export class SendbirdEventHandlersService {
   private internalChannelChanged$ = new Subject<
     SendBird.OpenChannel | SendBird.GroupChannel
   >();
+  private internalChannelDeleted$ = new Subject<string>();
   private internalReceivedInvitation$ = new Subject<SendBird.GroupChannel>();
   private channelHandler = new this.sb.ChannelHandler();
 
@@ -26,10 +27,14 @@ export class SendbirdEventHandlersService {
     return this.internalReceivedMessage$.asObservable();
   }
 
-  get channelChanged$(): Observable<
+  get changedChannel$(): Observable<
     SendBird.OpenChannel | SendBird.GroupChannel
   > {
     return this.internalChannelChanged$.asObservable();
+  }
+
+  get deletedChannel$(): Observable<string> {
+    return this.internalChannelDeleted$.asObservable();
   }
 
   get userReceivedInvitation$(): Observable<SendBird.GroupChannel> {
@@ -40,9 +45,11 @@ export class SendbirdEventHandlersService {
 
   setupHandlers() {
     this.channelHandler.onChannelChanged = this.onChannelChanged.bind(this);
+    this.channelHandler.onChannelDeleted = this.onChannelDeleted.bind(this);
+
     this.channelHandler.onMessageReceived = this.onMessageReceived.bind(this);
     this.channelHandler.onMessageUpdated = this.onMessageReceived.bind(this);
-    this.channelHandler.onMessageDeleted = this.onMessageDelete.bind(this);
+    this.channelHandler.onMessageDeleted = this.onMessageDeleted.bind(this);
     this.channelHandler.onUserEntered = this.onChannelChanged.bind(this);
     this.channelHandler.onUserExited = this.onChannelChanged.bind(this);
     this.channelHandler.onUserReceivedInvitation = this.onUserReceivedInvitation.bind(
@@ -63,7 +70,7 @@ export class SendbirdEventHandlersService {
     this.internalReceivedMessage$.next(message);
   }
 
-  private onMessageDelete(
+  private onMessageDeleted(
     channel: SendBird.OpenChannel | SendBird.GroupChannel,
     messageId: string // TODO, this should be a number
   ): void {
@@ -74,6 +81,12 @@ export class SendbirdEventHandlersService {
     channel: SendBird.OpenChannel | SendBird.GroupChannel
   ): void {
     this.internalChannelChanged$.next(channel);
+  }
+
+  private onChannelDeleted(channelUrl: string, channelType: string): void {
+    console.log(arguments);
+
+    this.internalChannelDeleted$.next(channelUrl);
   }
 
   private onUserReceivedInvitation(

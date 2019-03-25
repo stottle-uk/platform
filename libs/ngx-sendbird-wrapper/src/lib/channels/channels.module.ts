@@ -6,6 +6,7 @@ import { CreateOpenChannelComponent } from './containers/create-open-channel.com
 import { EditCurrentChannelComponent } from './containers/edit-current-channel.component';
 import { GroupChannelListComponent } from './containers/group-channel-list.component';
 import { OpenChannelListComponent } from './containers/open-channel-list.component';
+import { DeleteOpenChannelDirective } from './directives/delete-open-channel.directive';
 import { SendBirdChannelFormComponent } from './templates/send-bird-channel-form.component';
 import { SendbirdChannelListItemComponent } from './templates/send-bird-channel-list-item.component';
 import { SendbirdCreateChannelFormComponent } from './templates/send-bird-create-channel-form.component';
@@ -17,6 +18,7 @@ const entryComponents = [
 ];
 
 const declarations = [
+  DeleteOpenChannelDirective,
   OpenChannelListComponent,
   GroupChannelListComponent,
   CreateOpenChannelComponent,
@@ -28,6 +30,6 @@ const declarations = [
   imports: [SharedModule],
   declarations: [declarations, entryComponents, ChannelListInnerComponent],
   entryComponents: [entryComponents],
-  exports: [declarations, SharedModule] // TODo: remeove shared module export
+  exports: [declarations, SharedModule] // TODO: remeove shared module export
 })
 export class ChannelsModule {}

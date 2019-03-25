@@ -57,6 +57,12 @@ export class SendBirdService {
     return this.co(channel.exit.bind(channel));
   }
 
+  deleteOpenChannel(
+    channel: SendBird.OpenChannel
+  ): Observable<SendBird.OpenChannel> {
+    return this.co(channel.delete.bind(channel));
+  }
+
   getPreviousMessages(
     query: SendBird.PreviousMessageListQuery
   ): Observable<Array<SendBird.UserMessage | SendBird.FileMessage>> {

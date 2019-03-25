@@ -49,8 +49,8 @@ export class ChannelsViewStateService {
     notifier.registerNotifier('channels');
   }
 
-  setupHandlers(): Observable<SendBird.BaseChannel> {
-    return merge(this.onChannelChanged());
+  setupHandlers(): Observable<SendBird.BaseChannel | string> {
+    return merge(this.onChannelChanged(), this.onChannelDeleted());
   }
 
   getOpenChannel(channelUrl: string): Observable<SendBird.OpenChannel> {
@@ -163,12 +163,32 @@ export class ChannelsViewStateService {
     );
   }
 
+  deleteOpenChannel(): Observable<SendBird.OpenChannel> {
+    return this.currentChannel$.pipe(
+      take(1),
+      filter(channel => channel.isOpenChannel()),
+      map(channel => channel as SendBird.OpenChannel),
+      switchMap(channel => this.sb.deleteOpenChannel(channel))
+    );
+  }
+
   onChannelChanged(): Observable<SendBird.OpenChannel | SendBird.GroupChannel> {
-    return this.sbh.channelChanged$.pipe(
+    return this.sbh.changedChannel$.pipe(
       tap(channel =>
         channel.isOpenChannel()
           ? this.updateChannels(channel, this.internalOpenChannels$)
           : this.updateChannels(channel, this.internalGroupChannels$)
+      ),
+      tap(() => this.notifier.markAllForNotify())
+    );
+  }
+
+  onChannelDeleted(): Observable<string> {
+    return this.sbh.deletedChannel$.pipe(
+      tap(channelUrl =>
+        this.internalOpenChannels$.next(
+          this.internalOpenChannels$.value.filter(c => c.url !== channelUrl)
+        )
       ),
       tap(() => this.notifier.markAllForNotify())
     );
@@ -180,12 +200,12 @@ export class ChannelsViewStateService {
   ): void {
     return channels$.next(
       channels$.value.map(channel =>
-        this.updateChannel(channel, updatedChannel)
+        this.updateChannelWhenUrlMatches(channel, updatedChannel)
       )
     );
   }
 
-  private updateChannel<T extends SendBird.BaseChannel>(
+  private updateChannelWhenUrlMatches<T extends SendBird.BaseChannel>(
     channel: T,
     updatedChannel: T
   ): T {
