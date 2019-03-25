@@ -20,7 +20,6 @@ import {
   GenericOptions
 } from '../../_shared/models/shared.models';
 import { UpdateMessageComponent } from '../containers/update-message.component';
-import { SelectedMessageId } from '../services/conversations-view-state.service';
 import {
   SendbirdFetchMoreMessagesBtnComponent,
   SendbirdMessagesListItemComponent
@@ -51,15 +50,13 @@ export class MessagesListInnerComponent implements OnDestroy {
   @Input()
   messages: Array<SendBird.UserMessage | SendBird.FileMessage>;
   @Input()
-  selectedMessageId: SelectedMessageId;
+  selectedMessageId: number;
   @Input()
   scrollToBottomEnabled: boolean;
   @Input()
   scrollPositionMaintainEnabled: boolean;
   @Output()
   scrolledUp = new EventEmitter();
-  @Output()
-  changesNotified = new EventEmitter();
 
   @ViewChild('messagesContainer')
   messagesContainer: ElementRef<Element>;
@@ -73,7 +70,7 @@ export class MessagesListInnerComponent implements OnDestroy {
       this.messages.map(item => ({
         item,
         component:
-          item.messageId === this.selectedMessageId.messageId
+          item.messageId === this.selectedMessageId
             ? UpdateMessageComponent
             : SendbirdMessagesListItemComponent
       }))
@@ -128,8 +125,7 @@ export class MessagesListInnerComponent implements OnDestroy {
           this.lastScrollHeight$.next(
             this.messagesContainer.nativeElement.scrollHeight
           )
-        ),
-        tap(() => this.changesNotified.emit())
+        )
       )
       .subscribe();
   }

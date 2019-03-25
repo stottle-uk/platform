@@ -12,7 +12,6 @@ import { ConversationsViewStateService } from '../services/conversations-view-st
       [scrollToBottomEnabled]="scrollToBottomEnabled$ | async"
       [scrollPositionMaintainEnabled]="scrollPositionMaintainEnabled$ | async"
       (scrolledUp)="onScrolledUp()"
-      (changesNotified)="onChangesNotified()"
     ></stottle-messages-list-inner>
   `
 })
@@ -46,10 +45,6 @@ export class MessagesListComponent implements OnInit, OnDestroy {
       .getMoreMessagesForCurrentChannel()
       .pipe(takeUntil(this.destroy$))
       .subscribe();
-  }
-
-  onChangesNotified(): void {
-    this.vs.disableNotifyOnChanges();
   }
 
   private isOfType(types: string[]): OperatorFunction<string, boolean> {
