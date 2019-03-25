@@ -190,7 +190,8 @@ export class ChannelsViewStateService {
           this.internalOpenChannels$.value.filter(c => c.url !== channelUrl)
         )
       ),
-      tap(() => this.notifier.markAllForNotify())
+      tap(() => this.notifier.markAllForNotify()),
+      tap(() => this.internalCurrentChannel$.next(null))
     );
   }
 
