@@ -7,6 +7,7 @@ import { EditCurrentChannelComponent } from './containers/edit-current-channel.c
 import { GroupChannelListComponent } from './containers/group-channel-list.component';
 import { OpenChannelListComponent } from './containers/open-channel-list.component';
 import { DeleteOpenChannelDirective } from './directives/delete-open-channel.directive';
+import { GetAndEnterChannelDirective } from './directives/get-and-enter-channel.directive';
 import { SendBirdChannelFormComponent } from './templates/send-bird-channel-form.component';
 import { SendbirdChannelListItemComponent } from './templates/send-bird-channel-list-item.component';
 import { SendbirdCreateChannelFormComponent } from './templates/send-bird-create-channel-form.component';
@@ -18,6 +19,7 @@ const entryComponents = [
 ];
 
 const declarations = [
+  GetAndEnterChannelDirective,
   DeleteOpenChannelDirective,
   OpenChannelListComponent,
   GroupChannelListComponent,
