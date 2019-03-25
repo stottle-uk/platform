@@ -20,7 +20,6 @@ export class ChannelsViewStateService {
   private internalCurrentChannel$ = new BehaviorSubject<
     SendBird.OpenChannel | SendBird.GroupChannel
   >(null);
-  private internalNotifyOnChanges$ = new BehaviorSubject<boolean>(false);
 
   get lastCallType$(): Observable<string> {
     return this.internalLastCallType$.asObservable();
@@ -42,10 +41,6 @@ export class ChannelsViewStateService {
       .pipe(filter(channel => !!channel));
   }
 
-  get notifyOnChanges$(): Observable<boolean> {
-    return this.internalNotifyOnChanges$.asObservable();
-  }
-
   constructor(
     private sb: SendBirdService,
     private sbh: SendbirdEventHandlersService,
@@ -56,10 +51,6 @@ export class ChannelsViewStateService {
 
   setupHandlers(): Observable<SendBird.BaseChannel> {
     return merge(this.onChannelChanged());
-  }
-
-  disableNotifyOnChanges(): void {
-    this.internalNotifyOnChanges$.next(false);
   }
 
   getOpenChannel(channelUrl: string): Observable<SendBird.OpenChannel> {

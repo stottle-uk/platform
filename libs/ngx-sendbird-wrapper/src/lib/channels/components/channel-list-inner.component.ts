@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import * as SendBird from 'sendbird';
 import {
   GenericListOptions,
@@ -16,10 +10,7 @@ import { SendbirdChannelListItemComponent } from '../templates';
   selector: 'stottle-channel-list-inner',
   template: `
     <div class="channels-container">
-      <stottle-generic-list
-        [options]="options"
-        (changes)="changesNotified.emit()"
-      ></stottle-generic-list>
+      <stottle-generic-list [options]="options"></stottle-generic-list>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -27,8 +18,6 @@ import { SendbirdChannelListItemComponent } from '../templates';
 export class ChannelListInnerComponent {
   @Input()
   channels: SendBird.OpenChannel[];
-  @Output()
-  changesNotified = new EventEmitter();
 
   get items(): GenericListOptionsItem<
     SendBird.OpenChannel,

@@ -52,10 +52,6 @@ export class ConversationsViewStateService {
     return this.channels.currentChannel$;
   }
 
-  get channelNotifyOnChanges$(): Observable<boolean> {
-    return this.channels.notifyOnChanges$;
-  }
-
   get messages$(): Observable<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {

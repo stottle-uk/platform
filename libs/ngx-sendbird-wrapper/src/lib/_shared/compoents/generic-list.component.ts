@@ -55,7 +55,7 @@ export class GenericListComponent<T, TComp>
     this.list.changes
       .pipe(
         takeUntil(this.destroy$),
-        delay(0), // TODO Check this
+        delay(0),
         tap(() => this.componentRefs.forEach(ref => ref.ngOnDestroy())),
         map(changes => this.updateList(changes)),
         tap(refs => this.changes.emit(refs)),
