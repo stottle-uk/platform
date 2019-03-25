@@ -7,6 +7,7 @@ import {
   Dictionary,
   PreviousListQueries
 } from '../../_shared/models/shared.models';
+import { NotifyOnChangesService } from '../../_shared/services/notify-on-changes.service';
 import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
@@ -59,8 +60,11 @@ export class ChannelParticipantsViewStateService {
   constructor(
     private sb: SendBirdService,
     private sbh: SendbirdEventHandlersService,
-    private channels: ChannelsViewStateService
-  ) {}
+    private channels: ChannelsViewStateService,
+    private notifier: NotifyOnChangesService
+  ) {
+    notifier.registerNotifier('channelParticipants');
+  }
 
   getChannelParticipants(): Observable<SendBird.User[]> {
     return merge(this.currentChannel$, this.sbh.channelChanged$).pipe(

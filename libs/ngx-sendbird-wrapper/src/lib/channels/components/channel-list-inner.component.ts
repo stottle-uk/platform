@@ -27,8 +27,6 @@ import { SendbirdChannelListItemComponent } from '../templates';
 export class ChannelListInnerComponent {
   @Input()
   channels: SendBird.OpenChannel[];
-  @Input()
-  notifyOnChanges: boolean;
   @Output()
   changesNotified = new EventEmitter();
 
@@ -50,7 +48,7 @@ export class ChannelListInnerComponent {
     SendbirdChannelListItemComponent
   > {
     return {
-      notifyOnChanges: this.notifyOnChanges,
+      key: 'channels',
       items: this.items,
       trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)

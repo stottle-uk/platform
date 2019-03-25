@@ -8,14 +8,11 @@ import { ChannelsViewStateService } from '../services/channels-view-state.servic
   template: `
     <stottle-channel-list-inner
       [channels]="openChannels$ | async"
-      [notifyOnChanges]="notifyOnChanges$ | async"
-      (changesNotified)="onChangesNotified()"
     ></stottle-channel-list-inner>
   `
 })
 export class OpenChannelListComponent implements OnInit, OnDestroy {
   openChannels$ = this.vs.openChannels$;
-  notifyOnChanges$ = this.vs.notifyOnChanges$;
 
   private destroy$ = new Subject();
 
@@ -31,9 +28,5 @@ export class OpenChannelListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  onChangesNotified(): void {
-    this.vs.disableNotifyOnChanges();
   }
 }

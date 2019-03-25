@@ -36,6 +36,7 @@ export class UsersListInnerComponent {
     SendbirdUsersListItemComponent
   > {
     return {
+      key: 'users',
       items: this.items,
       trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)

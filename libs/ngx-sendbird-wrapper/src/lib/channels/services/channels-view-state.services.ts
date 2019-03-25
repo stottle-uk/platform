@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
+import { NotifyOnChangesService } from '../../_shared/services/notify-on-changes.service';
 import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
@@ -47,8 +48,11 @@ export class ChannelsViewStateService {
 
   constructor(
     private sb: SendBirdService,
-    private sbh: SendbirdEventHandlersService
-  ) {}
+    private sbh: SendbirdEventHandlersService,
+    private notifier: NotifyOnChangesService
+  ) {
+    notifier.registerNotifier('channels');
+  }
 
   setupHandlers(): Observable<SendBird.BaseChannel> {
     return merge(this.onChannelChanged());
@@ -175,7 +179,7 @@ export class ChannelsViewStateService {
           ? this.updateChannels(channel, this.internalOpenChannels$)
           : this.updateChannels(channel, this.internalGroupChannels$)
       ),
-      tap(() => this.internalNotifyOnChanges$.next(true))
+      tap(() => this.notifier.markAllForNotify())
     );
   }
 

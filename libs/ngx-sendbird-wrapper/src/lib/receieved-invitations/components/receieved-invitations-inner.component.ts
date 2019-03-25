@@ -36,6 +36,7 @@ export class ReceievedInvitationsInnerComponent {
     SendBirdReceievedInvitationsItemComponent
   > {
     return {
+      key: 'receievedInvitations',
       items: this.items,
       trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)

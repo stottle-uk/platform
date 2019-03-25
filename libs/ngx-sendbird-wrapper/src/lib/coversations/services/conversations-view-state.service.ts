@@ -7,6 +7,7 @@ import {
   Dictionary,
   PreviousListQueries
 } from '../../_shared/models/shared.models';
+import { NotifyOnChangesService } from '../../_shared/services/notify-on-changes.service';
 import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
@@ -54,6 +55,10 @@ export class ConversationsViewStateService {
     return this.channels.currentChannel$;
   }
 
+  get channelNotifyOnChanges$(): Observable<boolean> {
+    return this.channels.notifyOnChanges$;
+  }
+
   get messages$(): Observable<
     Array<SendBird.UserMessage | SendBird.FileMessage>
   > {
@@ -63,7 +68,17 @@ export class ConversationsViewStateService {
   }
 
   get selectedMessageId$(): Observable<SelectedMessageId> {
-    return this.internalSelectedMessageId$.asObservable();
+    return combineLatest(
+      this.internalSelectedMessageId$.asObservable(),
+      this.channelNotifyOnChanges$
+    ).pipe(
+      map(([selectedMessageId, channelNotifyOnChanges]) => ({
+        ...selectedMessageId,
+        notifyOnchanges: channelNotifyOnChanges
+          ? channelNotifyOnChanges
+          : selectedMessageId.notifyOnchanges
+      }))
+    );
   }
 
   get currentChannelPreviousMessageListQuery$(): Observable<
@@ -98,8 +113,11 @@ export class ConversationsViewStateService {
   constructor(
     private sb: SendBirdService,
     private sbh: SendbirdEventHandlersService,
-    private channels: ChannelsViewStateService
-  ) {}
+    private channels: ChannelsViewStateService,
+    private notifier: NotifyOnChangesService
+  ) {
+    notifier.registerNotifier('messages');
+  }
 
   setupHandlers(): Observable<MessageHandler> {
     return merge(this.onMessageDeleted(), this.onMessageReceived());
@@ -110,13 +128,15 @@ export class ConversationsViewStateService {
       messageId: messageId,
       notifyOnchanges: true
     });
+
+    this.notifier.markAllForNotify();
   }
 
   disableNotifyOnChanges(): void {
-    this.internalSelectedMessageId$.next({
-      ...this.internalSelectedMessageId$.value,
-      notifyOnchanges: false
-    });
+    // this.internalSelectedMessageId$.next({
+    //   ...this.internalSelectedMessageId$.value,
+    //   notifyOnchanges: false
+    // });
   }
 
   getMessagesForCurrentChannel(): Observable<
@@ -205,7 +225,8 @@ export class ConversationsViewStateService {
               messageId: null,
               notifyOnchanges: true
             })
-          )
+          ),
+          tap(() => this.notifier.markAllForNotify())
         )
       )
     );

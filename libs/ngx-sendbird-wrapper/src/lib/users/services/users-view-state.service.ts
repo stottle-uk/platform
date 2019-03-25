@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
+import { NotifyOnChangesService } from '../../_shared/services/notify-on-changes.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
 @Injectable({
@@ -26,7 +27,12 @@ export class UsersViewStateService {
       .pipe(filter(queries => !!queries));
   }
 
-  constructor(private sb: SendBirdService) {}
+  constructor(
+    private sb: SendBirdService,
+    private notifier: NotifyOnChangesService
+  ) {
+    notifier.registerNotifier('users');
+  }
 
   getUsers(): Observable<SendBird.User[]> {
     const query = this.sb.instance.createApplicationUserListQuery();

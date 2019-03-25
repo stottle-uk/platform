@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { NotifyOnChangesService } from '../../_shared/services/notify-on-changes.service';
 import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
@@ -18,8 +19,11 @@ export class ReceievedInvitationsViewStateService {
 
   constructor(
     private sb: SendBirdService,
-    private sbh: SendbirdEventHandlersService
-  ) {}
+    private sbh: SendbirdEventHandlersService,
+    private notifier: NotifyOnChangesService
+  ) {
+    notifier.registerNotifier('receievedInvitations');
+  }
 
   setupHandlers(): Observable<SendBird.GroupChannel> {
     return merge(this.onUserReceivedInvitation());

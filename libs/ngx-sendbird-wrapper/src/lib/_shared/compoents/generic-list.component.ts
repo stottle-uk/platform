@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
@@ -12,9 +11,10 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { delay, map, takeUntil, tap } from 'rxjs/operators';
+import { delay, filter, map, takeUntil, tap } from 'rxjs/operators';
 import { GenericDirective } from '../directives/generic.directive';
 import { GenericListOptions } from '../models/shared.models';
+import { NotifyOnChangesService } from '../services/notify-on-changes.service';
 
 @Component({
   selector: 'stottle-generic-list',
@@ -26,7 +26,7 @@ import { GenericListOptions } from '../models/shared.models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GenericListComponent<T, TComp>
-  implements AfterViewInit, AfterViewChecked, OnDestroy {
+  implements AfterViewInit, OnDestroy {
   @Input()
   options: GenericListOptions<T, TComp>;
   @Output()
@@ -49,23 +49,28 @@ export class GenericListComponent<T, TComp>
     return this.listItems.toArray();
   }
 
+  constructor(private notifier: NotifyOnChangesService) {}
+
   ngAfterViewInit(): void {
     this.list.changes
       .pipe(
         takeUntil(this.destroy$),
-        delay(0),
+        delay(0), // TODO Check this
         tap(() => this.componentRefs.forEach(ref => ref.ngOnDestroy())),
         map(changes => this.updateList(changes)),
         tap(refs => this.changes.emit(refs)),
         tap(refs => (this.componentRefs = refs))
       )
       .subscribe();
-  }
 
-  ngAfterViewChecked(): void {
-    if (this.options.notifyOnChanges) {
-      this.list.notifyOnChanges();
-    }
+    this.notifier.notfifyOnChanges$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(notifer => notifer[this.options.key]),
+        tap(() => this.list.notifyOnChanges()),
+        tap(() => this.notifier.disbableNotifier(this.options.key))
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

@@ -85,8 +85,7 @@ export class MessagesListInnerComponent implements OnDestroy {
     SendbirdMessagesListItemComponent | UpdateMessageComponent
   > {
     return {
-      notifyOnChanges:
-        this.selectedMessageId && this.selectedMessageId.notifyOnchanges,
+      key: 'messages',
       items: this.items,
       trackByKey: this.trackByKey,
       updateInstance: this.updateInstance.bind(this)
