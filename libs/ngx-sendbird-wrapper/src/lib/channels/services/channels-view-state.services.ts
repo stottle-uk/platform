@@ -115,9 +115,9 @@ export class ChannelsViewStateService {
     return !!this.internalCurrentChannel$.value &&
       this.internalCurrentChannel$.value.url === channel.url
       ? of(channel)
-      : this.sb.enterChannel(channel).pipe(
+      : this.exitCurrentChannel().pipe(
           switchMap(() =>
-            this.exitCurrentChannel().pipe(
+            this.sb.enterChannel(channel).pipe(
               tap(() => this.internalCurrentChannel$.next(channel)),
               map(() => channel)
             )

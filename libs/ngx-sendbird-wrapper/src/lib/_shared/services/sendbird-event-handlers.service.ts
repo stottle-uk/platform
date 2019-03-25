@@ -46,7 +46,6 @@ export class SendbirdEventHandlersService {
   setupHandlers() {
     this.channelHandler.onChannelChanged = this.onChannelChanged.bind(this);
     this.channelHandler.onChannelDeleted = this.onChannelDeleted.bind(this);
-
     this.channelHandler.onMessageReceived = this.onMessageReceived.bind(this);
     this.channelHandler.onMessageUpdated = this.onMessageReceived.bind(this);
     this.channelHandler.onMessageDeleted = this.onMessageDeleted.bind(this);
@@ -84,8 +83,6 @@ export class SendbirdEventHandlersService {
   }
 
   private onChannelDeleted(channelUrl: string, channelType: string): void {
-    console.log(arguments);
-
     this.internalChannelDeleted$.next(channelUrl);
   }
 

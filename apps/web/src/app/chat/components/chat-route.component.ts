@@ -7,6 +7,8 @@ import { ConnectionViewStateService } from '@stottle-platform/ngx-sendbird-wrapp
   template: `
     <div *ngIf="!userId">
       <input #userIdInput type="text" />
+      <button (click)="enter('a_user')">a_user</button>
+      <button (click)="enter('first_user')">first_user</button>
       <button (click)="enter(userIdInput.value)">Enter</button>
     </div>
 
@@ -46,7 +48,9 @@ export class ChatRouteComponent {
   ) {}
 
   enter(userId: string): void {
-    this.userId = !!userId ? userId : 'first_user';
+    if (!!userId) {
+      this.userId = userId;
+    }
   }
 
   createChannelCallback = (channel: SendBird.BaseChannel) =>

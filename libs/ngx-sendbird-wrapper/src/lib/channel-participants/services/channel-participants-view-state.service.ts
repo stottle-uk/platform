@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, merge, Observable, of } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 import * as SendBird from 'sendbird';
 import { ChannelsViewStateService } from '../../channels/services/channels-view-state.services';
 import {
@@ -68,12 +68,9 @@ export class ChannelParticipantsViewStateService {
 
   getChannelParticipants(): Observable<SendBird.User[]> {
     return merge(this.currentChannel$, this.sbh.changedChannel$).pipe(
+      tap(data => console.log(data)),
       switchMap(channel =>
-        this.currentChannelParticipants$.pipe(
-          take(1),
-          switchMap(participants =>
-            this.getParticipants(channel, participants)
-          ),
+        this.getParticipants(channel).pipe(
           map(participants =>
             this.reduceParticipants(channel.url, participants)
           ),
@@ -85,12 +82,9 @@ export class ChannelParticipantsViewStateService {
   }
 
   private getParticipants(
-    channel: SendBird.OpenChannel | SendBird.GroupChannel,
-    participants: SendBird.User[]
+    channel: SendBird.OpenChannel | SendBird.GroupChannel
   ): Observable<any[]> {
-    return !!participants && participants.length > 0
-      ? of([])
-      : channel.isOpenChannel()
+    return channel.isOpenChannel()
       ? this.createQueryAndGetParticpants(channel as SendBird.OpenChannel)
       : of((channel as SendBird.GroupChannel).members);
   }
@@ -121,26 +115,9 @@ export class ChannelParticipantsViewStateService {
     return participants.reduce(
       (users, user) => ({
         ...users,
-        [channelUrl]: !!users[channelUrl]
-          ? this.appendAndRemoveDups(users[channelUrl], user)
-          : [user]
+        [channelUrl]: participants
       }),
       this.internalParticipants$.value
-    );
-  }
-
-  private appendAndRemoveDups(
-    users: SendBird.User[],
-    user: SendBird.User
-  ): SendBird.User[] {
-    return Object.values(
-      [...users, user].reduce(
-        (prevUsers, currUser) => ({
-          ...prevUsers,
-          [currUser.userId]: currUser
-        }),
-        {}
-      )
     );
   }
 }
