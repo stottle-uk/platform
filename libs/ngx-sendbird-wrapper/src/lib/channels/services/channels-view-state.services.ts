@@ -175,9 +175,12 @@ export class ChannelsViewStateService {
   onChannelChanged(): Observable<SendBird.OpenChannel | SendBird.GroupChannel> {
     return this.sbh.changedChannel$.pipe(
       tap(channel =>
-        channel.isOpenChannel()
-          ? this.updateChannels(channel, this.internalOpenChannels$)
-          : this.updateChannels(channel, this.internalGroupChannels$)
+        this.updateChannels(
+          channel,
+          channel.isOpenChannel()
+            ? this.internalOpenChannels$
+            : this.internalGroupChannels$
+        )
       ),
       tap(() => this.notifier.markAllForNotify())
     );
