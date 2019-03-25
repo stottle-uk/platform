@@ -4,17 +4,18 @@ import {
   HostListener,
   Input,
   OnDestroy,
+  OnInit,
   Renderer2
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ConnectionViewStateService } from '../../connection/services/connection-view-state.service';
 import { ConversationsViewStateService } from '../services/conversations-view-state.service';
 
 @Directive({
   selector: '[stottleDeleteMessage]'
 })
-export class DeleteMessageDirective implements OnDestroy {
+export class DeleteMessageDirective implements OnInit, OnDestroy {
   @Input()
   message: SendBird.UserMessage | SendBird.FileMessage;
 
@@ -31,8 +32,14 @@ export class DeleteMessageDirective implements OnDestroy {
     this.connection.currentUser$
       .pipe(
         takeUntil(this.destroy$),
-        map(user => user.userId === this.message.sender.userId),
-        tap(isOwnMessage => !isOwnMessage && this.hideElement())
+        withLatestFrom(this.vs.currentChannel$),
+        filter(([user, channel]) => channel.isOpenChannel()),
+        map(
+          ([user, channel]) =>
+            (<SendBird.OpenChannel>channel).isOperator(user) ||
+            user.userId === this.message.sender.userId
+        ),
+        tap(isChannelOperator => !isChannelOperator && this.hideElement())
       )
       .subscribe();
   }
