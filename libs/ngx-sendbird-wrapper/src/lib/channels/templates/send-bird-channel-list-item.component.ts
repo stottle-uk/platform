@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   `
 })
 export class SendbirdChannelListItemComponent {
-  channel: SendBird.OpenChannel;
+  channel: SendBird.BaseChannel;
 }

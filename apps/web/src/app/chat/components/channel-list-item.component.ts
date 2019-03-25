@@ -20,7 +20,7 @@ import { SendbirdChannelListItemComponent } from '@stottle-platform/ngx-sendbird
 export class ChannelListItemComponent
   implements SendbirdChannelListItemComponent {
   @Input()
-  channel: SendBird.OpenChannel;
+  channel: SendBird.BaseChannel;
 
   get name(): string {
     return this.channel && this.channel.name;
