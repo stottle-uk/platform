@@ -5,38 +5,49 @@ import { ConnectionViewStateService } from '@stottle-platform/ngx-sendbird-wrapp
 @Component({
   selector: 'stottle-chat-route',
   template: `
-    <div class="content" stottleConnection userId="first_user">
-      <div fxLayout="row" *ngIf="(isConnected$ | async)">
-        <div>
-          <stottle-create-open-channel
-            [callback]="createChannelCallback"
-          ></stottle-create-open-channel>
-          <stottle-open-channel-list></stottle-open-channel-list>
+    <div *ngIf="!userId">
+      <input #userIdInput type="text" />
+      <button (click)="enter(userIdInput.value)">Enter</button>
+    </div>
 
-          <hr />
+    <ng-container *ngIf="!!userId">
+      <div class="content" stottleConnection [userId]="userId">
+        <div fxLayout="row" *ngIf="(isConnected$ | async)">
+          <div>
+            <stottle-create-open-channel
+              [callback]="createChannelCallback"
+            ></stottle-create-open-channel>
+            <stottle-open-channel-list></stottle-open-channel-list>
 
-          <stottle-create-group-channel
-            [callback]="createChannelCallback"
-          ></stottle-create-group-channel>
-          <stottle-group-channel-list></stottle-group-channel-list>
-        </div>
+            <hr />
 
-        <div fxFlex="grow">
-          <router-outlet></router-outlet>
+            <stottle-create-group-channel
+              [callback]="createChannelCallback"
+            ></stottle-create-group-channel>
+            <stottle-group-channel-list></stottle-group-channel-list>
+          </div>
+
+          <div fxFlex="grow">
+            <router-outlet></router-outlet>
+          </div>
         </div>
       </div>
-    </div>
-  `,
-  styles: []
+    </ng-container>
+  `
 })
 export class ChatRouteComponent {
   isConnected$ = this.sb.isConnected$;
+  userId: string;
 
   constructor(
     private sb: ConnectionViewStateService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
+
+  enter(userId: string): void {
+    this.userId = !!userId ? userId : 'first_user';
+  }
 
   createChannelCallback = (channel: SendBird.BaseChannel) =>
     this.router.navigate(['./', channel.url], {
