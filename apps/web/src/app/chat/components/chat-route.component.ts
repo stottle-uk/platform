@@ -20,13 +20,6 @@ import { ConnectionViewStateService } from '@stottle-platform/ngx-sendbird-wrapp
               [callback]="createChannelCallback"
             ></stottle-create-open-channel>
             <stottle-open-channel-list></stottle-open-channel-list>
-
-            <hr />
-
-            <stottle-create-group-channel
-              [callback]="createChannelCallback"
-            ></stottle-create-group-channel>
-            <stottle-group-channel-list></stottle-group-channel-list>
           </div>
 
           <div fxFlex="grow">
@@ -39,7 +32,7 @@ import { ConnectionViewStateService } from '@stottle-platform/ngx-sendbird-wrapp
 })
 export class ChatRouteComponent {
   isConnected$ = this.sb.isConnected$;
-  userId: string;
+  userId: string = 'first_user';
 
   constructor(
     private sb: ConnectionViewStateService,
@@ -58,3 +51,10 @@ export class ChatRouteComponent {
       relativeTo: this.activatedRoute
     });
 }
+
+// <hr />
+
+// <stottle-create-group-channel
+//   [callback]="createChannelCallback"
+// ></stottle-create-group-channel>
+// <stottle-group-channel-list></stottle-group-channel-list>
