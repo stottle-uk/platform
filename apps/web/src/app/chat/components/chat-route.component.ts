@@ -32,7 +32,7 @@ import { ConnectionViewStateService } from '@stottle-platform/ngx-sendbird-wrapp
 })
 export class ChatRouteComponent {
   isConnected$ = this.sb.isConnected$;
-  userId: string;
+  userId: string = 'first_user';
 
   constructor(
     private sb: ConnectionViewStateService,

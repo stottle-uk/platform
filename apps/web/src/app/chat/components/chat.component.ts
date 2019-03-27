@@ -9,10 +9,16 @@ import { filter, map } from 'rxjs/operators';
       fxLayout="row"
       stottleGetAndEnterChannel
       [channelUrl]="channelUrl$ | async"
-      (userCanEdit)="canEdit = $event"
     >
       <div fxFlex="grow">
-        <a *ngIf="canEdit" routerLink="edit">Edit Channel</a>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <span>Channel Title</span>
+          <a *stottleIfCanEditChannel routerLink="edit" mat-icon-button>
+            <mat-icon aria-label="Edit Channel">
+              edit
+            </mat-icon>
+          </a>
+        </div>
         <stottle-messages-list></stottle-messages-list>
         <stottle-send-message></stottle-send-message>
         <stottle-send-file-message></stottle-send-file-message>
@@ -31,7 +37,6 @@ export class ChatComponent {
     filter(params => params.has('channelUrl')),
     map(params => params.get('channelUrl'))
   );
-  canEdit = false;
 
   constructor(private activatedRoute: ActivatedRoute) {}
 }

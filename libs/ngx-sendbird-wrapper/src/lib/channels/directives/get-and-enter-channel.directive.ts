@@ -1,13 +1,6 @@
-import {
-  Directive,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output
-} from '@angular/core';
+import { Directive, Input, OnChanges } from '@angular/core';
 import { of } from 'rxjs';
-import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { ConnectionViewStateService } from '../../connection/services/connection-view-state.service';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { ChannelsViewStateService } from '../services/channels-view-state.services';
 
 @Directive({
@@ -16,13 +9,8 @@ import { ChannelsViewStateService } from '../services/channels-view-state.servic
 export class GetAndEnterChannelDirective implements OnChanges {
   @Input()
   channelUrl: string;
-  @Output()
-  userCanEdit = new EventEmitter<boolean>();
 
-  constructor(
-    private vs: ChannelsViewStateService,
-    private cvs: ConnectionViewStateService
-  ) {}
+  constructor(private vs: ChannelsViewStateService) {}
 
   ngOnChanges(): void {
     of(this.channelUrl)
@@ -42,19 +30,14 @@ export class GetAndEnterChannelDirective implements OnChanges {
   }
 
   private getAndEnterGroupChannel(channelUrl: string) {
-    return this.vs.getGroupChannel(channelUrl).pipe(
-      switchMap(channel => this.vs.enterGroupChannel(channel)),
-      map(channel => channel.myRole === 'operator'),
-      tap(isOperator => this.userCanEdit.emit(isOperator))
-    );
+    return this.vs
+      .getGroupChannel(channelUrl)
+      .pipe(switchMap(channel => this.vs.enterGroupChannel(channel)));
   }
 
   private getAndEnterOpenChannel(channelUrl: string) {
-    return this.vs.getOpenChannel(channelUrl).pipe(
-      switchMap(channel => this.vs.enterOpenChannel(channel)),
-      withLatestFrom(this.cvs.currentUser$),
-      map(([channel, user]) => channel.isOperator(user)),
-      tap(isOperator => this.userCanEdit.emit(isOperator))
-    );
+    return this.vs
+      .getOpenChannel(channelUrl)
+      .pipe(switchMap(channel => this.vs.enterOpenChannel(channel)));
   }
 }
