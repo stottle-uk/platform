@@ -5,35 +5,35 @@ import {
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
-import { iif, Observable, of, Subject } from 'rxjs';
-import { map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { iif, Observable, Subject } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 import { ConnectionViewStateService } from '../../connection/services/connection-view-state.service';
 import { ChannelsViewStateService } from '../services/channels-view-state.services';
 
 @Directive({
-  selector: '[stottleIfCanEditChannel]'
+  selector: '[stottleCanEditChannel]'
 })
-export class IfCanEditChannelDirective implements OnInit {
+export class CanEditChannelDirective implements OnInit {
   private destroy$ = new Subject();
 
   constructor(
     private viewContainer: ViewContainerRef,
     private templateRef: TemplateRef<NgIfContext>,
-    private vs: ChannelsViewStateService,
-    private cvs: ConnectionViewStateService
+    private connection: ConnectionViewStateService,
+    private vs: ChannelsViewStateService
   ) {}
 
   ngOnInit(): void {
     this.vs.currentChannel$
       .pipe(
-        takeUntil(this.destroy$),
         switchMap(channel =>
           iif(
             () => channel.isOpenChannel(),
             this.openChannel(channel as SendBird.OpenChannel),
             this.groupChannel(channel as SendBird.GroupChannel)
           )
-        )
+        ),
+        tap(isOperator => this.toggleView(isOperator))
       )
       .subscribe();
   }
@@ -44,23 +44,22 @@ export class IfCanEditChannelDirective implements OnInit {
   }
 
   private openChannel(channel: SendBird.OpenChannel): Observable<boolean> {
-    return of(channel).pipe(
-      withLatestFrom(this.cvs.currentUser$),
-      map(([channel, user]) => channel.isOperator(user)),
-      tap(isOperator => this.toggleView(isOperator))
+    return this.connection.checkUser(channel, (user, channel) =>
+      channel.isOperator(user)
     );
   }
 
   private groupChannel(channel: SendBird.GroupChannel): Observable<boolean> {
-    return of(channel).pipe(
-      map(channel => channel.myRole === 'operator'),
-      tap(isOperator => this.toggleView(isOperator))
+    return this.connection.checkUser(
+      channel,
+      (user, channel) => channel.myRole === 'operator'
     );
   }
 
   private toggleView(isOperator: boolean): void {
-    isOperator
-      ? this.viewContainer.createEmbeddedView(this.templateRef)
-      : this.viewContainer.clear();
+    this.viewContainer.clear();
+    if (isOperator) {
+      isOperator && this.viewContainer.createEmbeddedView(this.templateRef);
+    }
   }
 }

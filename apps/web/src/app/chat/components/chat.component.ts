@@ -13,7 +13,7 @@ import { filter, map } from 'rxjs/operators';
       <div fxFlex="grow">
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <span>Channel Title</span>
-          <a *stottleIfCanEditChannel routerLink="edit" mat-icon-button>
+          <a *stottleCanEditChannel routerLink="edit" mat-icon-button>
             <mat-icon aria-label="Edit Channel">
               edit
             </mat-icon>

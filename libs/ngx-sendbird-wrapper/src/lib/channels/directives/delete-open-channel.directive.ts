@@ -1,46 +1,18 @@
-import {
-  Directive,
-  ElementRef,
-  HostListener,
-  Input,
-  OnDestroy,
-  OnInit,
-  Renderer2
-} from '@angular/core';
+import { Directive, HostListener, Input, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { filter, map, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { ConnectionViewStateService } from '../../connection/services/connection-view-state.service';
+import { takeUntil, tap } from 'rxjs/operators';
 import { ChannelsViewStateService } from '../services/channels-view-state.services';
 
 @Directive({
   selector: '[stottleDeleteOpenChannel]'
 })
-export class DeleteOpenChannelDirective implements OnInit, OnDestroy {
+export class DeleteOpenChannelDirective implements OnDestroy {
   @Input()
   callback: () => void;
 
   private destroy$ = new Subject();
 
-  constructor(
-    private vs: ChannelsViewStateService,
-    private connection: ConnectionViewStateService,
-    private elementRef: ElementRef,
-    private rdr: Renderer2
-  ) {}
-
-  ngOnInit(): void {
-    this.connection.currentUser$
-      .pipe(
-        takeUntil(this.destroy$),
-        withLatestFrom(this.vs.currentChannel$),
-        filter(([user, channel]) => channel.isOpenChannel()),
-        map(([user, channel]) =>
-          (<SendBird.OpenChannel>channel).isOperator(user)
-        ),
-        tap(isChannelOperator => !isChannelOperator && this.hideElement())
-      )
-      .subscribe();
-  }
+  constructor(private vs: ChannelsViewStateService) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -56,9 +28,5 @@ export class DeleteOpenChannelDirective implements OnInit, OnDestroy {
         tap(() => !!this.callback && this.callback())
       )
       .subscribe();
-  }
-
-  private hideElement() {
-    this.rdr.setAttribute(this.elementRef.nativeElement, 'hidden', 'true');
   }
 }

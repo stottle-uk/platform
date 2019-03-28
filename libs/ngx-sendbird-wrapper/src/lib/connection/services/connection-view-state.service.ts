@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { SendbirdEventHandlersService } from '../../_shared/services/sendbird-event-handlers.service';
 import { SendBirdService } from '../../_shared/services/sendbird.service';
 
@@ -40,5 +40,12 @@ export class ConnectionViewStateService {
       tap(() => this.internalIsConnected$.next(false)),
       tap(() => this.sbh.removeHandlers())
     );
+  }
+
+  checkUser<T>(
+    item: T,
+    fn: (user: SendBird.User, item: T) => boolean
+  ): Observable<boolean> {
+    return this.currentUser$.pipe(map(user => fn(user, item)));
   }
 }

@@ -8,6 +8,7 @@ import { MessagesListComponent } from './containers/messages-list.component';
 import { SendFileMessageComponent } from './containers/send-file-message.component';
 import { SendMessageComponent } from './containers/send-message.component';
 import { UpdateMessageComponent } from './containers/update-message.component';
+import { CanEditMessageDirective } from './directives/can-edit-message.directive';
 import { DeleteMessageDirective } from './directives/delete-message.directive';
 import { FetchMoreMessagesDirective } from './directives/fetch-more-messages.directive';
 import { UpdateMessageDirective } from './directives/update-message.directive';
@@ -28,6 +29,7 @@ const declarations = [
   DeleteMessageDirective,
   FetchMoreMessagesDirective,
   UpdateMessageDirective,
+  CanEditMessageDirective,
   MessagesListComponent,
   SendMessageComponent,
   SendFileMessageComponent
